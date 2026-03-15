@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/dashboard`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/assessments/new`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/pci-saq-tool`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/pci-saq-questionnaire`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/pci-scope-calculator`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/pci-dss-requirements`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/solutions`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
