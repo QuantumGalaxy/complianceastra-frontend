@@ -50,12 +50,13 @@ export default function ResultsPage() {
     if (!user || !data?.anonymous_id || data?.is_owned || claiming || autoClaimAttempted) return;
     const authToken = token || (typeof window !== "undefined" ? localStorage.getItem("complianceastra_token") : null);
     if (!authToken) return;
+    const anonymousId = data.anonymous_id;
     setAutoClaimAttempted(true);
     const doClaim = async () => {
       setClaiming(true);
       setPurchaseError(null);
       try {
-        await assessmentsApi.claim(id, authToken, data.anonymous_id);
+        await assessmentsApi.claim(id, authToken, anonymousId);
         const r = await assessmentsApi.get(id, authToken);
         setData((d) => (d ? { ...d, is_owned: true, anonymous_id: undefined, report_id: r.report_id, report_status: r.report_status } : null));
       } catch (e) {
@@ -70,11 +71,12 @@ export default function ResultsPage() {
 
   const handleClaim = async () => {
     const authToken = token || (typeof window !== "undefined" ? localStorage.getItem("complianceastra_token") : null);
-    if (!authToken || !data?.anonymous_id) return;
+    const anonymousId = data?.anonymous_id;
+    if (!authToken || !anonymousId) return;
     setClaiming(true);
     setPurchaseError(null);
     try {
-      await assessmentsApi.claim(id, authToken, data.anonymous_id);
+      await assessmentsApi.claim(id, authToken, anonymousId);
       const r = await assessmentsApi.get(id, authToken);
       setData((d) =>
         d ? { ...d, is_owned: true, anonymous_id: undefined, report_id: r.report_id, report_status: r.report_status } : null
