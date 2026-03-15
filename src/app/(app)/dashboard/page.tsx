@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,7 +9,7 @@ import { useAuth } from "@/lib/auth-context";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-export default function DashboardPage() {
+function DashboardContent() {
   const searchParams = useSearchParams();
   const reportSuccess = searchParams.get("report") === "success";
   const { user, token, isLoading, logout } = useAuth();
@@ -142,5 +142,13 @@ export default function DashboardPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={<div className="py-16 text-center text-slate-600">Loading...</div>}>
+      <DashboardContent />
+    </Suspense>
   );
 }
