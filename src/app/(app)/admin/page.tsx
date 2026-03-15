@@ -157,7 +157,7 @@ export default function AdminPage() {
             <div className="flex flex-wrap gap-4 items-center">
               <div>
                 <Label className="text-xs text-slate-500">Scope Level</Label>
-                <Select value={scopeLevel} onValueChange={setScopeLevel}>
+                <Select value={scopeLevel} onValueChange={(value) => setScopeLevel(value ?? "")}>
                   <SelectTrigger className="w-[140px]">
                     <SelectValue />
                   </SelectTrigger>
@@ -171,7 +171,7 @@ export default function AdminPage() {
               </div>
               <div>
                 <Label className="text-xs text-slate-500">Environment</Label>
-                <Select value={envType} onValueChange={setEnvType}>
+                <Select value={envType} onValueChange={(value) => setEnvType(value ?? "")}>
                   <SelectTrigger className="w-[160px]">
                     <SelectValue />
                   </SelectTrigger>
