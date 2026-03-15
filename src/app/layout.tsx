@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
@@ -12,9 +13,39 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "ComplianceAstra | Simplify PCI DSS & Compliance",
+  title: {
+    default: "ComplianceAstra – PCI DSS Scope & SAQ Assessment Tool",
+    template: "%s | ComplianceAstra",
+  },
   description:
-    "ComplianceAstra simplifies complex security and regulatory compliance frameworks. Understand your PCI scope in minutes.",
+    "ComplianceAstra helps businesses quickly determine PCI DSS scope and identify the correct SAQ using a simple guided assessment.",
+  keywords: [
+    "PCI DSS scope tool",
+    "PCI compliance assessment",
+    "PCI SAQ determination",
+    "PCI DSS questionnaire",
+    "PCI DSS compliance tool",
+  ],
+  metadataBase: new URL("https://complianceastra.com"),
+  openGraph: {
+    title: "ComplianceAstra",
+    description:
+      "Simplify complex compliance frameworks and determine your PCI DSS scope in minutes.",
+    url: "https://complianceastra.com",
+    siteName: "ComplianceAstra",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+    type: "website",
+  },
+  icons: {
+    icon: "/icon.png",
+    apple: "/apple-icon.png",
+  },
 };
 
 export default function RootLayout({
@@ -22,9 +53,27 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+
   return (
     <html lang="en">
       <body className={`${dmSans.variable} font-sans antialiased`}>
+        {gaId && process.env.NODE_ENV === "production" && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gaId}');
+              `}
+            </Script>
+          </>
+        )}
         <AuthProvider>
           <div className="flex min-h-screen flex-col">
             <a

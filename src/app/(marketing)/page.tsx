@@ -3,9 +3,27 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Shield, Zap, FileCheck } from "lucide-react";
 
+export const metadata = {
+  title: "PCI DSS Scope Tool",
+  description:
+    "ComplianceAstra helps businesses quickly determine PCI DSS scope and identify the correct SAQ. Free guided assessment in minutes.",
+};
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "ComplianceAstra",
+  url: "https://complianceastra.com",
+  logo: "https://complianceastra.com/icon.png",
+};
+
 export default function HomePage() {
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
       {/* Hero */}
       <section
         className="relative overflow-hidden bg-gradient-to-b from-slate-50 via-white to-white py-24 md:py-32"
@@ -17,7 +35,7 @@ export default function HomePage() {
               id="hero-heading"
               className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl md:text-6xl"
             >
-              Simplify complex compliance frameworks
+              PCI DSS Scope Tool
             </h1>
             <p className="mt-6 text-lg text-slate-600 md:text-xl">
               ComplianceAstra helps businesses understand and navigate PCI DSS and regulatory
