@@ -49,8 +49,7 @@ const response = await favicons(tempSquare, {
 const faviconImage = response.images.find((img) => img.name === "favicon.ico");
 if (faviconImage) {
   await writeFile(join(dest, "favicon.ico"), faviconImage.contents);
-  await writeFile(join(appDir, "favicon.ico"), faviconImage.contents);
-  console.log("Generated public/favicon.ico and src/app/favicon.ico");
+  console.log("Generated public/favicon.ico");
 } else {
   console.error("favicon.ico not found in output");
   process.exit(1);
