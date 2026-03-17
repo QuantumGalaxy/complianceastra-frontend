@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,7 +35,14 @@ export function Header() {
           className="flex items-center gap-2 font-semibold text-slate-900"
           aria-label="ComplianceAstra home"
         >
-          <span className="text-xl">ComplianceAstra</span>
+          <Image
+            src="/logo.png"
+            alt="ComplianceAstra"
+            width={180}
+            height={36}
+            className="h-9 w-auto"
+            priority
+          />
         </Link>
 
         {/* Desktop nav */}

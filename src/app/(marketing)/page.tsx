@@ -14,7 +14,7 @@ const organizationSchema = {
   "@type": "Organization",
   name: "ComplianceAstra",
   url: "https://complianceastra.com",
-  logo: "https://complianceastra.com/icon.png",
+  logo: "https://complianceastra.com/logo.png",
 };
 
 export default function HomePage() {
@@ -26,7 +26,7 @@ export default function HomePage() {
       />
       {/* Hero */}
       <section
-        className="relative overflow-hidden bg-gradient-to-b from-slate-50 via-white to-white py-24 md:py-32"
+        className="relative overflow-hidden bg-gradient-to-b from-slate-50 via-white to-white py-6 md:py-10"
         aria-labelledby="hero-heading"
       >
         <div className="container">
@@ -37,11 +37,11 @@ export default function HomePage() {
             >
               PCI DSS Scope Tool
             </h1>
-            <p className="mt-6 text-lg text-slate-600 md:text-xl">
+            <p className="mt-4 text-lg text-slate-600 md:text-xl">
               ComplianceAstra helps businesses understand and navigate PCI DSS and regulatory
               compliance. Get plain-English scope guidance in minutes—not days.
             </p>
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center">
+            <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:justify-center">
               <Link href="/assessments/new">
                 <Button
                   size="lg"
@@ -67,9 +67,9 @@ export default function HomePage() {
       </section>
 
       {/* Value props */}
-      <section className="py-20" aria-labelledby="value-heading">
+      <section className="py-8" aria-labelledby="value-heading">
         <div className="container">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10">
             <h2 id="value-heading" className="text-3xl font-bold text-slate-900">
               Understand your PCI scope in minutes
             </h2>
