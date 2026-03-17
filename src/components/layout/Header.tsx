@@ -38,9 +38,9 @@ export function Header() {
           <Image
             src="/logo.png"
             alt="ComplianceAstra"
-            width={180}
-            height={36}
-            className="h-9 w-auto"
+            width={220}
+            height={44}
+            className="h-11 w-auto md:h-12"
             priority
           />
         </Link>
