@@ -34,11 +34,11 @@ function NewAssessmentContent() {
   const searchParams = useSearchParams();
   const presetEnv = searchParams.get("env");
   const { token, isLoading: authLoading } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const [loadingId, setLoadingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleSelect = async (envId: string) => {
-    setLoading(true);
+    setLoadingId(envId);
     setError(null);
     try {
       const authToken = token || (typeof window !== "undefined" ? localStorage.getItem("complianceastra_token") : null);
@@ -47,7 +47,7 @@ function NewAssessmentContent() {
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to start assessment");
     } finally {
-      setLoading(false);
+      setLoadingId(null);
     }
   };
 
@@ -81,7 +81,7 @@ function NewAssessmentContent() {
               className={`cursor-pointer transition-colors border-2 hover:border-emerald-300 ${
                 presetEnv === env.id ? "border-emerald-400" : "border-slate-200"
               }`}
-              onClick={() => !loading && handleSelect(env.id)}
+              onClick={() => !loadingId && handleSelect(env.id)}
             >
               <CardHeader className="flex flex-row items-center gap-4">
                 <span className="text-3xl" aria-hidden>
@@ -94,13 +94,13 @@ function NewAssessmentContent() {
                 <Button
                   className="ml-auto"
                   size="sm"
-                  disabled={loading}
+                  disabled={!!loadingId}
                   onClick={(e) => {
                     e.stopPropagation();
                     handleSelect(env.id);
                   }}
                 >
-                  {loading ? "Starting..." : "Start"}
+                  {loadingId === env.id ? "Starting..." : "Start"}
                 </Button>
               </CardHeader>
             </Card>
