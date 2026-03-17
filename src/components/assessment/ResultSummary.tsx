@@ -34,12 +34,15 @@ export function ResultSummary({
   return (
     <div className="space-y-8">
       <div className="text-center space-y-4">
+        <p className="text-sm font-medium uppercase tracking-wide text-slate-500">
+          Preliminary SAQ classification
+        </p>
         <Badge className="text-base px-4 py-1.5 rounded-full bg-emerald-600 text-white">
           {SAQ_LABELS[saq]}
         </Badge>
         <h1 className="text-3xl font-bold text-slate-900">{title}</h1>
         <p className="text-slate-600 max-w-2xl mx-auto">
-          This is an initial SAQ classification aid based on your answers. It does not replace
+          Based on PCI DSS v4.0.1. This is an initial classification aid and does not replace
           acquirer, processor, or payment-brand instructions.
         </p>
       </div>

@@ -7,6 +7,9 @@ import { ProgressHeader } from "@/components/assessment/ProgressHeader";
 import { QuestionCard } from "@/components/assessment/QuestionCard";
 import { ResultSummary } from "@/components/assessment/ResultSummary";
 import { ChecklistView } from "@/components/assessment/ChecklistView";
+import { ChecklistPreview } from "@/components/assessment/ChecklistPreview";
+import { PaywallSection } from "@/components/assessment/PaywallSection";
+import { PaymentModal } from "@/components/assessment/PaymentModal";
 import { CHECKLISTS, SaqType } from "@/components/assessment/checklist-data";
 
 type Channel = "ecommerce" | "moto" | "card_present" | "service_provider" | null;
@@ -53,6 +56,29 @@ type WizardState = {
 };
 
 const STORAGE_KEY_PREFIX = "complianceastra_saq_wizard_";
+const UNLOCKED_KEY_PREFIX = "complianceastra_unlocked_";
+
+function loadUnlocked(id: string): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage.getItem(UNLOCKED_KEY_PREFIX + id) === "true";
+  } catch {
+    return false;
+  }
+}
+
+function saveUnlocked(id: string, unlocked: boolean) {
+  if (typeof window === "undefined") return;
+  try {
+    if (unlocked) {
+      window.localStorage.setItem(UNLOCKED_KEY_PREFIX + id, "true");
+    } else {
+      window.localStorage.removeItem(UNLOCKED_KEY_PREFIX + id);
+    }
+  } catch {
+    // ignore
+  }
+}
 
 function loadState(id: string): WizardState | null {
   if (typeof window === "undefined") return null;
@@ -282,10 +308,22 @@ export default function AssessmentPage() {
     string,
     { answer: "in_place" | "not_applicable" | "action_needed" | null; notes: string }
   >>({});
+  const [unlocked, setUnlocked] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+
+  useEffect(() => {
+    setUnlocked(loadUnlocked(idParam));
+  }, [idParam]);
 
   useEffect(() => {
     saveState(idParam, state);
   }, [idParam, state]);
+
+  const handlePaymentSuccess = () => {
+    setUnlocked(true);
+    saveUnlocked(idParam, true);
+  };
 
   const result = useMemo(() => {
     if (!state.saq) return null;
@@ -683,7 +721,7 @@ export default function AssessmentPage() {
         )}
 
         {step === "checklist" && result && (
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div className="space-y-2">
               <h1 className="text-2xl font-bold text-slate-900">
                 {CHECKLISTS[result.saq].title}
@@ -691,14 +729,38 @@ export default function AssessmentPage() {
               <p className="text-sm text-slate-600 max-w-2xl">
                 Work through these{" "}
                 <span className="font-semibold">plain-English compliance checkpoints</span>.
-                Record which items are already in place and where action is still needed.
+                {unlocked
+                  ? " Record which items are already in place and where action is still needed."
+                  : " Unlock to see the full checklist and track your progress."}
               </p>
             </div>
-            <ChecklistView
-              saq={result.saq}
-              state={checklistState}
-              onChange={setChecklistState}
-            />
+
+            {!unlocked ? (
+              <>
+                <ChecklistPreview
+                  saq={result.saq}
+                  state={checklistState}
+                  onChange={setChecklistState}
+                />
+                <PaywallSection
+                  email={userEmail}
+                  onEmailChange={setUserEmail}
+                  onUnlockClick={() => setPaymentModalOpen(true)}
+                />
+                <PaymentModal
+                  open={paymentModalOpen}
+                  onOpenChange={setPaymentModalOpen}
+                  onSuccess={handlePaymentSuccess}
+                  planLabel="Full checklist – $49"
+                />
+              </>
+            ) : (
+              <ChecklistView
+                saq={result.saq}
+                state={checklistState}
+                onChange={setChecklistState}
+              />
+            )}
           </div>
         )}
       </div>
