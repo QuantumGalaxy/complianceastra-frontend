@@ -1,0 +1,96 @@
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import type { SaqType } from "./checklist-data";
+
+type ResultSummaryProps = {
+  saq: SaqType;
+  title: string;
+  whyMatched: string[];
+  scopeSummary: string;
+  estimateLabel: string;
+  onContinueChecklist: () => void;
+};
+
+const SAQ_LABELS: Record<SaqType, string> = {
+  A: "SAQ A",
+  "A-EP": "SAQ A-EP",
+  B: "SAQ B",
+  "B-IP": "SAQ B-IP",
+  "C-VT": "SAQ C-VT",
+  C: "SAQ C",
+  D_MERCHANT: "SAQ D (Merchant)",
+  D_SERVICE_PROVIDER: "SAQ D (Service Provider)",
+};
+
+export function ResultSummary({
+  saq,
+  title,
+  whyMatched,
+  scopeSummary,
+  estimateLabel,
+  onContinueChecklist,
+}: ResultSummaryProps) {
+  return (
+    <div className="space-y-8">
+      <div className="text-center space-y-4">
+        <Badge className="text-base px-4 py-1.5 rounded-full bg-emerald-600 text-white">
+          {SAQ_LABELS[saq]}
+        </Badge>
+        <h1 className="text-3xl font-bold text-slate-900">{title}</h1>
+        <p className="text-slate-600 max-w-2xl mx-auto">
+          This is an initial SAQ classification aid based on your answers. It does not replace
+          acquirer, processor, or payment-brand instructions.
+        </p>
+      </div>
+
+      <Card className="border-slate-200">
+        <CardHeader>
+          <CardTitle>Why this matched</CardTitle>
+          <CardDescription>Key points from your answers.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ul className="list-disc list-inside text-slate-700 space-y-1 text-sm">
+            {whyMatched.map((reason, i) => (
+              <li key={i}>{reason}</li>
+            ))}
+          </ul>
+        </CardContent>
+      </Card>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <Card className="border-emerald-200 bg-emerald-50/40">
+          <CardHeader>
+            <CardTitle className="text-emerald-900">What this means</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-slate-800">{scopeSummary}</p>
+          </CardContent>
+        </Card>
+        <Card className="border-slate-200">
+          <CardHeader>
+            <CardTitle>Estimated checklist size</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-slate-700">{estimateLabel}</p>
+            <p className="mt-3 text-xs text-slate-500">
+              Your actual PCI requirements may vary. Always confirm final reporting obligations with
+              your acquiring bank, payment processor, or qualified security assessor (QSA).
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="flex justify-center">
+        <Button
+          size="lg"
+          className="bg-emerald-600 hover:bg-emerald-700 px-10"
+          onClick={onContinueChecklist}
+        >
+          Continue to compliance checklist
+        </Button>
+      </div>
+    </div>
+  );
+}
+

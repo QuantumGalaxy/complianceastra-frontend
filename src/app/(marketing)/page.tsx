@@ -39,7 +39,7 @@ export default function HomePage() {
             </h1>
             <p className="mt-4 text-lg text-slate-600 md:text-xl">
               ComplianceAstra helps businesses understand and navigate PCI DSS and regulatory
-              compliance. Get plain-English scope guidance in minutes—not days.
+              compliance. Reduce your PCI scope by up to 80% in 5 minutes.
             </p>
             <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:justify-center">
               <Link href="/assessments/new">
