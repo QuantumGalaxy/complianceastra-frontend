@@ -26,8 +26,9 @@ export function PaymentModal({
     setSimulating(true);
     setTimeout(() => {
       setSimulating(false);
-      onOpenChange(false);
+      // Unlock first so the full checklist is visible when the modal closes
       onSuccess();
+      onOpenChange(false);
     }, 800);
   };
 

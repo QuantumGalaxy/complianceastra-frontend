@@ -755,11 +755,19 @@ export default function AssessmentPage() {
                 />
               </>
             ) : (
-              <ChecklistView
-                saq={result.saq}
-                state={checklistState}
-                onChange={setChecklistState}
-              />
+              <>
+                <div
+                  className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800"
+                  role="status"
+                >
+                  <strong>Unlocked.</strong> Your full compliance checklist is below. Track progress, add notes, and complete each item.
+                </div>
+                <ChecklistView
+                  saq={result.saq}
+                  state={checklistState}
+                  onChange={setChecklistState}
+                />
+              </>
             )}
           </div>
         )}
