@@ -27,7 +27,7 @@ export default function PrivacyPage() {
           </p>
           <h2 className="text-xl font-semibold text-slate-900 mt-8">Contact</h2>
           <p>
-            For privacy-related questions, contact us at privacy@complianceastra.com.
+            For privacy-related questions, contact us at legal@complianceastra.com.
           </p>
         </div>
       </div>

@@ -25,10 +25,10 @@ export default function ContactPage() {
           </CardHeader>
           <CardContent>
             <a
-              href="mailto:consulting@complianceastra.com"
+              href="mailto:legal@complianceastra.com"
               className="text-emerald-600 hover:underline font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 rounded"
             >
-              consulting@complianceastra.com
+              legal@complianceastra.com
             </a>
           </CardContent>
         </Card>
