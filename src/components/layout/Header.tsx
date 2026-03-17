@@ -29,7 +29,7 @@ export function Header() {
       className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80"
       role="banner"
     >
-      <div className="container flex h-20 items-center justify-between">
+      <div className="container flex h-24 items-center justify-between">
         <Link
           href="/"
           className="flex items-center gap-2 font-semibold text-slate-900"
@@ -38,9 +38,9 @@ export function Header() {
           <Image
             src="/logo.png"
             alt="ComplianceAstra"
-            width={440}
-            height={88}
-            className="h-20 w-auto"
+            width={520}
+            height={104}
+            className="h-24 w-auto"
             priority
           />
         </Link>
