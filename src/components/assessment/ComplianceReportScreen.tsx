@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -10,8 +10,8 @@ import {
   SAQ_LABELS,
   SAQ_RISK_LEVEL,
   TOP_ACTIONS_BY_SAQ,
-  type RiskLevel,
 } from "./report-data";
+import { generateComplianceReportPdf } from "@/lib/generateComplianceReportPdf";
 import type { SaqType } from "./checklist-data";
 
 type ReportResult = {
@@ -115,6 +115,30 @@ export function ComplianceReportScreen({
   const scopeInfo = useMemo(() => getInScopeOutOfScope(result.saq), [result.saq]);
   const riskLevel = SAQ_RISK_LEVEL[result.saq];
   const topActions = TOP_ACTIONS_BY_SAQ[result.saq] ?? [];
+
+  const handleDownloadPdf = useCallback(() => {
+    generateComplianceReportPdf({
+      result,
+      scopeInfo,
+      riskLevel,
+      topActions,
+      checklistDef: def,
+      checklistState,
+      completed,
+      totalItems,
+    });
+    onDownloadPdf?.();
+  }, [
+    result,
+    scopeInfo,
+    riskLevel,
+    topActions,
+    def,
+    checklistState,
+    completed,
+    totalItems,
+    onDownloadPdf,
+  ]);
 
   return (
     <div className="space-y-8">
@@ -295,12 +319,12 @@ export function ComplianceReportScreen({
             size="lg"
             variant="outline"
             className="w-full sm:w-auto border-emerald-600 text-emerald-700 hover:bg-emerald-50"
-            onClick={onDownloadPdf}
+            onClick={handleDownloadPdf}
           >
             Download Compliance Report (PDF)
           </Button>
           <p className="mt-2 text-xs text-slate-500">
-            Export this report for your records or to share with your acquirer or QSA. PDF generation will be available when the export feature is connected.
+            Export this report for your records or to share with your acquirer or QSA.
           </p>
         </CardContent>
       </Card>

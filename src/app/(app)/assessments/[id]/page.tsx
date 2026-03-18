@@ -764,10 +764,6 @@ export default function AssessmentPage() {
             }}
             checklistState={checklistState}
             onChecklistChange={setChecklistState}
-            onDownloadPdf={() => {
-              // Placeholder: wire to PDF export when ready
-              if (typeof window !== "undefined") window.alert("PDF export will be available when connected.");
-            }}
           />
         )}
       </div>
