@@ -1,11 +1,12 @@
 type ProgressHeaderProps = {
-  currentStep: "scope" | "eligibility" | "checklist";
+  currentStep: "scope" | "eligibility" | "checklist" | "report";
 };
 
 const STEPS: { id: ProgressHeaderProps["currentStep"]; label: string }[] = [
   { id: "scope", label: "Scope wizard" },
   { id: "eligibility", label: "SAQ eligibility" },
-  { id: "checklist", label: "Compliance checklist" },
+  { id: "checklist", label: "Checklist" },
+  { id: "report", label: "Your report" },
 ];
 
 export function ProgressHeader({ currentStep }: ProgressHeaderProps) {

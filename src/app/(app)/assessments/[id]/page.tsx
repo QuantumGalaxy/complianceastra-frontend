@@ -6,14 +6,14 @@ import { Button } from "@/components/ui/button";
 import { ProgressHeader } from "@/components/assessment/ProgressHeader";
 import { QuestionCard } from "@/components/assessment/QuestionCard";
 import { ResultSummary } from "@/components/assessment/ResultSummary";
-import { ChecklistView } from "@/components/assessment/ChecklistView";
 import { ChecklistPreview } from "@/components/assessment/ChecklistPreview";
 import { PaywallSection } from "@/components/assessment/PaywallSection";
 import { PaymentModal } from "@/components/assessment/PaymentModal";
+import { ComplianceReportScreen } from "@/components/assessment/ComplianceReportScreen";
 import { CHECKLISTS, SaqType } from "@/components/assessment/checklist-data";
 
 type Channel = "ecommerce" | "moto" | "card_present" | "service_provider" | null;
-type WizardStep = "scope" | "eligibility" | "checklist";
+type WizardStep = "scope" | "eligibility" | "checklist" | "report";
 
 type EcommerceAnswers = {
   onlyEcommerce?: string;
@@ -313,7 +313,9 @@ export default function AssessmentPage() {
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 
   useEffect(() => {
-    setUnlocked(loadUnlocked(idParam));
+    const wasUnlocked = loadUnlocked(idParam);
+    setUnlocked(wasUnlocked);
+    if (wasUnlocked) setStep("report");
   }, [idParam]);
 
   useEffect(() => {
@@ -323,6 +325,7 @@ export default function AssessmentPage() {
   const handlePaymentSuccess = () => {
     setUnlocked(true);
     saveUnlocked(idParam, true);
+    setStep("report");
   };
 
   const result = useMemo(() => {
@@ -365,7 +368,7 @@ export default function AssessmentPage() {
   };
 
   const currentStep: WizardStep =
-    step === "checklist" ? "checklist" : state.saq ? step : "scope";
+    step === "report" ? "report" : step === "checklist" ? "checklist" : state.saq ? step : "scope";
 
   return (
     <div className="py-16">
@@ -729,47 +732,43 @@ export default function AssessmentPage() {
               <p className="text-sm text-slate-600 max-w-2xl">
                 Work through these{" "}
                 <span className="font-semibold">plain-English compliance checkpoints</span>.
-                {unlocked
-                  ? " Record which items are already in place and where action is still needed."
-                  : " Unlock to see the full checklist and track your progress."}
+                Unlock to get your full compliance report and checklist.
               </p>
             </div>
-
-            {!unlocked ? (
-              <>
-                <ChecklistPreview
-                  saq={result.saq}
-                  state={checklistState}
-                  onChange={setChecklistState}
-                />
-                <PaywallSection
-                  email={userEmail}
-                  onEmailChange={setUserEmail}
-                  onUnlockClick={() => setPaymentModalOpen(true)}
-                />
-                <PaymentModal
-                  open={paymentModalOpen}
-                  onOpenChange={setPaymentModalOpen}
-                  onSuccess={handlePaymentSuccess}
-                  planLabel="Full checklist – $49"
-                />
-              </>
-            ) : (
-              <>
-                <div
-                  className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800"
-                  role="status"
-                >
-                  <strong>Unlocked.</strong> Your full compliance checklist is below. Track progress, add notes, and complete each item.
-                </div>
-                <ChecklistView
-                  saq={result.saq}
-                  state={checklistState}
-                  onChange={setChecklistState}
-                />
-              </>
-            )}
+            <ChecklistPreview
+              saq={result.saq}
+              state={checklistState}
+              onChange={setChecklistState}
+            />
+            <PaywallSection
+              email={userEmail}
+              onEmailChange={setUserEmail}
+              onUnlockClick={() => setPaymentModalOpen(true)}
+            />
+            <PaymentModal
+              open={paymentModalOpen}
+              onOpenChange={setPaymentModalOpen}
+              onSuccess={handlePaymentSuccess}
+            />
           </div>
+        )}
+
+        {step === "report" && result && (
+          <ComplianceReportScreen
+            result={{
+              saq: result.saq,
+              title: result.title,
+              why: result.why,
+              summary: result.summary,
+              estimateLabel: result.estimateLabel,
+            }}
+            checklistState={checklistState}
+            onChecklistChange={setChecklistState}
+            onDownloadPdf={() => {
+              // Placeholder: wire to PDF export when ready
+              if (typeof window !== "undefined") window.alert("PDF export will be available when connected.");
+            }}
+          />
         )}
       </div>
     </div>

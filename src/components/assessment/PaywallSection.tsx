@@ -15,10 +15,10 @@ type PaywallSectionProps = {
 
 const BENEFITS = [
   "Full SAQ checklist (100+ requirements)",
-  "Step-by-step guidance",
-  "Track progress (In Place / Action Needed)",
-  "Add notes and evidence",
-  "Export PDF for audit",
+  "Progress tracking (In Place / Action Needed)",
+  "Evidence notes and audit trail",
+  "Export PDF for your acquirer or QSA",
+  "Future updates included",
 ];
 
 export function PaywallSection({
@@ -42,7 +42,7 @@ export function PaywallSection({
           </h2>
           <p className="text-slate-600 text-sm md:text-base max-w-xl mx-auto">
             Avoid weeks of PCI confusion. Based on PCI DSS v4.0.1 — get a clear,
-            actionable checklist tailored to your SAQ.
+            actionable checklist and report tailored to your SAQ.
           </p>
         </div>
 
@@ -57,36 +57,17 @@ export function PaywallSection({
           ))}
         </ul>
 
-        <div className="grid gap-6 md:grid-cols-3 text-center">
-          <Card className="border-slate-200 bg-white">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base text-slate-700">FREE</CardTitle>
+        <div className="flex justify-center">
+          <Card className="w-full max-w-md border-emerald-300 bg-emerald-50/50 ring-2 ring-emerald-500/30">
+            <CardHeader className="text-center pb-2">
+              <CardTitle className="text-2xl text-emerald-900">$99</CardTitle>
+              <p className="text-sm text-slate-700">One-time payment</p>
             </CardHeader>
-            <CardContent className="space-y-1 text-sm text-slate-600">
-              <p>SAQ result</p>
-              <p>Basic explanation</p>
-            </CardContent>
-          </Card>
-          <Card className="border-emerald-300 bg-emerald-50/50 ring-2 ring-emerald-500/30">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base text-emerald-900">$49</CardTitle>
-              <p className="text-xs font-medium text-emerald-700">Recommended</p>
-            </CardHeader>
-            <CardContent className="space-y-1 text-sm text-slate-700">
-              <p>Full checklist</p>
-              <p>Progress tracking</p>
+            <CardContent className="space-y-1 text-sm text-slate-700 text-center">
+              <p>Full SAQ checklist</p>
+              <p>Progress tracking & evidence notes</p>
               <p>Export PDF</p>
-            </CardContent>
-          </Card>
-          <Card className="border-slate-200 bg-white">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base text-slate-700">$99</CardTitle>
-              <p className="text-xs text-slate-500">Advanced</p>
-            </CardHeader>
-            <CardContent className="space-y-1 text-sm text-slate-600">
-              <p>Everything above</p>
               <p>Future updates</p>
-              <p>Priority support</p>
             </CardContent>
           </Card>
         </div>
@@ -111,7 +92,7 @@ export function PaywallSection({
               onClick={onUnlockClick}
               disabled={isLoading}
             >
-              {isLoading ? "Opening…" : "Unlock Full Checklist – $49"}
+              {isLoading ? "Opening…" : "Unlock Full Compliance Plan – $99"}
             </Button>
             <p className="text-sm text-slate-500">
               One-time payment. No subscription.
