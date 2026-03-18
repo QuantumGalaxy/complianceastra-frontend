@@ -54,12 +54,12 @@ export default function HomePage() {
           className="absolute -bottom-28 -left-28 h-72 w-72 rounded-full bg-sky-200/30 blur-3xl"
         />
 
-        <div className="relative container py-16 md:py-20">
+        <div className="relative container py-12 md:py-14">
           <div className="grid items-center gap-10 lg:grid-cols-2">
             <Reveal>
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <h1
-                  className="text-5xl font-bold tracking-tight text-slate-900 sm:text-6xl"
+                  className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl"
                 >
                   PCI DSS Scope Tool
                 </h1>
@@ -69,8 +69,8 @@ export default function HomePage() {
                   get moving faster.
                 </p>
 
-                <div className="space-y-4">
-                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                <div className="space-y-3">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                     <Link href="/assessments/new">
                       <Button
                         size="lg"
@@ -99,7 +99,7 @@ export default function HomePage() {
             <Reveal>
               <div className="mx-auto w-full max-w-lg">
                 <div className="rounded-2xl border border-slate-200 bg-white/70 backdrop-blur shadow-sm overflow-hidden">
-                  <div className="px-5 py-4 border-b border-slate-200 bg-gradient-to-r from-emerald-50/70 to-white">
+                  <div className="px-4 py-3 border-b border-slate-200 bg-gradient-to-r from-emerald-50/70 to-white">
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex items-center gap-3 min-w-0">
                         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
@@ -118,8 +118,8 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div className="p-5 space-y-5">
-                    <div className="rounded-xl border border-slate-200 bg-white p-4">
+                  <div className="p-4 space-y-4">
+                    <div className="rounded-xl border border-slate-200 bg-white p-3">
                       <div className="flex items-start gap-3">
                         <span className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-xl bg-sky-50 text-sky-700">
                           <LockKeyhole className="h-4 w-4" aria-hidden />
@@ -135,7 +135,7 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    <div className="rounded-xl border border-slate-200 bg-white p-4">
+                    <div className="rounded-xl border border-slate-200 bg-white p-3">
                       <div className="flex items-start gap-3">
                         <span className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
                           <ShieldCheck className="h-4 w-4" aria-hidden />
@@ -151,7 +151,7 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    <div className="rounded-xl border border-slate-200 bg-white p-4">
+                    <div className="rounded-xl border border-slate-200 bg-white p-3">
                       <div className="flex items-start gap-3">
                         <span className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-700">
                           <FileCheck className="h-4 w-4" aria-hidden />
