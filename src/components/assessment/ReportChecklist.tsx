@@ -12,10 +12,19 @@ type ChecklistState = Record<
   { answer: "in_place" | "not_applicable" | "action_needed" | null; notes: string }
 >;
 
+type StatusCounts = {
+  inPlace: number;
+  actionNeeded: number;
+  notApplicable: number;
+};
+
 type ReportChecklistProps = {
   checklistDef: ChecklistDefinition;
   state: ChecklistState;
   onChange: (next: ChecklistState) => void;
+  statusCounts?: StatusCounts;
+  totalItems?: number;
+  completed?: number;
 };
 
 const ANSWER_OPTIONS: {
@@ -32,10 +41,14 @@ export function ReportChecklist({
   checklistDef,
   state,
   onChange,
+  statusCounts,
+  totalItems = 0,
+  completed = 0,
 }: ReportChecklistProps) {
   const [openSections, setOpenSections] = useState<Set<string>>(
     () => new Set(checklistDef.sections.slice(0, 2).map((s) => s.id)),
   );
+  const sectionCount = checklistDef.sections.length;
 
   const toggleSection = (id: string) => {
     setOpenSections((prev) => {
@@ -62,6 +75,31 @@ export function ReportChecklist({
 
   return (
     <div className="space-y-4">
+      {/* Workspace summary header */}
+      <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 flex flex-wrap items-center gap-4 text-sm shadow-sm">
+        <span className="font-medium text-slate-700">
+          {sectionCount} workstream{sectionCount !== 1 ? "s" : ""}
+        </span>
+        {typeof totalItems === "number" && totalItems > 0 && (
+          <span className="text-slate-600">
+            <span className="font-semibold text-slate-900">{completed}</span> items complete
+          </span>
+        )}
+        {statusCounts && (
+          <>
+            <span className="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-800">
+              In Place: {statusCounts.inPlace}
+            </span>
+            <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-800">
+              Action Needed: {statusCounts.actionNeeded}
+            </span>
+            <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
+              N/A: {statusCounts.notApplicable}
+            </span>
+          </>
+        )}
+      </div>
+
       {checklistDef.sections.map((section) => {
         const isOpen = openSections.has(section.id);
         return (
@@ -69,7 +107,7 @@ export function ReportChecklist({
             <button
               type="button"
               onClick={() => toggleSection(section.id)}
-              className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left hover:bg-slate-50/80 transition-colors border-b border-slate-100"
+              className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left hover:bg-white/80 transition-colors border-b border-slate-100"
             >
               <div className="flex items-center gap-3">
                 {isOpen ? (
@@ -77,9 +115,14 @@ export function ReportChecklist({
                 ) : (
                   <ChevronRight className="h-5 w-5 text-slate-500 shrink-0" aria-hidden />
                 )}
-                <CardTitle className="text-base text-slate-900 m-0">
-                  {section.title}
-                </CardTitle>
+                <div className="text-left">
+                  <span className="block text-[11px] font-medium uppercase tracking-wide text-slate-500 mb-0.5">
+                    Workstream
+                  </span>
+                  <CardTitle className="text-base text-slate-900 m-0">
+                    {section.title}
+                  </CardTitle>
+                </div>
               </div>
               <span className="text-sm text-slate-500">
                 {section.items.length} item{section.items.length !== 1 ? "s" : ""}
