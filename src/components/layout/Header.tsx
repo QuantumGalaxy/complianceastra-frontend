@@ -29,25 +29,30 @@ export function Header() {
       className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80"
       role="banner"
     >
-      <div className="container flex h-14 md:h-16 items-center justify-between">
+      <div className="container flex h-16 items-center justify-between py-3">
         <Link
           href="/"
-          className="flex items-center gap-2 font-semibold text-slate-900"
+          className="flex items-center shrink-0"
           aria-label="ComplianceAstra home"
         >
-          <Image
-            src="/logo.png"
-            alt="ComplianceAstra"
-            width={640}
-            height={140}
-            className="h-10 md:h-12 w-auto"
-            priority
-          />
+          <span
+            className="flex h-8 max-h-8 items-center origin-left"
+            style={{ transform: "scale(1.15)" }}
+          >
+            <Image
+              src="/logo.png"
+              alt="ComplianceAstra"
+              width={640}
+              height={140}
+              className="h-8 max-h-8 w-auto object-contain object-left drop-shadow-sm"
+              priority
+            />
+          </span>
         </Link>
 
         {/* Desktop nav */}
         <nav
-          className="hidden md:flex items-center gap-6 text-sm text-slate-600"
+          className="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-600"
           aria-label="Main navigation"
         >
           {NAV_LINKS.map((link) => (
