@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +9,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { Menu, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 
 const NAV_LINKS = [
@@ -32,21 +31,14 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between gap-8">
         <Link
           href="/"
-          className="flex items-center shrink-0 py-1"
+          className="flex items-center gap-2 shrink-0"
           aria-label="ComplianceAstra home"
         >
-          <span
-            className="flex h-8 max-h-8 items-center origin-left"
-            style={{ transform: "scale(1.2)" }}
-          >
-            <Image
-              src="/logo.png"
-              alt="ComplianceAstra"
-              width={640}
-              height={140}
-              className="h-8 max-h-8 w-auto object-contain object-left brightness-[0.98] contrast-[1.02]"
-              priority
-            />
+          <span className="flex h-7 w-7 shrink-0 items-center justify-center text-emerald-600">
+            <ShieldCheck className="h-5 w-5" strokeWidth={2.25} aria-hidden />
+          </span>
+          <span className="text-base font-semibold tracking-tight text-slate-900">
+            ComplianceAstra
           </span>
         </Link>
 
