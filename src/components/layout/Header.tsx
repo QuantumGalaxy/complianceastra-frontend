@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -23,8 +22,6 @@ const NAV_LINKS = [
 
 export function Header() {
   const { user } = useAuth();
-  const pathname = usePathname();
-  const isHome = pathname === "/";
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -32,11 +29,7 @@ export function Header() {
       className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80"
       role="banner"
     >
-      <div
-        className={`container flex items-center justify-between ${
-          isHome ? "h-28 md:h-32" : "h-20"
-        }`}
-      >
+      <div className="container flex h-28 md:h-32 items-center justify-between">
         <Link
           href="/"
           className="flex items-center gap-2 font-semibold text-slate-900"
@@ -45,9 +38,9 @@ export function Header() {
           <Image
             src="/logo.png"
             alt="ComplianceAstra"
-            width={isHome ? 640 : 360}
-            height={isHome ? 140 : 80}
-            className={isHome ? "h-24 md:h-28 w-auto" : "h-16 w-auto"}
+            width={640}
+            height={140}
+            className="h-24 md:h-28 w-auto"
             priority
           />
         </Link>
