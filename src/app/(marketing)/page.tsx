@@ -1,7 +1,22 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Zap, FileCheck } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  ArrowRight,
+  FileCheck,
+  ShieldCheck,
+  Zap,
+  LayoutDashboard,
+  LockKeyhole,
+  Users,
+} from "lucide-react";
+import { Reveal } from "@/components/marketing/Reveal";
 
 export const metadata = {
   title: "PCI DSS Scope Tool",
@@ -25,138 +40,307 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
       />
       {/* Hero */}
-      <section
-        className="relative overflow-hidden bg-gradient-to-b from-slate-50 via-white to-white py-6 md:py-10"
-        aria-labelledby="hero-heading"
-      >
+      <section className="relative overflow-hidden">
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-br from-sky-50 via-emerald-50/50 to-white"
+        />
+        <div
+          aria-hidden
+          className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-emerald-200/30 blur-3xl"
+        />
+        <div
+          aria-hidden
+          className="absolute -bottom-28 -left-28 h-72 w-72 rounded-full bg-sky-200/30 blur-3xl"
+        />
+
+        <div className="relative container py-16 md:py-20">
+          <div className="grid items-center gap-10 lg:grid-cols-2">
+            <Reveal>
+              <div className="space-y-6">
+                <h1
+                  className="text-5xl font-bold tracking-tight text-slate-900 sm:text-6xl"
+                >
+                  PCI DSS Scope Tool
+                </h1>
+                <p className="text-lg leading-relaxed text-slate-600 sm:text-xl">
+                  ComplianceAstra helps businesses understand and navigate PCI DSS and regulatory
+                  compliance — with plain-English results that reduce PCI confusion and help you
+                  get moving faster.
+                </p>
+
+                <div className="space-y-4">
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                    <Link href="/assessments/new">
+                      <Button
+                        size="lg"
+                        className="bg-emerald-600 hover:bg-emerald-700 text-lg px-7 shadow-lg shadow-emerald-500/20"
+                        aria-label="Start free assessment"
+                      >
+                        Start Free Assessment →
+                      </Button>
+                    </Link>
+                    <Link href="/solutions">
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        className="text-lg px-7"
+                        aria-label="Explore solutions"
+                      >
+                        Explore Solutions
+                      </Button>
+                    </Link>
+                  </div>
+                  <p className="text-sm text-slate-500">Takes less than 5 minutes.</p>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal>
+              <div className="mx-auto w-full max-w-lg">
+                <div className="rounded-2xl border border-slate-200 bg-white/70 backdrop-blur shadow-sm overflow-hidden">
+                  <div className="px-5 py-4 border-b border-slate-200 bg-gradient-to-r from-emerald-50/70 to-white">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
+                          <LayoutDashboard className="h-5 w-5" aria-hidden />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-slate-900 truncate">
+                            Scope, then act
+                          </p>
+                          <p className="text-xs text-slate-500 truncate">Plain-English SAQ guidance</p>
+                        </div>
+                      </div>
+                      <span className="inline-flex items-center rounded-full bg-emerald-50 border border-emerald-200 px-3 py-1 text-xs font-medium text-emerald-800">
+                        v4.0.1
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-5 space-y-5">
+                    <div className="rounded-xl border border-slate-200 bg-white p-4">
+                      <div className="flex items-start gap-3">
+                        <span className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-xl bg-sky-50 text-sky-700">
+                          <LockKeyhole className="h-4 w-4" aria-hidden />
+                        </span>
+                        <div className="space-y-1">
+                          <p className="text-sm font-semibold text-slate-900">
+                            1) Answer short scope questions
+                          </p>
+                          <p className="text-xs text-slate-600">
+                            Minimum branching — business-friendly prompts.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="rounded-xl border border-slate-200 bg-white p-4">
+                      <div className="flex items-start gap-3">
+                        <span className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
+                          <ShieldCheck className="h-4 w-4" aria-hidden />
+                        </span>
+                        <div className="space-y-1">
+                          <p className="text-sm font-semibold text-slate-900">
+                            2) Get a likely SAQ + scope summary
+                          </p>
+                          <p className="text-xs text-slate-600">
+                            Transparent “why this matched” explanations.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="rounded-xl border border-slate-200 bg-white p-4">
+                      <div className="flex items-start gap-3">
+                        <span className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-700">
+                          <FileCheck className="h-4 w-4" aria-hidden />
+                        </span>
+                        <div className="space-y-1">
+                          <p className="text-sm font-semibold text-slate-900">
+                            3) Track compliance in your workspace
+                          </p>
+                          <p className="text-xs text-slate-600">
+                            Evidence notes, action statuses, and PDF export.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between text-xs text-slate-500">
+                      <span>Calm, premium compliance UX</span>
+                      <span className="inline-flex items-center gap-2">
+                        <Users className="h-4 w-4 text-slate-400" aria-hidden />
+                        Built for teams
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust / Value strip */}
+      <section className="relative -mt-10 pb-8 md:pb-10">
         <div className="container">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1
-              id="hero-heading"
-              className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl md:text-6xl"
-            >
-              PCI DSS Scope Tool
-            </h1>
-            <p className="mt-4 text-lg text-slate-600 md:text-xl">
-              ComplianceAstra helps businesses understand and navigate PCI DSS and regulatory
-              compliance. Reduce your PCI scope by up to 80% in 5 minutes.
-            </p>
-            <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Link href="/assessments/new">
-                <Button
-                  size="lg"
-                  className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-lg px-8"
-                  aria-label="Start free PCI DSS scope assessment"
-                >
-                  Start Free Assessment
-                </Button>
-              </Link>
-              <Link href="/solutions">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="w-full sm:w-auto text-lg px-8"
-                  aria-label="Explore compliance solutions"
-                >
-                  Explore Solutions
-                </Button>
-              </Link>
+          <div className="rounded-2xl border border-slate-200 bg-white/70 backdrop-blur shadow-sm px-6 py-5">
+            <div className="grid gap-4 md:grid-cols-3">
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
+                  <ShieldCheck className="h-5 w-5" aria-hidden />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">Reduce PCI scope by up to 80%</p>
+                  <p className="text-xs text-slate-500 mt-0.5">Find likely SAQ boundaries quickly.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 text-sky-700">
+                  <FileCheck className="h-5 w-5" aria-hidden />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">Plain English results</p>
+                  <p className="text-xs text-slate-500 mt-0.5">No auditor-heavy dumps.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-700">
+                  <Users className="h-5 w-5" aria-hidden />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">Used by fintech & ecommerce teams</p>
+                  <p className="text-xs text-slate-500 mt-0.5">Built for real-world payment flows.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Value props */}
-      <section className="py-8" aria-labelledby="value-heading">
+      {/* Feature cards */}
+      <section className="py-12 md:py-16" aria-labelledby="features-heading">
         <div className="container">
           <div className="text-center mb-10">
-            <h2 id="value-heading" className="text-3xl font-bold text-slate-900">
-              Understand your PCI scope in minutes
+            <h2 id="features-heading" className="text-3xl font-bold tracking-tight text-slate-900">
+              Start where your payments happen
             </h2>
             <p className="mt-4 text-slate-600 max-w-2xl mx-auto">
-              Transaction-flow-first questions. Environment-specific guidance. Plain-English results.
+              Pick the environment you run today — we’ll adapt the guidance to your scope.
             </p>
           </div>
-          <div className="grid gap-8 md:grid-cols-3">
-            <Card className="border-slate-200 hover:border-slate-300 transition-colors">
-              <CardHeader>
-                <div className="flex items-center gap-2">
-                  <Shield className="h-6 w-6 text-emerald-600" aria-hidden />
-                  <CardTitle className="text-slate-900">Ecommerce</CardTitle>
-                </div>
-                <CardDescription>
-                  Checkout, hosting, third-party integrations—we help you understand what&apos;s in scope.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Link href="/solutions/ecommerce">
-                  <Button variant="outline" className="w-full">
-                    Learn more
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-            <Card className="border-slate-200 hover:border-slate-300 transition-colors">
-              <CardHeader>
-                <div className="flex items-center gap-2">
-                  <Zap className="h-6 w-6 text-emerald-600" aria-hidden />
-                  <CardTitle className="text-slate-900">POS & Retail</CardTitle>
-                </div>
-                <CardDescription>
-                  Network segmentation, terminal management, multi-location requirements—plain English.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Link href="/solutions/pos">
-                  <Button variant="outline" className="w-full">
-                    Learn more
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-            <Card className="border-slate-200 hover:border-slate-300 transition-colors">
-              <CardHeader>
-                <div className="flex items-center gap-2">
-                  <FileCheck className="h-6 w-6 text-emerald-600" aria-hidden />
-                  <CardTitle className="text-slate-900">Payment Platforms</CardTitle>
-                </div>
-                <CardDescription>
-                  APIs, multi-tenant systems, card data exposure—scope your SAQ or ROC with confidence.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Link href="/solutions/payment-platform">
-                  <Button variant="outline" className="w-full">
-                    Learn more
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            <Reveal>
+              <Link href="/solutions/ecommerce" className="group">
+                <Card className="h-full rounded-2xl border-slate-200 bg-white/70 backdrop-blur shadow-sm transition-transform transform hover:-translate-y-0.5 hover:shadow-md overflow-hidden">
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
+                        <ShieldCheck className="h-5 w-5" aria-hidden />
+                      </div>
+                      <CardTitle className="text-slate-900">Ecommerce</CardTitle>
+                    </div>
+                    <CardDescription>
+                      Checkout, hosting, and third-party integrations — understand what’s in scope.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-0 flex flex-col justify-between gap-6">
+                    <div className="text-sm text-slate-600">
+                      Designed for hosted, redirected, and embedded payment flows.
+                    </div>
+                    <div className="flex items-center gap-2 text-emerald-700 font-semibold">
+                      Explore in plain English <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            </Reveal>
+
+            <Reveal>
+              <Link href="/solutions/pos" className="group">
+                <Card className="h-full rounded-2xl border-slate-200 bg-white/70 backdrop-blur shadow-sm transition-transform transform hover:-translate-y-0.5 hover:shadow-md overflow-hidden">
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 text-sky-700">
+                        <Zap className="h-5 w-5" aria-hidden />
+                      </div>
+                      <CardTitle className="text-slate-900">POS & Retail</CardTitle>
+                    </div>
+                    <CardDescription>
+                      Segmentation, terminal management, multi-location requirements — plain English.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-0 flex flex-col justify-between gap-6">
+                    <div className="text-sm text-slate-600">
+                      Clarify what’s connected, isolated, and in scope for your environment.
+                    </div>
+                    <div className="flex items-center gap-2 text-emerald-700 font-semibold">
+                      Explore in plain English <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            </Reveal>
+
+            <Reveal>
+              <Link href="/solutions/payment-platform" className="group">
+                <Card className="h-full rounded-2xl border-slate-200 bg-white/70 backdrop-blur shadow-sm transition-transform transform hover:-translate-y-0.5 hover:shadow-md overflow-hidden">
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-700">
+                        <FileCheck className="h-5 w-5" aria-hidden />
+                      </div>
+                      <CardTitle className="text-slate-900">Payment Platforms</CardTitle>
+                    </div>
+                    <CardDescription>
+                      APIs, multi-tenant systems, and card data exposure — scope your SAQ or ROC with confidence.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-0 flex flex-col justify-between gap-6">
+                    <div className="text-sm text-slate-600">
+                      Reduce ambiguity across complex integrations and workflows.
+                    </div>
+                    <div className="flex items-center gap-2 text-emerald-700 font-semibold">
+                      Explore in plain English <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            </Reveal>
           </div>
         </div>
       </section>
 
       {/* CTA */}
       <section
-        className="py-20 bg-slate-900 text-white"
+        className="py-16 md:py-20 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 text-white"
         aria-labelledby="cta-heading"
       >
         <div className="container text-center">
-          <h2 id="cta-heading" className="text-3xl font-bold">
-            Ready to understand your scope?
+          <h2 id="cta-heading" className="text-3xl md:text-4xl font-bold tracking-tight">
+            Ready to map your PCI scope?
           </h2>
           <p className="mt-4 text-slate-300 max-w-xl mx-auto">
-            Free assessment. No credit card. Get actionable guidance in under 15 minutes.
+            Avoid weeks of PCI confusion. Start your free assessment in minutes — then continue in your compliance workspace.
           </p>
-          <Link href="/assessments/new" className="inline-block mt-8">
-            <Button
-              size="lg"
-              className="bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-semibold"
-              aria-label="Start free assessment"
-            >
-              Start Free Assessment
-            </Button>
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
+            <Link href="/assessments/new">
+              <Button
+                size="lg"
+                className="bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-semibold px-8 shadow-lg shadow-emerald-500/20"
+                aria-label="Start free assessment"
+              >
+                Start Free Assessment →
+              </Button>
+            </Link>
+            <Link href="/resources">
+              <Button size="lg" variant="outline" className="bg-white/0 text-white border-white/30 hover:bg-white/10 px-8">
+                Read PCI Guidance
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
     </div>
