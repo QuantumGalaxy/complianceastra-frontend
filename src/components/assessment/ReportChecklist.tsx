@@ -12,19 +12,13 @@ type ChecklistState = Record<
   { answer: "in_place" | "not_applicable" | "action_needed" | null; notes: string }
 >;
 
-type StatusCounts = {
-  inPlace: number;
-  actionNeeded: number;
-  notApplicable: number;
-};
-
 type ReportChecklistProps = {
   checklistDef: ChecklistDefinition;
   state: ChecklistState;
   onChange: (next: ChecklistState) => void;
-  statusCounts?: StatusCounts;
   totalItems?: number;
   completed?: number;
+  progressPercent?: number;
 };
 
 const ANSWER_OPTIONS: {
@@ -41,9 +35,9 @@ export function ReportChecklist({
   checklistDef,
   state,
   onChange,
-  statusCounts,
   totalItems = 0,
   completed = 0,
+  progressPercent = 0,
 }: ReportChecklistProps) {
   const [openSections, setOpenSections] = useState<Set<string>>(
     () => new Set(checklistDef.sections.slice(0, 2).map((s) => s.id)),
@@ -75,29 +69,23 @@ export function ReportChecklist({
 
   return (
     <div className="space-y-4">
-      {/* Workspace summary header */}
-      <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 flex flex-wrap items-center gap-4 text-sm shadow-sm">
-        <span className="font-medium text-slate-700">
-          {sectionCount} workstream{sectionCount !== 1 ? "s" : ""}
-        </span>
-        {typeof totalItems === "number" && totalItems > 0 && (
-          <span className="text-slate-600">
-            <span className="font-semibold text-slate-900">{completed}</span> items complete
+      {/* Workspace header — local progress only (no duplicate status chips) */}
+      <div className="rounded-lg border border-slate-200/80 bg-white/80 px-4 py-3 shadow-sm">
+        <p className="text-sm text-slate-600">
+          <span className="font-medium text-slate-700">
+            {sectionCount} workstream{sectionCount !== 1 ? "s" : ""}
           </span>
-        )}
-        {statusCounts && (
-          <>
-            <span className="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-800">
-              In Place: {statusCounts.inPlace}
-            </span>
-            <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-800">
-              Action Needed: {statusCounts.actionNeeded}
-            </span>
-            <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
-              N/A: {statusCounts.notApplicable}
-            </span>
-          </>
-        )}
+          <span className="mx-2 text-slate-300" aria-hidden>
+            •
+          </span>
+          <span>
+            {completed} of {totalItems} item{totalItems !== 1 ? "s" : ""} complete
+          </span>
+          {totalItems > 0 && (
+            <span className="text-slate-500"> ({progressPercent}%)</span>
+          )}
+        </p>
+        <p className="mt-1 text-xs text-slate-400">Last updated: Just now</p>
       </div>
 
       {checklistDef.sections.map((section) => {

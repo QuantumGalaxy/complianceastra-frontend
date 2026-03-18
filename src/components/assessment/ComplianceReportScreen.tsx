@@ -212,16 +212,23 @@ export function ComplianceReportScreen({
         </div>
       </section>
 
-      {/* Status summary chips */}
-      <div className="flex flex-wrap items-center gap-3" role="status" aria-label="Compliance status summary">
-        <span className="inline-flex items-center rounded-full bg-emerald-100 px-4 py-2 text-sm font-medium text-emerald-800">
-          In Place: {statusCounts.inPlace}
+      {/* Global status summary — single source of truth */}
+      <div
+        className="flex flex-wrap items-center gap-3"
+        role="status"
+        aria-label="Compliance status summary"
+      >
+        <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200/80 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-900 shadow-sm">
+          <span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden />
+          In Place ({statusCounts.inPlace})
         </span>
-        <span className="inline-flex items-center rounded-full bg-amber-100 px-4 py-2 text-sm font-medium text-amber-800">
-          Action Needed: {statusCounts.actionNeeded}
+        <span className="inline-flex items-center gap-2 rounded-full border border-amber-200/80 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-900 shadow-sm">
+          <span className="h-2 w-2 rounded-full bg-amber-500" aria-hidden />
+          Needs Action ({statusCounts.actionNeeded})
         </span>
-        <span className="inline-flex items-center rounded-full bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700">
-          Not Applicable: {statusCounts.notApplicable}
+        <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm">
+          <span className="h-2 w-2 rounded-full bg-slate-400" aria-hidden />
+          Not Applicable ({statusCounts.notApplicable})
         </span>
       </div>
 
@@ -425,9 +432,9 @@ export function ComplianceReportScreen({
           checklistDef={def}
           state={checklistState}
           onChange={onChecklistChange}
-          statusCounts={statusCounts}
           totalItems={totalItems}
           completed={completed}
+          progressPercent={progressPercent}
         />
       </section>
 
