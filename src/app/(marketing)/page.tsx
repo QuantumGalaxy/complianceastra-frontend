@@ -54,7 +54,7 @@ export default function HomePage() {
           className="absolute -bottom-28 -left-28 h-72 w-72 rounded-full bg-sky-200/30 blur-3xl"
         />
 
-        <div className="relative container py-10 md:py-12">
+        <div className="relative container py-6 md:py-8">
           <div className="grid items-center gap-8 lg:grid-cols-2">
             <Reveal>
               <div className="space-y-3">
