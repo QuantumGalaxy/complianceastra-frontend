@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -372,8 +373,16 @@ export default function AssessmentPage() {
 
   return (
     <div className="py-16">
-      <div className="container max-w-3xl">
-        <ProgressHeader currentStep={currentStep} />
+      <div className={`container ${step === "report" ? "max-w-4xl" : "max-w-3xl"}`}>
+        {step !== "report" && <ProgressHeader currentStep={currentStep} />}
+
+        {step === "report" && result && (
+          <nav className="mb-8 text-sm text-slate-500" aria-label="Breadcrumb">
+            <Link href="/dashboard" className="hover:text-slate-700">Dashboard</Link>
+            <span className="mx-2">/</span>
+            <span className="text-slate-900 font-medium">Your Report</span>
+          </nav>
+        )}
 
         {step === "scope" && (
           <div className="space-y-6">

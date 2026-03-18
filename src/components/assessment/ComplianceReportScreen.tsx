@@ -4,14 +4,15 @@ import { useMemo, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChecklistView } from "./ChecklistView";
+import { ReportChecklist } from "./ReportChecklist";
 import { CHECKLISTS } from "./checklist-data";
 import {
   SAQ_LABELS,
   SAQ_RISK_LEVEL,
-  TOP_ACTIONS_BY_SAQ,
+  ACTION_CARDS_BY_SAQ,
 } from "./report-data";
 import { generateComplianceReportPdf } from "@/lib/generateComplianceReportPdf";
+import { Download, ListChecks, CheckCircle2 } from "lucide-react";
 import type { SaqType } from "./checklist-data";
 
 type ReportResult = {
@@ -114,14 +115,14 @@ export function ComplianceReportScreen({
   const progressPercent = totalItems > 0 ? Math.round((completed / totalItems) * 100) : 0;
   const scopeInfo = useMemo(() => getInScopeOutOfScope(result.saq), [result.saq]);
   const riskLevel = SAQ_RISK_LEVEL[result.saq];
-  const topActions = TOP_ACTIONS_BY_SAQ[result.saq] ?? [];
+  const actionCards = ACTION_CARDS_BY_SAQ[result.saq] ?? [];
 
   const handleDownloadPdf = useCallback(() => {
     generateComplianceReportPdf({
       result,
       scopeInfo,
       riskLevel,
-      topActions,
+      topActions: actionCards.map((a) => a.title),
       checklistDef: def,
       checklistState,
       completed,
@@ -132,7 +133,7 @@ export function ComplianceReportScreen({
     result,
     scopeInfo,
     riskLevel,
-    topActions,
+    actionCards,
     def,
     checklistState,
     completed,
@@ -140,33 +141,56 @@ export function ComplianceReportScreen({
     onDownloadPdf,
   ]);
 
+  const scrollToChecklist = () => {
+    document.getElementById("checklist-section")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <div className="space-y-8">
-      {/* Success banner */}
-      <div
-        className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-4 text-emerald-900"
-        role="status"
+    <div className="space-y-12">
+      {/* Hero success section */}
+      <section
+        className="relative rounded-2xl border border-emerald-200/80 bg-gradient-to-br from-emerald-50 to-emerald-100/60 px-6 py-10 md:px-10 md:py-12 shadow-lg"
+        aria-labelledby="report-hero-title"
       >
-        <p className="font-semibold">
-          ✅ Payment successful. Your full compliance plan is now unlocked.
-        </p>
-        <p className="mt-1 text-sm text-emerald-800">
-          Based on your answers, here is your complete compliance plan. Use this report to track progress and prepare for your acquirer or QSA.
-        </p>
-      </div>
+        <div className="flex flex-col items-center text-center max-w-2xl mx-auto space-y-6">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500 text-white shadow-md">
+            <CheckCircle2 className="h-8 w-8" aria-hidden />
+          </div>
+          <div className="space-y-2">
+            <h1 id="report-hero-title" className="text-3xl font-bold text-slate-900 md:text-4xl">
+              Your PCI Compliance Plan is Ready
+            </h1>
+            <p className="text-slate-700 text-lg">
+              You now have a complete, audit-ready compliance roadmap based on your system setup.
+            </p>
+            <p className="text-sm text-slate-600 pt-1">
+              Aligned with PCI DSS v4.0 requirements and structured for audit preparation.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+            <Button
+              size="lg"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-md px-8"
+              onClick={handleDownloadPdf}
+            >
+              <Download className="h-5 w-5 mr-2" aria-hidden />
+              Download Report (PDF)
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-slate-300 bg-white hover:bg-slate-50 px-8"
+              onClick={scrollToChecklist}
+            >
+              <ListChecks className="h-5 w-5 mr-2" aria-hidden />
+              Start Completing Checklist
+            </Button>
+          </div>
+        </div>
+      </section>
 
-      {/* Title */}
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold text-slate-900">
-          Your PCI DSS Compliance Report
-        </h1>
-        <p className="text-slate-600 max-w-2xl">
-          Based on your answers, here is your complete compliance plan.
-        </p>
-      </header>
-
-      {/* Section 1: SAQ Summary */}
-      <Card className="border-slate-200">
+      {/* 1. SAQ Summary */}
+      <Card className="border-slate-200 shadow-sm">
         <CardHeader>
           <CardTitle className="text-slate-900">SAQ Summary</CardTitle>
         </CardHeader>
@@ -199,8 +223,8 @@ export function ComplianceReportScreen({
         </CardContent>
       </Card>
 
-      {/* Section 2: Scope Summary */}
-      <Card className="border-slate-200">
+      {/* 2. Scope Summary */}
+      <Card className="border-slate-200 shadow-sm">
         <CardHeader>
           <CardTitle className="text-slate-900">Scope Summary</CardTitle>
         </CardHeader>
@@ -232,8 +256,51 @@ export function ComplianceReportScreen({
         </CardContent>
       </Card>
 
-      {/* Section 3: Checklist Overview */}
-      <Card className="border-slate-200">
+      {/* 3. Action Plan (premium cards) */}
+      <section aria-labelledby="action-plan-title">
+        <h2 id="action-plan-title" className="text-xl font-bold text-slate-900 mb-4">
+          Action Plan
+        </h2>
+        <p className="text-slate-600 text-sm mb-6 max-w-2xl">
+          Prioritize these to build a strong foundation and reduce risk.
+        </p>
+        <div className="grid gap-4 md:grid-cols-2">
+          {actionCards.map((card, i) => (
+            <Card
+              key={i}
+              className="border-slate-200 shadow-sm hover:shadow-md transition-shadow"
+            >
+              <CardHeader className="pb-2">
+                <div className="flex items-start justify-between gap-2">
+                  <CardTitle className="text-base text-slate-900 leading-snug">
+                    {card.title}
+                  </CardTitle>
+                  <Badge
+                    variant="outline"
+                    className={
+                      card.priority === "High"
+                        ? "border-amber-400 text-amber-800 text-xs shrink-0"
+                        : "border-slate-300 text-slate-600 text-xs shrink-0"
+                    }
+                  >
+                    {card.priority === "High" ? "High" : "Medium"} priority
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3 pt-0">
+                <p className="text-sm text-slate-600">{card.description}</p>
+                <p className="text-xs text-slate-500 border-l-2 border-emerald-200 pl-3">
+                  <span className="font-medium text-slate-600">Why it matters:</span>{" "}
+                  {card.whyItMatters}
+                </p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* 4. Checklist Overview (summary card) */}
+      <Card className="border-emerald-200 bg-emerald-50/30 shadow-sm">
         <CardHeader>
           <CardTitle className="text-slate-900">Checklist Overview</CardTitle>
           <p className="text-sm text-slate-600">
@@ -241,7 +308,11 @@ export function ComplianceReportScreen({
           </p>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-2">
+          <div className="rounded-lg bg-white border border-slate-200 p-4 space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-slate-700">Total requirements</span>
+              <span className="text-lg font-bold text-slate-900">{totalItems}+</span>
+            </div>
             <div className="flex justify-between text-sm">
               <span className="text-slate-600">Progress</span>
               <span className="font-semibold text-slate-900">
@@ -249,83 +320,67 @@ export function ComplianceReportScreen({
               </span>
             </div>
             <div
-              className="h-2 rounded-full bg-slate-200 overflow-hidden"
+              className="h-3 rounded-full bg-slate-200 overflow-hidden"
               role="progressbar"
               aria-valuenow={progressPercent}
               aria-valuemin={0}
               aria-valuemax={100}
             >
               <div
-                className="h-full bg-emerald-600 transition-all"
+                className="h-full bg-emerald-600 transition-all rounded-full"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
+            <div className="flex flex-wrap gap-2 pt-2">
+              {def.sections.map((s) => (
+                <span
+                  key={s.id}
+                  className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700"
+                >
+                  {s.title}
+                </span>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {def.sections.map((s) => (
-              <span
-                key={s.id}
-                className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700"
-              >
-                {s.title}
-              </span>
-            ))}
+        </CardContent>
+      </Card>
+
+      {/* 5. Full Compliance Checklist (collapsible) */}
+      <section id="checklist-section" aria-labelledby="full-checklist-title">
+        <h2 id="full-checklist-title" className="text-xl font-bold text-slate-900 mb-2">
+          Full Compliance Checklist
+        </h2>
+        <p className="text-slate-600 text-sm mb-6">
+          Mark each item as In Place, Action Needed, or Not Applicable. Add notes for evidence.
+        </p>
+        <ReportChecklist
+          checklistDef={def}
+          state={checklistState}
+          onChange={onChecklistChange}
+        />
+      </section>
+
+      {/* 6. Export / PDF section */}
+      <Card className="border-slate-200 shadow-sm bg-slate-50/30">
+        <CardContent className="py-8 px-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+            <div>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">
+                Download your report
+              </h2>
+              <p className="text-sm text-slate-600 max-w-md">
+                Use this report for your QSA or acquirer submission.
+              </p>
+            </div>
+            <Button
+              size="lg"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shrink-0 w-full sm:w-auto"
+              onClick={handleDownloadPdf}
+            >
+              <Download className="h-5 w-5 mr-2" aria-hidden />
+              Download Audit-Ready Compliance Report (PDF)
+            </Button>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Section 4: Top 5 Actions */}
-      <Card className="border-emerald-200 bg-emerald-50/30">
-        <CardHeader>
-          <CardTitle className="text-emerald-900">
-            Top 5 actions to get compliant
-          </CardTitle>
-          <p className="text-sm text-slate-700">
-            Prioritize these to build a strong foundation.
-          </p>
-        </CardHeader>
-        <CardContent>
-          <ol className="list-decimal list-inside space-y-2 text-slate-800 font-medium">
-            {topActions.map((action, i) => (
-              <li key={i} className="pl-2">
-                {action}
-              </li>
-            ))}
-          </ol>
-        </CardContent>
-      </Card>
-
-      {/* Section 5: Interactive Checklist */}
-      <Card className="border-slate-200">
-        <CardHeader>
-          <CardTitle className="text-slate-900">Full compliance checklist</CardTitle>
-          <p className="text-sm text-slate-600">
-            Mark each item as In Place, Not Applicable, or Action Needed. Add notes for evidence.
-          </p>
-        </CardHeader>
-        <CardContent className="pt-0">
-          <ChecklistView
-            saq={result.saq}
-            state={checklistState}
-            onChange={onChecklistChange}
-          />
-        </CardContent>
-      </Card>
-
-      {/* Section 6: Export */}
-      <Card className="border-slate-200">
-        <CardContent className="pt-6">
-          <Button
-            size="lg"
-            variant="outline"
-            className="w-full sm:w-auto border-emerald-600 text-emerald-700 hover:bg-emerald-50"
-            onClick={handleDownloadPdf}
-          >
-            Download Compliance Report (PDF)
-          </Button>
-          <p className="mt-2 text-xs text-slate-500">
-            Export this report for your records or to share with your acquirer or QSA.
-          </p>
         </CardContent>
       </Card>
     </div>
