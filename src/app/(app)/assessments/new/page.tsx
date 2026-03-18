@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation";
 import { useState, Suspense } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { assessmentsApi } from "@/lib/api";
-import { useAuth } from "@/lib/auth-context";
 
 const ENVIRONMENTS = [
   {
@@ -33,31 +31,24 @@ function NewAssessmentContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const presetEnv = searchParams.get("env");
-  const { token, isLoading: authLoading } = useAuth();
-  const [loadingId, setLoadingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSelect = async (envId: string) => {
-    setLoadingId(envId);
+  /**
+   * Navigate immediately — the SAQ wizard is client-side only. Waiting on
+   * POST /api/assessments caused long "Starting..." delays (API cold starts, network).
+   */
+  const handleSelect = (envId: string) => {
     setError(null);
     try {
-      const authToken = token || (typeof window !== "undefined" ? localStorage.getItem("complianceastra_token") : null);
-      const { id } = await assessmentsApi.create(envId, authToken ?? undefined);
-      router.push(`/assessments/${id}`);
+      const sessionId = `w${Date.now().toString(36)}${Math.random().toString(36).slice(2, 11)}`;
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("complianceastra_start_env", envId);
+      }
+      router.push(`/assessments/${sessionId}`);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed to start assessment");
-    } finally {
-      setLoadingId(null);
+      setError(e instanceof Error ? e.message : "Failed to start");
     }
   };
-
-  if (authLoading) {
-    return (
-      <div className="py-16 text-center">
-        <p className="text-slate-600">Loading...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="py-16">
@@ -81,7 +72,7 @@ function NewAssessmentContent() {
               className={`cursor-pointer transition-colors border-2 hover:border-emerald-300 ${
                 presetEnv === env.id ? "border-emerald-400" : "border-slate-200"
               }`}
-              onClick={() => !loadingId && handleSelect(env.id)}
+              onClick={() => handleSelect(env.id)}
             >
               <CardHeader className="flex flex-row items-center gap-4">
                 <span className="text-3xl" aria-hidden>
@@ -94,13 +85,12 @@ function NewAssessmentContent() {
                 <Button
                   className="ml-auto"
                   size="sm"
-                  disabled={!!loadingId}
                   onClick={(e) => {
                     e.stopPropagation();
                     handleSelect(env.id);
                   }}
                 >
-                  {loadingId === env.id ? "Starting..." : "Start"}
+                  Start
                 </Button>
               </CardHeader>
             </Card>

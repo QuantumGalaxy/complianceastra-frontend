@@ -319,6 +319,24 @@ export default function AssessmentPage() {
     if (wasUnlocked) setStep("report");
   }, [idParam]);
 
+  /** Pre-select payment channel from /assessments/new choice (instant start, no API wait). */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const saved = loadState(idParam);
+    if (saved?.channel) return;
+    const env = sessionStorage.getItem("complianceastra_start_env");
+    if (!env) return;
+    sessionStorage.removeItem("complianceastra_start_env");
+    const map: Record<string, Channel> = {
+      ecommerce: "ecommerce",
+      pos: "card_present",
+      payment_platform: "service_provider",
+    };
+    const ch = map[env];
+    if (!ch) return;
+    setState((prev) => (prev.channel ? prev : { ...prev, channel: ch }));
+  }, [idParam]);
+
   useEffect(() => {
     saveState(idParam, state);
   }, [idParam, state]);
