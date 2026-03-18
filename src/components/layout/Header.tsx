@@ -29,22 +29,22 @@ export function Header() {
       className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80"
       role="banner"
     >
-      <div className="container flex h-16 items-center justify-between py-3">
+      <div className="container flex h-16 items-center justify-between gap-8">
         <Link
           href="/"
-          className="flex items-center shrink-0"
+          className="flex items-center shrink-0 py-1"
           aria-label="ComplianceAstra home"
         >
           <span
             className="flex h-8 max-h-8 items-center origin-left"
-            style={{ transform: "scale(1.15)" }}
+            style={{ transform: "scale(1.2)" }}
           >
             <Image
               src="/logo.png"
               alt="ComplianceAstra"
               width={640}
               height={140}
-              className="h-8 max-h-8 w-auto object-contain object-left drop-shadow-sm"
+              className="h-8 max-h-8 w-auto object-contain object-left brightness-[0.98] contrast-[1.02]"
               priority
             />
           </span>

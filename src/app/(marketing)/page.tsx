@@ -43,7 +43,7 @@ export default function HomePage() {
       <section className="relative overflow-hidden">
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-br from-sky-50 via-emerald-50/50 to-white"
+          className="absolute inset-0 bg-gradient-to-br from-sky-50/95 via-emerald-50/60 to-white"
         />
         <div
           aria-hidden
@@ -54,27 +54,27 @@ export default function HomePage() {
           className="absolute -bottom-28 -left-28 h-72 w-72 rounded-full bg-sky-200/30 blur-3xl"
         />
 
-        <div className="relative container py-6 md:py-8">
-          <div className="grid items-center gap-8 lg:grid-cols-2">
+        <div className="relative container py-6 md:py-8 pb-10 md:pb-12">
+          <div className="grid items-start gap-6 lg:grid-cols-2 lg:items-center">
             <Reveal>
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 <h1
-                  className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl"
+                  className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl leading-[1.1]"
                 >
                   PCI DSS Scope Tool
                 </h1>
-                <p className="text-lg leading-relaxed text-slate-600 sm:text-xl">
+                <p className="text-lg leading-snug text-slate-700 sm:text-xl">
                   ComplianceAstra helps businesses understand and navigate PCI DSS and regulatory
                   compliance — with plain-English results that reduce PCI confusion and help you
                   get moving faster.
                 </p>
 
-                <div className="space-y-2">
-                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                <div className="space-y-1.5 pt-0.5">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
                     <Link href="/assessments/new">
                       <Button
                         size="lg"
-                        className="bg-emerald-600 hover:bg-emerald-700 text-lg px-7 shadow-lg shadow-emerald-500/20"
+                        className="h-11 bg-emerald-600 hover:bg-emerald-700 text-base font-semibold px-6 shadow-md shadow-emerald-500/25 ring-1 ring-emerald-500/20"
                         aria-label="Start free assessment"
                       >
                         Start Free Assessment →
@@ -84,92 +84,92 @@ export default function HomePage() {
                       <Button
                         size="lg"
                         variant="outline"
-                        className="text-lg px-7"
+                        className="h-11 text-base font-medium px-6 border-slate-300 hover:bg-slate-50 hover:border-slate-400"
                         aria-label="Explore solutions"
                       >
                         Explore Solutions
                       </Button>
                     </Link>
                   </div>
-                  <p className="text-sm text-slate-500">Takes less than 5 minutes.</p>
+                  <p className="text-sm text-slate-600">Takes less than 5 minutes.</p>
                 </div>
               </div>
             </Reveal>
 
             <Reveal>
-              <div className="mx-auto w-full max-w-lg">
-                <div className="rounded-2xl border border-slate-200 bg-white/70 backdrop-blur shadow-sm overflow-hidden">
-                  <div className="px-4 py-2 border-b border-slate-200 bg-gradient-to-r from-emerald-50/70 to-white">
+              <div className="mx-auto w-full max-w-lg lg:pt-0">
+                <div className="rounded-2xl border border-slate-200 bg-white/80 backdrop-blur shadow-sm overflow-hidden">
+                  <div className="px-4 py-1.5 border-b border-slate-200 bg-gradient-to-r from-emerald-50/80 to-white">
                     <div className="flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
-                          <LayoutDashboard className="h-5 w-5" aria-hidden />
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
+                          <LayoutDashboard className="h-4 w-4" aria-hidden />
                         </div>
                         <div className="min-w-0">
                           <p className="text-sm font-semibold text-slate-900 truncate">
                             Scope, then act
                           </p>
-                          <p className="text-xs text-slate-500 truncate">Plain-English SAQ guidance</p>
+                          <p className="text-xs text-slate-600 truncate">Plain-English SAQ guidance</p>
                         </div>
                       </div>
-                      <span className="inline-flex items-center rounded-full bg-emerald-50 border border-emerald-200 px-3 py-1 text-xs font-medium text-emerald-800">
+                      <span className="inline-flex shrink-0 items-center rounded-full bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 text-xs font-medium text-emerald-800">
                         v4.0.1
                       </span>
                     </div>
                   </div>
 
-                  <div className="p-4 space-y-3">
-                    <div className="rounded-xl border border-slate-200 bg-white p-2">
-                      <div className="flex items-start gap-3">
-                        <span className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-xl bg-sky-50 text-sky-700">
+                  <div className="p-3 space-y-2">
+                    <div className="rounded-lg border border-slate-200 bg-white px-2.5 py-2">
+                      <div className="flex items-center gap-2.5">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-700">
                           <LockKeyhole className="h-4 w-4" aria-hidden />
                         </span>
-                        <div className="space-y-1">
+                        <div className="min-w-0">
                           <p className="text-sm font-semibold text-slate-900">
                             1) Answer short scope questions
                           </p>
-                          <p className="text-xs text-slate-600">
+                          <p className="text-xs text-slate-600 leading-snug">
                             Minimum branching — business-friendly prompts.
                           </p>
                         </div>
                       </div>
                     </div>
 
-                    <div className="rounded-xl border border-slate-200 bg-white p-2">
-                      <div className="flex items-start gap-3">
-                        <span className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
+                    <div className="rounded-lg border border-slate-200 bg-white px-2.5 py-2">
+                      <div className="flex items-center gap-2.5">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
                           <ShieldCheck className="h-4 w-4" aria-hidden />
                         </span>
-                        <div className="space-y-1">
+                        <div className="min-w-0">
                           <p className="text-sm font-semibold text-slate-900">
                             2) Get a likely SAQ + scope summary
                           </p>
-                          <p className="text-xs text-slate-600">
+                          <p className="text-xs text-slate-600 leading-snug">
                             Transparent “why this matched” explanations.
                           </p>
                         </div>
                       </div>
                     </div>
 
-                    <div className="rounded-xl border border-slate-200 bg-white p-2">
-                      <div className="flex items-start gap-3">
-                        <span className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-xl bg-amber-50 text-amber-700">
+                    <div className="rounded-lg border border-slate-200 bg-white px-2.5 py-2">
+                      <div className="flex items-center gap-2.5">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-amber-50 text-amber-700">
                           <FileCheck className="h-4 w-4" aria-hidden />
                         </span>
-                        <div className="space-y-1">
+                        <div className="min-w-0">
                           <p className="text-sm font-semibold text-slate-900">
                             3) Track compliance in your workspace
                           </p>
-                          <p className="text-xs text-slate-600">
+                          <p className="text-xs text-slate-600 leading-snug">
                             Evidence notes, action statuses, and PDF export.
                           </p>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between text-xs text-slate-500">
+                    <div className="flex items-center justify-between pt-0.5 text-xs text-slate-600">
                       <span>Calm, premium compliance UX</span>
-                      <span className="inline-flex items-center gap-2">
+                      <span className="inline-flex items-center gap-1.5">
                         <Users className="h-4 w-4 text-slate-400" aria-hidden />
                         Built for teams
                       </span>
@@ -182,36 +182,36 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Trust / Value strip */}
-      <section className="relative -mt-10 pb-8 md:pb-10">
+      {/* Trust / Value strip — clearly separated below hero */}
+      <section className="relative pt-4 pb-8 md:pb-10">
         <div className="container">
-          <div className="rounded-2xl border border-slate-200 bg-white/70 backdrop-blur shadow-sm px-6 py-5">
-            <div className="grid gap-4 md:grid-cols-3">
-              <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
-                  <ShieldCheck className="h-5 w-5" aria-hidden />
+          <div className="rounded-xl border border-slate-100 bg-slate-50/70 backdrop-blur px-5 py-3 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+            <div className="grid gap-2 md:grid-cols-3 md:gap-6">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/90 text-emerald-600 shadow-sm">
+                  <ShieldCheck className="h-4 w-4" aria-hidden />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <p className="text-sm font-semibold text-slate-900">Reduce PCI scope by up to 80%</p>
-                  <p className="text-xs text-slate-500 mt-0.5">Find likely SAQ boundaries quickly.</p>
+                  <p className="text-xs text-slate-600 mt-0.5">Find likely SAQ boundaries quickly.</p>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 text-sky-700">
-                  <FileCheck className="h-5 w-5" aria-hidden />
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/90 text-sky-600 shadow-sm">
+                  <FileCheck className="h-4 w-4" aria-hidden />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <p className="text-sm font-semibold text-slate-900">Plain English results</p>
-                  <p className="text-xs text-slate-500 mt-0.5">No auditor-heavy dumps.</p>
+                  <p className="text-xs text-slate-600 mt-0.5">No auditor-heavy dumps.</p>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-700">
-                  <Users className="h-5 w-5" aria-hidden />
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/90 text-amber-600 shadow-sm">
+                  <Users className="h-4 w-4" aria-hidden />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <p className="text-sm font-semibold text-slate-900">Used by fintech & ecommerce teams</p>
-                  <p className="text-xs text-slate-500 mt-0.5">Built for real-world payment flows.</p>
+                  <p className="text-xs text-slate-600 mt-0.5">Built for real-world payment flows.</p>
                 </div>
               </div>
             </div>
@@ -226,7 +226,7 @@ export default function HomePage() {
             <h2 id="features-heading" className="text-3xl font-bold tracking-tight text-slate-900">
               Start where your payments happen
             </h2>
-            <p className="mt-4 text-slate-600 max-w-2xl mx-auto">
+            <p className="mt-4 text-slate-700 max-w-2xl mx-auto">
               Pick the environment you run today — we’ll adapt the guidance to your scope.
             </p>
           </div>
