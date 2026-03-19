@@ -31,12 +31,12 @@ export function PaywallSection({
 
   return (
     <section
-      className="flex justify-center px-4"
+      className="w-full"
       aria-labelledby="paywall-heading"
     >
       <div
         id="paywall-card"
-        className="w-full max-w-[680px] rounded-2xl border border-slate-200/80 bg-white shadow-xl shadow-slate-200/40 overflow-hidden"
+        className="w-full rounded-2xl border border-slate-200/80 bg-white shadow-xl shadow-slate-200/40 overflow-hidden"
       >
         <div className="mx-auto max-w-[520px] px-8 py-8 md:px-10 md:py-10">
           {/* Title section */}
