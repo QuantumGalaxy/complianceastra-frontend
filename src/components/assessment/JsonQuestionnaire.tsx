@@ -20,7 +20,9 @@ function flattenItems(questionnaire: Questionnaire): { item: QuestionnaireItem; 
   const sections = [...questionnaire.sections].sort((a, b) => a.section_order - b.section_order);
   const result: { item: QuestionnaireItem; section: QuestionnaireSection }[] = [];
   for (const section of sections) {
-    const items = [...section.items].sort((a, b) => a.display_order - b.display_order);
+    const items = [...section.items].sort(
+      (a, b) => (a.display_order ?? 999) - (b.display_order ?? 999),
+    );
     for (const item of items) {
       result.push({ item, section });
     }

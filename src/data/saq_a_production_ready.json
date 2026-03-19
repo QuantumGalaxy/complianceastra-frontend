@@ -1,0 +1,240 @@
+[
+  {
+    "section": "Secure Systems Configuration",
+    "section_order": 1,
+    "items": [
+      {
+        "id": "2.2.2",
+        "requirement_raw": "Vendor default settings are changed",
+        "question": "Have you changed all default passwords and settings on your systems and hosting platforms?",
+        "help_text": "For example, admin panels, hosting dashboards, or CMS should not use default credentials.",
+        "options": [
+          "In Place",
+          "In Place with CCW",
+          "Not Applicable",
+          "Action Needed"
+        ],
+        "requires_ccw_explanation": true
+      }
+    ]
+  },
+  {
+    "section": "Protect Stored Account Data",
+    "section_order": 2,
+    "items": [
+      {
+        "id": "3.1.1",
+        "requirement_raw": "Cardholder data storage is minimized",
+        "question": "Do you avoid storing cardholder data on your systems?",
+        "help_text": "If you use hosted checkout like Stripe or PayPal, you should not store card data.",
+        "options": [
+          "In Place",
+          "In Place with CCW",
+          "Not Applicable",
+          "Action Needed"
+        ],
+        "requires_ccw_explanation": true
+      }
+    ]
+  },
+  {
+    "section": "Protect Systems and Networks",
+    "section_order": 3,
+    "items": [
+      {
+        "id": "6.4.3",
+        "requirement_raw": "Payment page integrity is maintained",
+        "question": "Do you ensure your payment page is secure and has not been tampered with?",
+        "help_text": "Use HTTPS and monitor for unauthorized scripts (e.g., Magecart attacks).",
+        "options": [
+          "In Place",
+          "In Place with CCW",
+          "Not Applicable",
+          "Action Needed"
+        ],
+        "requires_ccw_explanation": true
+      },
+      {
+        "id": "6.4.3.1",
+        "requirement_raw": "Script integrity is maintained",
+        "question": "Do you verify that scripts running on your payment page are trusted and have not been modified?",
+        "help_text": "Only allow scripts from trusted sources and monitor changes.",
+        "options": [
+          "In Place",
+          "In Place with CCW",
+          "Not Applicable",
+          "Action Needed"
+        ],
+        "requires_ccw_explanation": true
+      },
+      {
+        "id": "6.4.3.2",
+        "requirement_raw": "Inventory of scripts is maintained",
+        "question": "Do you maintain a list of all scripts used on your payment pages?",
+        "help_text": "Track all third-party scripts and review them regularly.",
+        "options": [
+          "In Place",
+          "In Place with CCW",
+          "Not Applicable",
+          "Action Needed"
+        ],
+        "requires_ccw_explanation": true
+      }
+    ]
+  },
+  {
+    "section": "Access Control",
+    "section_order": 4,
+    "items": [
+      {
+        "id": "8.3.1",
+        "requirement_raw": "Strong authentication is enforced",
+        "question": "Do you require strong passwords or multi-factor authentication for admin access?",
+        "help_text": "For example, hosting, CMS, and payment dashboards should use MFA.",
+        "options": [
+          "In Place",
+          "In Place with CCW",
+          "Not Applicable",
+          "Action Needed"
+        ],
+        "requires_ccw_explanation": true
+      }
+    ]
+  },
+  {
+    "section": "Security Policies and Procedures",
+    "section_order": 5,
+    "items": [
+      {
+        "id": "12.1.1",
+        "requirement_raw": "Security policy is established",
+        "question": "Do you have a basic security policy for handling payment data and systems?",
+        "help_text": "Even a simple written policy is acceptable for small businesses.",
+        "options": [
+          "In Place",
+          "In Place with CCW",
+          "Not Applicable",
+          "Action Needed"
+        ],
+        "requires_ccw_explanation": true
+      },
+      {
+        "id": "12.1.2",
+        "requirement_raw": "Risk assessment is performed",
+        "question": "Do you periodically review risks to your payment environment?",
+        "help_text": "For example, review your website, integrations, and access controls.",
+        "options": [
+          "In Place",
+          "In Place with CCW",
+          "Not Applicable",
+          "Action Needed"
+        ],
+        "requires_ccw_explanation": true
+      },
+      {
+        "id": "12.1.3",
+        "requirement_raw": "Roles and responsibilities are defined",
+        "question": "Have you defined who is responsible for security in your organization?",
+        "help_text": "Even in small teams, someone should be accountable for security.",
+        "options": [
+          "In Place",
+          "In Place with CCW",
+          "Not Applicable",
+          "Action Needed"
+        ],
+        "requires_ccw_explanation": true
+      },
+      {
+        "id": "12.6.1",
+        "requirement_raw": "Security awareness program",
+        "question": "Do you train staff on basic security practices related to payment data?",
+        "help_text": "For example, phishing awareness and handling sensitive data.",
+        "options": [
+          "In Place",
+          "In Place with CCW",
+          "Not Applicable",
+          "Action Needed"
+        ],
+        "requires_ccw_explanation": true
+      },
+      {
+        "id": "12.8.1",
+        "requirement_raw": "Vendor management policy",
+        "question": "Do you maintain a list of service providers that handle payment-related services?",
+        "help_text": "Examples: Stripe, PayPal, hosting providers.",
+        "options": [
+          "In Place",
+          "In Place with CCW",
+          "Not Applicable",
+          "Action Needed"
+        ],
+        "requires_ccw_explanation": true
+      },
+      {
+        "id": "12.8.2",
+        "requirement_raw": "Written agreements with vendors",
+        "question": "Do your service providers confirm they are responsible for protecting card data?",
+        "help_text": "Usually covered in vendor agreements or terms of service.",
+        "options": [
+          "In Place",
+          "In Place with CCW",
+          "Not Applicable",
+          "Action Needed"
+        ],
+        "requires_ccw_explanation": true
+      },
+      {
+        "id": "12.8.3",
+        "requirement_raw": "Vendor PCI compliance status is monitored",
+        "question": "Do you verify that your service providers are PCI compliant?",
+        "help_text": "Check provider compliance documentation (e.g., Stripe PCI Level 1).",
+        "options": [
+          "In Place",
+          "In Place with CCW",
+          "Not Applicable",
+          "Action Needed"
+        ],
+        "requires_ccw_explanation": true
+      },
+      {
+        "id": "12.8.4",
+        "requirement_raw": "Maintain program for vendor monitoring",
+        "question": "Do you regularly review your service providers for security compliance?",
+        "help_text": "Review annually or when services change.",
+        "options": [
+          "In Place",
+          "In Place with CCW",
+          "Not Applicable",
+          "Action Needed"
+        ],
+        "requires_ccw_explanation": true
+      },
+      {
+        "id": "12.8.5",
+        "requirement_raw": "Information maintained about vendors",
+        "question": "Do you keep records of your service providers and their responsibilities?",
+        "help_text": "Maintain basic documentation of vendor roles.",
+        "options": [
+          "In Place",
+          "In Place with CCW",
+          "Not Applicable",
+          "Action Needed"
+        ],
+        "requires_ccw_explanation": true
+      },
+      {
+        "id": "12.10.1",
+        "requirement_raw": "Incident response plan",
+        "question": "Do you have a plan to respond if a security incident occurs?",
+        "help_text": "Even a simple plan outlining steps to take is acceptable.",
+        "options": [
+          "In Place",
+          "In Place with CCW",
+          "Not Applicable",
+          "Action Needed"
+        ],
+        "requires_ccw_explanation": true
+      }
+    ]
+  }
+]

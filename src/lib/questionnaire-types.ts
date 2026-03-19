@@ -9,7 +9,7 @@ export type QuestionnaireItem = {
   question: string;
   help_text?: string;
   options: string[];
-  display_order: number;
+  display_order?: number;
   category?: string;
   tags?: string[];
   risk_level?: "low" | "medium" | "high";
