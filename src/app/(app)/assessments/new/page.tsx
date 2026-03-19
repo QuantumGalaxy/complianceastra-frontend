@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState, Suspense } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, FileCheck, ShieldCheck, Zap } from "lucide-react";
+import { ArrowRight, FileCheck, Phone, ShieldCheck, Zap } from "lucide-react";
 
 const ENVIRONMENTS = [
   {
@@ -25,9 +25,17 @@ const ENVIRONMENTS = [
     iconColor: "text-sky-700",
   },
   {
+    id: "moto",
+    title: "MOTO",
+    description: "Mail and phone orders — find the right SAQ for card-not-present without a website checkout.",
+    icon: Phone,
+    iconBg: "bg-violet-50",
+    iconColor: "text-violet-700",
+  },
+  {
     id: "payment_platform",
-    title: "Payment Platform",
-    description: "APIs, fintech, embedded payments — scope your SAQ or ROC with confidence.",
+    title: "Payment platform / Service provider",
+    description: "APIs, fintech, or services that touch other businesses’ card data.",
     icon: FileCheck,
     iconBg: "bg-amber-50",
     iconColor: "text-amber-700",

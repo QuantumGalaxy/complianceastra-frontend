@@ -10,6 +10,8 @@ type ResultSummaryProps = {
   scopeSummary: string;
   estimateLabel: string;
   onContinueChecklist: () => void;
+  /** Optional risk hint from decision engine */
+  riskLevel?: "Low" | "Medium" | "High";
 };
 
 const SAQ_LABELS: Record<SaqType, string> = {
@@ -30,6 +32,7 @@ export function ResultSummary({
   scopeSummary,
   estimateLabel,
   onContinueChecklist,
+  riskLevel,
 }: ResultSummaryProps) {
   return (
     <div className="space-y-8">
@@ -40,6 +43,16 @@ export function ResultSummary({
         <Badge className="text-base px-4 py-1.5 rounded-full bg-emerald-600 text-white">
           {SAQ_LABELS[saq]}
         </Badge>
+        <p className="text-lg font-semibold text-slate-800 max-w-xl mx-auto">
+          Based on your answers, you should complete:{" "}
+          <span className="text-emerald-700">{SAQ_LABELS[saq]}</span>
+        </p>
+        {riskLevel && (
+          <p className="text-xs text-slate-500">
+            Estimated scope complexity:{" "}
+            <span className="font-medium text-slate-700">{riskLevel}</span>
+          </p>
+        )}
         <h1 className="text-3xl font-bold text-slate-900">{title}</h1>
         <p className="text-slate-600 max-w-2xl mx-auto">
           Based on PCI DSS v4.0.1. This is an initial classification aid and does not replace

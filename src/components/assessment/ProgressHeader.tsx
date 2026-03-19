@@ -5,7 +5,7 @@ type ProgressHeaderProps = {
 };
 
 const BASE_STEPS: { id: string; label: string }[] = [
-  { id: "scope", label: "Scope wizard" },
+  { id: "scope", label: "Eligibility" },
   { id: "eligibility", label: "SAQ eligibility" },
   { id: "questionnaire", label: "Assessment" },
   { id: "checklist", label: "Checklist" },
