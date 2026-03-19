@@ -54,12 +54,12 @@ export default function HomePage() {
           className="absolute -bottom-28 -left-28 h-72 w-72 rounded-full bg-sky-200/30 blur-3xl"
         />
 
-        <div className="relative container py-6 md:py-8 pb-10 md:pb-12">
-          <div className="grid items-start gap-6 lg:grid-cols-2 lg:items-center">
+        <div className="relative container py-8 md:py-10 pb-12 md:pb-14">
+          <div className="grid items-start gap-8 lg:grid-cols-2 lg:items-center">
             <Reveal>
-              <div className="space-y-2.5">
+              <div className="space-y-3">
                 <h1
-                  className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl leading-[1.1]"
+                  className="text-[2.5rem] font-bold tracking-tight text-slate-900 sm:text-5xl leading-[1.15]"
                 >
                   PCI DSS Scope Tool
                 </h1>
@@ -69,7 +69,7 @@ export default function HomePage() {
                   get moving faster.
                 </p>
 
-                <div className="space-y-1.5 pt-0.5">
+                <div className="space-y-2 pt-1">
                   <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
                     <Link href="/assessments/new">
                       <Button
@@ -97,12 +97,12 @@ export default function HomePage() {
             </Reveal>
 
             <Reveal>
-              <div className="mx-auto w-full max-w-lg lg:pt-0">
+              <div className="mx-auto w-full max-w-xl lg:pt-0">
                 <div className="rounded-2xl border border-slate-200 bg-white/80 backdrop-blur shadow-sm overflow-hidden">
-                  <div className="px-4 py-1.5 border-b border-slate-200 bg-gradient-to-r from-emerald-50/80 to-white">
+                  <div className="px-5 py-2 border-b border-slate-200 bg-gradient-to-r from-emerald-50/80 to-white">
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
                           <LayoutDashboard className="h-4 w-4" aria-hidden />
                         </div>
                         <div className="min-w-0">
@@ -118,10 +118,10 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div className="p-3 space-y-2">
-                    <div className="rounded-lg border border-slate-200 bg-white px-2.5 py-2">
+                  <div className="p-4 space-y-2.5">
+                    <div className="rounded-lg border border-slate-200 bg-white px-3 py-2.5">
                       <div className="flex items-center gap-2.5">
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-700">
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-700">
                           <LockKeyhole className="h-4 w-4" aria-hidden />
                         </span>
                         <div className="min-w-0">
@@ -135,9 +135,9 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    <div className="rounded-lg border border-slate-200 bg-white px-2.5 py-2">
+                    <div className="rounded-lg border border-slate-200 bg-white px-3 py-2.5">
                       <div className="flex items-center gap-2.5">
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
                           <ShieldCheck className="h-4 w-4" aria-hidden />
                         </span>
                         <div className="min-w-0">
@@ -151,9 +151,9 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    <div className="rounded-lg border border-slate-200 bg-white px-2.5 py-2">
+                    <div className="rounded-lg border border-slate-200 bg-white px-3 py-2.5">
                       <div className="flex items-center gap-2.5">
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-amber-50 text-amber-700">
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-50 text-amber-700">
                           <FileCheck className="h-4 w-4" aria-hidden />
                         </span>
                         <div className="min-w-0">
@@ -167,7 +167,7 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-0.5 text-xs text-slate-600">
+                    <div className="flex items-center justify-between pt-1 text-xs text-slate-600">
                       <span>Calm, premium compliance UX</span>
                       <span className="inline-flex items-center gap-1.5">
                         <Users className="h-4 w-4 text-slate-400" aria-hidden />
