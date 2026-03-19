@@ -44,6 +44,8 @@ type ComplianceReportScreenProps = {
   checklistState: ChecklistState;
   onChecklistChange: (next: ChecklistState) => void;
   onDownloadPdf?: () => void;
+  /** Override checklist definition (e.g. from JSON-driven questionnaire for SAQ B) */
+  checklistDef?: import("./checklist-data").ChecklistDefinition;
 };
 
 function getInScopeOutOfScope(saq: SaqType): {
@@ -110,8 +112,12 @@ export function ComplianceReportScreen({
   checklistState,
   onChecklistChange,
   onDownloadPdf,
+  checklistDef: checklistDefOverride,
 }: ComplianceReportScreenProps) {
-  const def = useMemo(() => CHECKLISTS[result.saq], [result.saq]);
+  const def = useMemo(
+    () => checklistDefOverride ?? CHECKLISTS[result.saq],
+    [result.saq, checklistDefOverride],
+  );
   const totalItems = useMemo(
     () => def.sections.reduce((acc, s) => acc + s.items.length, 0),
     [def],

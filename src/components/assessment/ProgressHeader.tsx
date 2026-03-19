@@ -1,17 +1,26 @@
 type ProgressHeaderProps = {
-  currentStep: "scope" | "eligibility" | "checklist" | "report";
+  currentStep: "scope" | "eligibility" | "questionnaire" | "checklist" | "report";
+  /** When true, show questionnaire step (e.g. for SAQ B) */
+  showQuestionnaire?: boolean;
 };
 
-const STEPS: { id: ProgressHeaderProps["currentStep"]; label: string }[] = [
+const BASE_STEPS: { id: string; label: string }[] = [
   { id: "scope", label: "Scope wizard" },
   { id: "eligibility", label: "SAQ eligibility" },
+  { id: "questionnaire", label: "Assessment" },
   { id: "checklist", label: "Checklist" },
   { id: "report", label: "Your report" },
 ];
 
-export function ProgressHeader({ currentStep }: ProgressHeaderProps) {
+function getSteps(showQuestionnaire: boolean) {
+  if (showQuestionnaire) return BASE_STEPS;
+  return BASE_STEPS.filter((s) => s.id !== "questionnaire");
+}
+
+export function ProgressHeader({ currentStep, showQuestionnaire = false }: ProgressHeaderProps) {
+  const STEPS = getSteps(showQuestionnaire);
   const currentIndex = STEPS.findIndex((s) => s.id === currentStep);
-  const progressPercent = ((currentIndex + 1) / STEPS.length) * 100;
+  const progressPercent = STEPS.length > 0 ? ((currentIndex + 1) / STEPS.length) * 100 : 0;
 
   return (
     <div className="mb-8 space-y-3">

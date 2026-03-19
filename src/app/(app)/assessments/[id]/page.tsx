@@ -12,9 +12,16 @@ import { PaywallSection } from "@/components/assessment/PaywallSection";
 import { PaymentModal } from "@/components/assessment/PaymentModal";
 import { ComplianceReportScreen } from "@/components/assessment/ComplianceReportScreen";
 import { CHECKLISTS, SaqType } from "@/components/assessment/checklist-data";
+import { JsonQuestionnaire } from "@/components/assessment/JsonQuestionnaire";
+import { QuestionnaireSummary } from "@/components/assessment/QuestionnaireSummary";
+import {
+  loadQuestionnaire,
+  hasJsonQuestionnaire,
+  questionnaireToChecklistDefinition,
+} from "@/lib/load-questionnaire";
 
 type Channel = "ecommerce" | "moto" | "card_present" | "service_provider" | null;
-type WizardStep = "scope" | "eligibility" | "checklist" | "report";
+type WizardStep = "scope" | "eligibility" | "questionnaire" | "checklist" | "report";
 
 type EcommerceAnswers = {
   onlyEcommerce?: string;
@@ -387,12 +394,33 @@ export default function AssessmentPage() {
   };
 
   const currentStep: WizardStep =
-    step === "report" ? "report" : step === "checklist" ? "checklist" : state.saq ? step : "scope";
+    step === "report"
+      ? "report"
+      : step === "checklist"
+      ? "checklist"
+      : step === "questionnaire"
+      ? "questionnaire"
+      : state.saq
+      ? step
+      : "scope";
+
+  const handleContinueFromEligibility = () => {
+    if (result?.saq && hasJsonQuestionnaire(result.saq)) {
+      setStep("questionnaire");
+    } else {
+      setStep("checklist");
+    }
+  };
 
   return (
     <div className="py-16">
       <div className={`container ${step === "report" ? "max-w-4xl" : "max-w-3xl"}`}>
-        {step !== "report" && <ProgressHeader currentStep={currentStep} />}
+        {step !== "report" && (
+          <ProgressHeader
+            currentStep={currentStep}
+            showQuestionnaire={result?.saq ? hasJsonQuestionnaire(result.saq) : false}
+          />
+        )}
 
         {step === "report" && result && (
           <nav className="mb-8 text-sm text-slate-500" aria-label="Breadcrumb">
@@ -745,7 +773,28 @@ export default function AssessmentPage() {
               whyMatched={result.why}
               scopeSummary={result.summary}
               estimateLabel={result.estimateLabel}
-              onContinueChecklist={() => setStep("checklist")}
+              onContinueChecklist={handleContinueFromEligibility}
+            />
+          </div>
+        )}
+
+        {step === "questionnaire" && result && hasJsonQuestionnaire(result.saq) && (
+          <div className="space-y-8">
+            <div className="space-y-2">
+              <h1 className="text-2xl font-bold text-slate-900">
+                {loadQuestionnaire(result.saq).framework}
+              </h1>
+              <p className="text-sm text-slate-600 max-w-2xl">
+                Answer each requirement below. Use <strong>In Place</strong> when the control is
+                implemented, <strong>Not Applicable</strong> when it does not apply to your
+                environment, or <strong>Action Needed</strong> when work remains.
+              </p>
+            </div>
+            <JsonQuestionnaire
+              questionnaire={loadQuestionnaire(result.saq)}
+              state={checklistState}
+              onChange={setChecklistState}
+              onComplete={() => setStep("checklist")}
             />
           </div>
         )}
@@ -754,19 +803,37 @@ export default function AssessmentPage() {
           <div className="space-y-8">
             <div className="space-y-2">
               <h1 className="text-2xl font-bold text-slate-900">
-                {CHECKLISTS[result.saq].title}
+                {hasJsonQuestionnaire(result.saq)
+                  ? loadQuestionnaire(result.saq).framework
+                  : CHECKLISTS[result.saq].title}
               </h1>
               <p className="text-sm text-slate-600 max-w-2xl">
-                Work through these{" "}
-                <span className="font-semibold">plain-English compliance checkpoints</span>.
-                Unlock to get your full compliance report and checklist.
+                {hasJsonQuestionnaire(result.saq) ? (
+                  <>
+                    You&apos;ve completed the SAQ B assessment. Unlock to get your full compliance
+                    report, readiness summary, and remediation recommendations.
+                  </>
+                ) : (
+                  <>
+                    Work through these{" "}
+                    <span className="font-semibold">plain-English compliance checkpoints</span>.
+                    Unlock to get your full compliance report and checklist.
+                  </>
+                )}
               </p>
             </div>
-            <ChecklistPreview
-              saq={result.saq}
-              state={checklistState}
-              onChange={setChecklistState}
-            />
+            {hasJsonQuestionnaire(result.saq) ? (
+              <QuestionnaireSummary
+                questionnaire={loadQuestionnaire(result.saq)}
+                state={checklistState}
+              />
+            ) : (
+              <ChecklistPreview
+                saq={result.saq}
+                state={checklistState}
+                onChange={setChecklistState}
+              />
+            )}
             <PaywallSection
               email={userEmail}
               onEmailChange={setUserEmail}
@@ -792,6 +859,11 @@ export default function AssessmentPage() {
             }}
             checklistState={checklistState}
             onChecklistChange={setChecklistState}
+            checklistDef={
+              hasJsonQuestionnaire(result.saq)
+                ? questionnaireToChecklistDefinition(loadQuestionnaire(result.saq), result.saq)
+                : undefined
+            }
           />
         )}
       </div>
