@@ -6,53 +6,181 @@
 import type { Questionnaire, QuestionnaireItem, QuestionnaireSection } from "./questionnaire-types";
 import type { ChecklistDefinition, SaqType } from "@/components/assessment/checklist-data";
 import saqBJson from "@/data/saq_b_production_ready.json";
-import saqAJson from "@/data/saq_a_production_ready.json";
+import saqACorrectedJson from "@/data/saq_a_production_ready_corrected.json";
 
 export type SaqQuestionnaireType = "A" | "B"; // Future: "C" | "D" | ...
 
-/** SAQ A uses array-of-sections format; normalize to Questionnaire schema */
-type SaqARawSection = {
-  section: string;
+/** Flat row format from saq_a_production_ready_corrected.json */
+type SaqACorrectedRow = {
+  section_title: string;
   section_order: number;
-  items: {
-    id: string;
-    requirement_raw: string;
-    question: string;
-    help_text?: string;
-    options: string[];
-    requires_ccw_explanation?: boolean;
-  }[];
+  group_title?: string;
+  group_order?: number;
+  id: string;
+  requirement_raw: string;
+  question: string;
+  help_text?: string;
+  options: string[];
+  requires_ccw_explanation?: boolean;
+  display_order?: number;
+  show_requirement_id?: boolean;
+  allow_note?: boolean;
+  category?: string;
+  risk_level?: string;
+  ui_hint?: string;
+  response_type?: string;
+  evidence_examples?: string[];
+  tags?: string[];
 };
 
-function normalizeSaqA(raw: SaqARawSection[]): Questionnaire {
-  const sections: QuestionnaireSection[] = raw.map((sec, secIdx) => ({
-    section_id: String(secIdx + 1),
-    section_order: sec.section_order,
-    section_title: sec.section,
-    items: sec.items.map((item, itemIdx) => ({
-      id: item.id,
-      requirement_raw: item.requirement_raw,
-      question: item.question,
-      help_text: item.help_text,
-      options: item.options,
-      display_order: itemIdx + 1,
-      show_requirement_id: true,
-      allow_note: true,
-    })) as QuestionnaireItem[],
-  }));
+/** Expected requirement IDs from corrected SAQ A (PCI DSS v4.0.1 SAQ A) */
+export const EXPECTED_SAQ_A_REQUIREMENT_IDS = [
+  "2.2.2",
+  "3.1.1",
+  "3.2.1",
+  "6.3.1",
+  "6.3.3",
+  "8.2.1",
+  "8.2.2",
+  "8.2.5",
+  "8.3.1",
+  "8.3.5",
+  "8.3.6",
+  "8.3.7",
+  "8.3.9",
+  "9.4.1",
+  "9.4.1.1",
+  "9.4.2",
+  "9.4.3",
+  "9.4.4",
+  "9.4.6",
+  "11.3.2",
+  "11.3.2.1",
+  "12.8.1",
+  "12.8.2",
+  "12.8.3",
+  "12.8.4",
+  "12.8.5",
+  "12.10.1",
+] as const;
+
+const FORBIDDEN_LEGACY_SAQ_A_IDS = new Set(["6.4.3", "6.4.3.1", "6.4.3.2"]);
+
+function slugSectionId(sectionOrder: number, sectionTitle: string): string {
+  const slug = sectionTitle
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 48);
+  return `${sectionOrder}-${slug || "section"}`;
+}
+
+/** Normalize flat corrected SAQ A JSON into Questionnaire schema */
+function normalizeSaqACorrected(raw: SaqACorrectedRow[]): Questionnaire {
+  const rows = [...raw].sort(
+    (a, b) => (a.display_order ?? 999) - (b.display_order ?? 999),
+  );
+
+  const groupKey = (r: SaqACorrectedRow) => `${r.section_order}::${r.section_title}`;
+  const groupOrder: string[] = [];
+  for (const r of rows) {
+    const k = groupKey(r);
+    if (!groupOrder.includes(k)) groupOrder.push(k);
+  }
+
+  const sections: QuestionnaireSection[] = groupOrder.map((key) => {
+    const first = rows.find((r) => groupKey(r) === key)!;
+    const sectionItems = rows
+      .filter((r) => groupKey(r) === key)
+      .map((item) => ({
+        id: item.id,
+        requirement_raw: item.requirement_raw,
+        question: item.question,
+        help_text: item.help_text,
+        options: item.options,
+        display_order: item.display_order,
+        show_requirement_id: item.show_requirement_id ?? true,
+        allow_note: item.allow_note ?? true,
+        category: item.category,
+        risk_level: item.risk_level as QuestionnaireItem["risk_level"],
+        ui_hint: item.ui_hint,
+        response_type: item.response_type,
+        evidence_examples: item.evidence_examples,
+        tags: item.tags,
+      })) as QuestionnaireItem[];
+
+    return {
+      section_id: slugSectionId(first.section_order, first.section_title),
+      section_order: first.section_order,
+      section_title: first.section_title,
+      category: first.category,
+      items: sectionItems,
+    };
+  });
 
   return {
     framework: "PCI DSS v4.0.1 SAQ A",
-    source: "Fully outsourced ecommerce / MOTO",
+    source: "Corrected SAQ A questionnaire (production)",
     sections,
   };
 }
 
-const QUESTIONNAIRE_MAP: Record<
-  SaqQuestionnaireType,
-  () => Questionnaire
-> = {
-  A: () => normalizeSaqA(saqAJson as SaqARawSection[]),
+/**
+ * Validates corrected SAQ A loaded data before use.
+ * Throws if required IDs are missing or legacy incorrect IDs appear.
+ */
+export function validateSaqAQuestionnaire(questionnaire: Questionnaire): void {
+  const ids = new Set<string>();
+  for (const sec of questionnaire.sections) {
+    for (const item of sec.items) {
+      ids.add(item.id);
+      if (FORBIDDEN_LEGACY_SAQ_A_IDS.has(item.id)) {
+        throw new Error(
+          `SAQ A validation failed: legacy item "${item.id}" must not appear in corrected questionnaire.`,
+        );
+      }
+    }
+  }
+
+  const missing: string[] = [];
+  for (const expected of EXPECTED_SAQ_A_REQUIREMENT_IDS) {
+    if (!ids.has(expected)) missing.push(expected);
+  }
+  if (missing.length > 0) {
+    throw new Error(
+      `SAQ A validation failed: missing requirement ID(s): ${missing.join(", ")}. Expected ${EXPECTED_SAQ_A_REQUIREMENT_IDS.length} items.`,
+    );
+  }
+
+  const expectedSet = new Set<string>(EXPECTED_SAQ_A_REQUIREMENT_IDS);
+  const unexpected = [...ids].filter((id) => !expectedSet.has(id));
+  if (unexpected.length > 0) {
+    throw new Error(`SAQ A validation failed: unexpected requirement ID(s): ${unexpected.join(", ")}`);
+  }
+
+  let itemCount = 0;
+  for (const sec of questionnaire.sections) {
+    itemCount += sec.items.length;
+  }
+  if (itemCount !== EXPECTED_SAQ_A_REQUIREMENT_IDS.length) {
+    throw new Error(
+      `SAQ A validation failed: expected ${EXPECTED_SAQ_A_REQUIREMENT_IDS.length} items, found ${itemCount} (check for duplicates).`,
+    );
+  }
+}
+
+function loadSaqA(): Questionnaire {
+  const rows = saqACorrectedJson as SaqACorrectedRow[];
+  if (!Array.isArray(rows) || rows.length === 0) {
+    throw new Error("SAQ A: corrected JSON must be a non-empty array.");
+  }
+  const questionnaire = normalizeSaqACorrected(rows);
+  validateSaqAQuestionnaire(questionnaire);
+  return questionnaire;
+}
+
+const QUESTIONNAIRE_MAP: Record<SaqQuestionnaireType, () => Questionnaire> = {
+  A: loadSaqA,
   B: () => saqBJson as Questionnaire,
 };
 

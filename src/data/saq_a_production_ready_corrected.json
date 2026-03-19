@@ -1,0 +1,1121 @@
+[
+  {
+    "section_title": "Build and Maintain a Secure Network and Systems",
+    "section_order": 1,
+    "group_title": "Requirement 2: Apply Secure Configurations to All System Components",
+    "group_order": 1,
+    "id": "2.2.2",
+    "requirement_raw": "Vendor default accounts are managed as follows: If the vendor default account(s) will be used, the default password is changed per Requirement 8.3.6. If the vendor default account(s) will not be used, the account is removed or disabled.",
+    "expected_testing_raw": [
+      "Examine system configuration standards.",
+      "Examine vendor documentation.",
+      "Observe a system administrator logging on using vendor default accounts.",
+      "Examine configuration files.",
+      "Interview personnel."
+    ],
+    "applicability_notes": [
+      "For SAQ A, Requirement 2.2.2 applies to e-commerce merchants\u2019 vendor default accounts on web servers.",
+      "This applies to all vendor default accounts and passwords, including those used by operating systems, security software, application and system accounts, POS terminals, payment applications, and SNMP defaults.",
+      "This also applies where a system component is not installed within the entity\u2019s environment, such as software and applications in scope that are accessed via a cloud subscription service."
+    ],
+    "saq_completion_guidance": null,
+    "question": "Have you changed or disabled all default vendor accounts on your in-scope web servers and related systems?",
+    "help_text": "Default usernames, passwords, and built-in vendor accounts should not stay active with default settings.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "configuration",
+    "display_order": 1,
+    "tags": [
+      "Build and Maintain a Secure Network and Systems",
+      "2"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Protect Account Data",
+    "section_order": 2,
+    "group_title": "Requirement 3: Protect Stored Account Data",
+    "group_order": 1,
+    "id": "3.1.1",
+    "requirement_raw": "All security policies and operational procedures that are identified in Requirement 3 are documented, kept up to date, in use, and known to all affected parties.",
+    "expected_testing_raw": [
+      "Examine documentation.",
+      "Interview personnel."
+    ],
+    "applicability_notes": [
+      "For SAQ A, Requirement 3 applies only to merchants with paper records that include account data, such as receipts or printed reports."
+    ],
+    "saq_completion_guidance": "If the merchant has paper storage of account data, the merchant has policies and procedures in place that govern activities for Requirement 3 and ensure personnel are aware of and follow them. If the merchant does not store paper records with account data, mark this requirement as Not Applicable and complete Appendix C.",
+    "question": "If you keep paper receipts or reports with card data, do you have written procedures for protecting them?",
+    "help_text": "Your team should know how to store, handle, and protect any paper records that contain account data.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "data_retention",
+    "display_order": 2,
+    "tags": [
+      "Protect Account Data",
+      "3"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Protect Account Data",
+    "section_order": 2,
+    "group_title": "Requirement 3: Protect Stored Account Data",
+    "group_order": 1,
+    "id": "3.2.1",
+    "requirement_raw": "Account data storage is kept to a minimum through data retention and disposal policies, procedures, and processes that cover all locations of stored account data; cover any sensitive authentication data stored prior to completion of authorization; limit storage amount and retention time to legal, regulatory, and/or business requirements; define specific retention periods with documented business justification; require secure deletion or rendering account data unrecoverable when no longer needed; and verify at least once every three months that stored account data exceeding the retention period has been securely deleted or rendered unrecoverable.",
+    "expected_testing_raw": [
+      "Examine the data retention and disposal policies, procedures, and processes.",
+      "Interview personnel.",
+      "Examine files and system records on system components where account data is stored.",
+      "Observe the mechanisms used to render account data unrecoverable."
+    ],
+    "applicability_notes": [
+      "Part of the applicability note was intentionally removed as it does not apply to SAQ A assessments.",
+      "The bullet for coverage of sensitive authentication data stored prior to completion of authorization was a best practice until 31 March 2025, after which it is required as part of Requirement 3.2.1."
+    ],
+    "saq_completion_guidance": "If the merchant stores paper containing account data, the merchant stores it only as long as needed for business, legal, and/or regulatory reasons and destroys it when no longer needed. If the merchant never prints or stores paper containing account data, mark this requirement as Not Applicable and complete Appendix C.",
+    "question": "If you keep paper records with account data, do you keep them only as long as needed and securely destroy them on schedule?",
+    "help_text": "Your retention policy should say what you keep, why you keep it, how long you keep it, and how you destroy it when it is no longer needed.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "data_retention",
+    "display_order": 3,
+    "tags": [
+      "Protect Account Data",
+      "3"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Maintain a Vulnerability Management Program",
+    "section_order": 3,
+    "group_title": "Requirement 6: Develop and Maintain Secure Systems and Software",
+    "group_order": 1,
+    "id": "6.3.1",
+    "requirement_raw": "Security vulnerabilities are identified and managed using industry-recognized sources for vulnerability information; vulnerabilities are assigned a risk ranking based on industry best practices and consideration of potential impact; and risk rankings identify, at a minimum, all vulnerabilities considered to be high-risk or critical to the environment.",
+    "expected_testing_raw": [
+      "Examine policies and procedures.",
+      "Interview responsible personnel.",
+      "Examine documentation.",
+      "Observe processes."
+    ],
+    "applicability_notes": [
+      "For SAQ A, Requirement 6 applies to merchant servers with a webpage that either redirects customers to a TPSP/payment processor or includes a TPSP/payment processor embedded payment page/form.",
+      "This requirement is not achieved by, and is in addition to, performing vulnerability scans according to Requirements 11.3.2 and 11.3.2.1."
+    ],
+    "saq_completion_guidance": null,
+    "question": "Do you actively track new security vulnerabilities and rank them by risk so serious issues are handled first?",
+    "help_text": "Use trusted sources like vendor alerts or CERT bulletins and document which issues are high-risk or critical.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "vulnerability_management",
+    "display_order": 4,
+    "tags": [
+      "Maintain a Vulnerability Management Program",
+      "6"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Maintain a Vulnerability Management Program",
+    "section_order": 3,
+    "group_title": "Requirement 6: Develop and Maintain Secure Systems and Software",
+    "group_order": 1,
+    "id": "6.3.3",
+    "requirement_raw": "All system components are protected from known vulnerabilities by installing applicable security patches and updates, including installing patches/updates for critical vulnerabilities within one month of release.",
+    "expected_testing_raw": [
+      "Examine policies and procedures.",
+      "Examine system components and related software.",
+      "Compare list of security patches installed to recent vendor patch lists."
+    ],
+    "applicability_notes": [
+      "For SAQ A, Requirement 6 applies to merchant servers with a webpage that either redirects customers to a TPSP/payment processor or includes a TPSP/payment processor embedded payment page/form."
+    ],
+    "saq_completion_guidance": null,
+    "question": "Do you install important security patches and updates promptly, including critical patches within one month?",
+    "help_text": "This applies to merchant systems that host the page which redirects customers to the payment provider or embeds the provider\u2019s payment form.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "vulnerability_management",
+    "display_order": 5,
+    "tags": [
+      "Maintain a Vulnerability Management Program",
+      "6"
+    ],
+    "risk_level": "high",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Implement Strong Access Control Measures",
+    "section_order": 4,
+    "group_title": "Requirement 8: Identify Users and Authenticate Access to System Components",
+    "group_order": 1,
+    "id": "8.2.1",
+    "requirement_raw": "All users are assigned a unique ID before access to system components or cardholder data is allowed.",
+    "expected_testing_raw": [
+      "Interview responsible personnel.",
+      "Examine audit logs and other evidence."
+    ],
+    "applicability_notes": [
+      "For SAQ A, Requirement 8 applies to merchant servers with a webpage that either redirects customers to a TPSP/payment processor or includes a TPSP/payment processor embedded payment page/form.",
+      "This requirement is not intended to apply to user accounts within point-of-sale terminals that have access to only one card number at a time to facilitate a single transaction."
+    ],
+    "saq_completion_guidance": null,
+    "question": "Does every user who can access in-scope systems have their own unique user ID?",
+    "help_text": "People should not share personal accounts if they can access systems involved in the payment page redirect or embedded form.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "authentication_access",
+    "display_order": 6,
+    "tags": [
+      "Implement Strong Access Control Measures",
+      "8"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Implement Strong Access Control Measures",
+    "section_order": 4,
+    "group_title": "Requirement 8: Identify Users and Authenticate Access to System Components",
+    "group_order": 1,
+    "id": "8.2.2",
+    "requirement_raw": "Group, shared, or generic IDs or other shared authentication credentials are used only when necessary on an exception basis: use is prevented unless needed for an exceptional circumstance; use is limited to the time needed; business justification is documented; use is explicitly approved by management; individual user identity is confirmed before access; and every action taken is attributable to an individual user.",
+    "expected_testing_raw": [
+      "Examine user account lists on system components and applicable documentation.",
+      "Examine authentication policies and procedures.",
+      "Interview system administrators."
+    ],
+    "applicability_notes": [
+      "This requirement is not intended to apply to user accounts within point-of-sale terminals that have access to only one card number at a time to facilitate a single transaction."
+    ],
+    "saq_completion_guidance": null,
+    "question": "If shared or generic accounts are ever used, are they tightly controlled, justified, approved, and traceable to a specific person?",
+    "help_text": "Shared access should be rare, temporary, approved, and logged so actions can still be tied to one individual.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "authentication_access",
+    "display_order": 7,
+    "tags": [
+      "Implement Strong Access Control Measures",
+      "8"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Implement Strong Access Control Measures",
+    "section_order": 4,
+    "group_title": "Requirement 8: Identify Users and Authenticate Access to System Components",
+    "group_order": 1,
+    "id": "8.2.5",
+    "requirement_raw": "Access for terminated users is immediately revoked.",
+    "expected_testing_raw": [
+      "Examine information sources for terminated users.",
+      "Review current user access lists.",
+      "Interview responsible personnel."
+    ],
+    "applicability_notes": [],
+    "saq_completion_guidance": null,
+    "question": "Is access removed immediately when an employee or user leaves or no longer needs it?",
+    "help_text": "Former users should not retain access to web hosting, admin tools, or other in-scope systems.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "authentication_access",
+    "display_order": 8,
+    "tags": [
+      "Implement Strong Access Control Measures",
+      "8"
+    ],
+    "risk_level": "high",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Implement Strong Access Control Measures",
+    "section_order": 4,
+    "group_title": "Requirement 8: Identify Users and Authenticate Access to System Components",
+    "group_order": 1,
+    "id": "8.3.1",
+    "requirement_raw": "All user access to system components for users and administrators is authenticated via at least one of the following authentication factors: something you know, something you have, or something you are.",
+    "expected_testing_raw": [
+      "Examine documentation describing the authentication factor(s) used.",
+      "For each type of authentication factor used with each type of system component, observe the authentication process."
+    ],
+    "applicability_notes": [
+      "This requirement is not intended to apply to user accounts on point-of-sale terminals that have access to only one card number at a time to facilitate a single transaction.",
+      "This requirement does not supersede multi-factor authentication requirements but applies to in-scope systems not otherwise subject to MFA.",
+      "A digital certificate is a valid option for 'something you have' if it is unique for a particular user."
+    ],
+    "saq_completion_guidance": null,
+    "question": "Do all users log in to in-scope systems using approved authentication such as a password, token, certificate, or biometric?",
+    "help_text": "At least one valid authentication factor must be used for each user or administrator.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "authentication_access",
+    "display_order": 9,
+    "tags": [
+      "Implement Strong Access Control Measures",
+      "8"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Implement Strong Access Control Measures",
+    "section_order": 4,
+    "group_title": "Requirement 8: Identify Users and Authenticate Access to System Components",
+    "group_order": 1,
+    "id": "8.3.5",
+    "requirement_raw": "If passwords/passphrases are used as authentication factors to meet Requirement 8.3.1, they are set and reset for each user to a unique value for first-time use and upon reset, and are forced to be changed immediately after first use.",
+    "expected_testing_raw": [
+      "Examine procedures for setting and resetting passwords/passphrases.",
+      "Observe security personnel."
+    ],
+    "applicability_notes": [],
+    "saq_completion_guidance": null,
+    "question": "When passwords are first issued or reset, are they unique and forced to change after first use?",
+    "help_text": "This prevents shared starter passwords from staying active.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "authentication_access",
+    "display_order": 10,
+    "tags": [
+      "Implement Strong Access Control Measures",
+      "8"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Implement Strong Access Control Measures",
+    "section_order": 4,
+    "group_title": "Requirement 8: Identify Users and Authenticate Access to System Components",
+    "group_order": 1,
+    "id": "8.3.6",
+    "requirement_raw": "If passwords/passphrases are used as authentication factors to meet Requirement 8.3.1, they are at least 12 characters long (or at least 8 if the system does not support 12) and contain both numeric and alphabetic characters.",
+    "expected_testing_raw": [
+      "Examine system configuration settings."
+    ],
+    "applicability_notes": [
+      "This requirement is not intended to apply to user accounts on point-of-sale terminals that have access to only one card number at a time to facilitate a single transaction.",
+      "This requirement is not intended to apply to application or system accounts, which are governed by requirements in section 8.6.",
+      "This requirement was a best practice until 31 March 2025, after which it is required. Until 31 March 2025, passwords had to be at least seven characters per PCI DSS v3.2.1 Requirement 8.2.3."
+    ],
+    "saq_completion_guidance": null,
+    "question": "Do user passwords meet PCI complexity rules, including minimum length and a mix of letters and numbers?",
+    "help_text": "As of SAQ A r1, passwords should be at least 12 characters where supported, or 8 if the system cannot support 12.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "authentication_access",
+    "display_order": 11,
+    "tags": [
+      "Implement Strong Access Control Measures",
+      "8"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Implement Strong Access Control Measures",
+    "section_order": 4,
+    "group_title": "Requirement 8: Identify Users and Authenticate Access to System Components",
+    "group_order": 1,
+    "id": "8.3.7",
+    "requirement_raw": "Individuals are not allowed to submit a new password/passphrase that is the same as any of the last four passwords/passphrases used.",
+    "expected_testing_raw": [
+      "Examine system configuration settings."
+    ],
+    "applicability_notes": [
+      "This requirement is not intended to apply to user accounts within point-of-sale terminals that have access to only one card number at a time to facilitate a single transaction."
+    ],
+    "saq_completion_guidance": null,
+    "question": "Does the system prevent users from reusing any of their last four passwords?",
+    "help_text": "Password history should block immediate reuse of old passwords.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "authentication_access",
+    "display_order": 12,
+    "tags": [
+      "Implement Strong Access Control Measures",
+      "8"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Implement Strong Access Control Measures",
+    "section_order": 4,
+    "group_title": "Requirement 8: Identify Users and Authenticate Access to System Components",
+    "group_order": 1,
+    "id": "8.3.9",
+    "requirement_raw": "If passwords/passphrases are used as the only authentication factor for user access, then either passwords/passphrases are changed at least once every 90 days, or the security posture of accounts is dynamically analyzed and real-time access to resources is automatically determined accordingly.",
+    "expected_testing_raw": [
+      "Inspect system configuration settings."
+    ],
+    "applicability_notes": [
+      "This requirement does not apply to in-scope system components where MFA is used.",
+      "This requirement is not intended to apply to user accounts on point-of-sale terminals that have access to only one card number at a time to facilitate a single transaction.",
+      "This requirement does not apply to service providers\u2019 customer accounts but does apply to accounts for service provider personnel."
+    ],
+    "saq_completion_guidance": null,
+    "question": "If a user logs in with password-only access, do you either require password changes at least every 90 days or use a real-time risk-based access approach?",
+    "help_text": "If MFA is used for the system, this specific requirement may not apply.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "authentication_access",
+    "display_order": 13,
+    "tags": [
+      "Implement Strong Access Control Measures",
+      "8"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Restrict Physical Access to Cardholder Data",
+    "section_order": 5,
+    "group_title": "Requirement 9: Restrict Physical Access to Cardholder Data",
+    "group_order": 1,
+    "id": "9.4.1",
+    "requirement_raw": "All media with cardholder data is physically secured.",
+    "expected_testing_raw": [
+      "Examine documentation."
+    ],
+    "applicability_notes": [
+      "For SAQ A, Requirements at 9.4 apply only to merchants with paper records with account data, including primary account numbers."
+    ],
+    "saq_completion_guidance": null,
+    "question": "If you keep paper media with card data, is it physically secured?",
+    "help_text": "Examples include locked drawers, cabinets, safes, or other restricted storage.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "physical_security",
+    "display_order": 14,
+    "tags": [
+      "Restrict Physical Access to Cardholder Data",
+      "9"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Restrict Physical Access to Cardholder Data",
+    "section_order": 5,
+    "group_title": "Requirement 9: Restrict Physical Access to Cardholder Data",
+    "group_order": 1,
+    "id": "9.4.1.1",
+    "requirement_raw": "Offline media backups with cardholder data are stored in a secure location.",
+    "expected_testing_raw": [
+      "Examine documented procedures.",
+      "Examine logs or other documentation.",
+      "Interview responsible personnel at the storage location(s)."
+    ],
+    "applicability_notes": [],
+    "saq_completion_guidance": null,
+    "question": "If you keep offline backups or stored paper media with card data, are they kept in a secure location?",
+    "help_text": "Stored copies should be in a controlled location with access restricted to authorized personnel.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "physical_security",
+    "display_order": 15,
+    "tags": [
+      "Restrict Physical Access to Cardholder Data",
+      "9"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Restrict Physical Access to Cardholder Data",
+    "section_order": 5,
+    "group_title": "Requirement 9: Restrict Physical Access to Cardholder Data",
+    "group_order": 1,
+    "id": "9.4.2",
+    "requirement_raw": "All media with cardholder data is classified in accordance with the sensitivity of the data.",
+    "expected_testing_raw": [
+      "Examine documented procedures.",
+      "Examine media logs or other documentation."
+    ],
+    "applicability_notes": [],
+    "saq_completion_guidance": null,
+    "question": "Do you label or classify paper media with card data based on how sensitive it is?",
+    "help_text": "Your procedures should make clear that card-data documents need stronger handling than ordinary paperwork.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "physical_security",
+    "display_order": 16,
+    "tags": [
+      "Restrict Physical Access to Cardholder Data",
+      "9"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Restrict Physical Access to Cardholder Data",
+    "section_order": 5,
+    "group_title": "Requirement 9: Restrict Physical Access to Cardholder Data",
+    "group_order": 1,
+    "id": "9.4.3",
+    "requirement_raw": "Media with cardholder data sent outside the facility is secured using a secured courier or other delivery method that can be accurately tracked.",
+    "expected_testing_raw": [
+      "Examine documented procedures.",
+      "Interview personnel.",
+      "Examine records.",
+      "Examine offsite tracking logs for all media."
+    ],
+    "applicability_notes": [],
+    "saq_completion_guidance": null,
+    "question": "If paper media with card data leaves your facility, is it sent by a secure and trackable delivery method?",
+    "help_text": "You should be able to track where the media is and confirm delivery.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "physical_security",
+    "display_order": 17,
+    "tags": [
+      "Restrict Physical Access to Cardholder Data",
+      "9"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Restrict Physical Access to Cardholder Data",
+    "section_order": 5,
+    "group_title": "Requirement 9: Restrict Physical Access to Cardholder Data",
+    "group_order": 1,
+    "id": "9.4.4",
+    "requirement_raw": "Management approves all media with cardholder data that is moved outside the facility, including when media is distributed to individuals.",
+    "expected_testing_raw": [
+      "Examine documented procedures.",
+      "Examine offsite media tracking logs.",
+      "Interview responsible personnel."
+    ],
+    "applicability_notes": [
+      "Individuals approving media movements should have the appropriate level of management authority, but do not need to have 'manager' in their title."
+    ],
+    "saq_completion_guidance": null,
+    "question": "Does management approve any movement of paper media with card data outside the facility?",
+    "help_text": "Someone with appropriate authority should approve when this information is taken or sent offsite.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "physical_security",
+    "display_order": 18,
+    "tags": [
+      "Restrict Physical Access to Cardholder Data",
+      "9"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Restrict Physical Access to Cardholder Data",
+    "section_order": 5,
+    "group_title": "Requirement 9: Restrict Physical Access to Cardholder Data",
+    "group_order": 1,
+    "id": "9.4.6",
+    "requirement_raw": "Hard-copy materials with cardholder data are destroyed when no longer needed for business or legal reasons by cross-cut shredding, incineration, or pulping so cardholder data cannot be reconstructed, and are stored in secure storage containers prior to destruction.",
+    "expected_testing_raw": [
+      "Examine the periodic media destruction policy.",
+      "Observe processes.",
+      "Interview personnel.",
+      "Observe storage containers."
+    ],
+    "applicability_notes": [
+      "These requirements for media destruction are separate and distinct from Requirement 3.2.1, which addresses secure deletion when data is no longer needed per the retention policy."
+    ],
+    "saq_completion_guidance": "If the merchant stores paper media with account data, it must be securely stored and destroyed when no longer needed. If the merchant never stores paper with account data, mark as Not Applicable and complete Appendix C.",
+    "question": "When paper records with card data are no longer needed, do you destroy them securely?",
+    "help_text": "Use methods like cross-cut shredding, incineration, or pulping, and keep them in secure containers before destruction.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "physical_security",
+    "display_order": 19,
+    "tags": [
+      "Restrict Physical Access to Cardholder Data",
+      "9"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Test Security of Systems and Networks Regularly",
+    "section_order": 6,
+    "group_title": "Requirement 11: Test Security of Systems and Networks Regularly",
+    "group_order": 1,
+    "id": "11.3.2",
+    "requirement_raw": "External vulnerability scans are performed at least once every three months by a PCI SSC Approved Scanning Vendor (ASV); vulnerabilities are resolved and ASV Program Guide requirements for a passing scan are met; rescans are performed as needed to confirm vulnerabilities are resolved.",
+    "expected_testing_raw": [
+      "Examine ASV scan reports."
+    ],
+    "applicability_notes": [
+      "For SAQ A, Requirement 11 applies to merchant servers with a webpage that either redirects customers to a TPSP/payment processor or includes a TPSP/payment processor embedded payment page/form.",
+      "For the initial assessment, four passing scans within 12 months are not required if the assessor verifies the most recent scan passed, documented policies require scans at least every three months, and vulnerabilities were corrected as shown in rescans.",
+      "For subsequent years, passing scans at least every three months must have occurred."
+    ],
+    "saq_completion_guidance": null,
+    "question": "Do you get external ASV scans at least every three months for in-scope systems and fix any findings until the scans pass?",
+    "help_text": "This applies to the merchant page or server that redirects customers to or embeds the payment provider\u2019s form.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "security_testing",
+    "display_order": 20,
+    "tags": [
+      "Test Security of Systems and Networks Regularly",
+      "11"
+    ],
+    "risk_level": "high",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Test Security of Systems and Networks Regularly",
+    "section_order": 6,
+    "group_title": "Requirement 11: Test Security of Systems and Networks Regularly",
+    "group_order": 1,
+    "id": "11.3.2.1",
+    "requirement_raw": "External vulnerability scans are performed after any significant change; vulnerabilities scored 4.0 or higher by CVSS are resolved; rescans are conducted as needed; and scans are performed by qualified personnel with organizational independence.",
+    "expected_testing_raw": [
+      "Examine change control documentation.",
+      "Interview personnel.",
+      "Examine external scan and rescan reports, as applicable."
+    ],
+    "applicability_notes": [],
+    "saq_completion_guidance": null,
+    "question": "After any significant change, do you run external scans again and fix any qualifying vulnerabilities?",
+    "help_text": "Examples of significant changes include major website updates, infrastructure changes, or changes affecting the payment page.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "security_testing",
+    "display_order": 21,
+    "tags": [
+      "Test Security of Systems and Networks Regularly",
+      "11"
+    ],
+    "risk_level": "high",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Maintain an Information Security Policy",
+    "section_order": 7,
+    "group_title": "Requirement 12: Support Information Security with Organizational Policies and Programs",
+    "group_order": 1,
+    "id": "12.8.1",
+    "requirement_raw": "A list of all third-party service providers with which account data is shared or that could affect the security of account data is maintained, including a description for each service provided.",
+    "expected_testing_raw": [
+      "Examine policies and procedures.",
+      "Examine list of TPSPs."
+    ],
+    "applicability_notes": [
+      "The use of a PCI DSS compliant TPSP does not make an entity PCI DSS compliant, nor remove the entity\u2019s responsibility for its own PCI DSS compliance."
+    ],
+    "saq_completion_guidance": null,
+    "question": "Do you keep a current list of third-party service providers that handle payment-related services or could affect payment security?",
+    "help_text": "Examples include payment processors, web hosts, managed security providers, or vendors with remote access.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "vendor_and_incident_management",
+    "display_order": 22,
+    "tags": [
+      "Maintain an Information Security Policy",
+      "12"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Maintain an Information Security Policy",
+    "section_order": 7,
+    "group_title": "Requirement 12: Support Information Security with Organizational Policies and Programs",
+    "group_order": 1,
+    "id": "12.8.2",
+    "requirement_raw": "Written agreements are maintained with all TPSPs with which account data is shared or that could affect the security of the CDE, and written agreements include acknowledgments from TPSPs that they are responsible for the security of the account data they possess or could impact.",
+    "expected_testing_raw": [
+      "Examine policies and procedures.",
+      "Examine written agreements with TPSPs."
+    ],
+    "applicability_notes": [
+      "The exact wording depends on the service being provided and the responsibilities assigned to each party.",
+      "A TPSP\u2019s PCI DSS AOC, website declaration, policy statement, or responsibility matrix is not the same as the written acknowledgment required here if it is not included in a written agreement."
+    ],
+    "saq_completion_guidance": null,
+    "question": "Do you have written agreements with service providers that clearly state their responsibility for protecting account data?",
+    "help_text": "The agreement should clearly acknowledge the provider\u2019s security responsibility, not just mention compliance in marketing materials.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "vendor_and_incident_management",
+    "display_order": 23,
+    "tags": [
+      "Maintain an Information Security Policy",
+      "12"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Maintain an Information Security Policy",
+    "section_order": 7,
+    "group_title": "Requirement 12: Support Information Security with Organizational Policies and Programs",
+    "group_order": 1,
+    "id": "12.8.3",
+    "requirement_raw": "An established process is implemented for engaging TPSPs, including proper due diligence prior to engagement.",
+    "expected_testing_raw": [
+      "Examine policies and procedures.",
+      "Examine evidence.",
+      "Interview responsible personnel."
+    ],
+    "applicability_notes": [],
+    "saq_completion_guidance": null,
+    "question": "Do you perform due diligence before engaging a third-party service provider?",
+    "help_text": "Review the provider\u2019s role, security posture, and suitability before using them for payment-related services.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "vendor_and_incident_management",
+    "display_order": 24,
+    "tags": [
+      "Maintain an Information Security Policy",
+      "12"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Maintain an Information Security Policy",
+    "section_order": 7,
+    "group_title": "Requirement 12: Support Information Security with Organizational Policies and Programs",
+    "group_order": 1,
+    "id": "12.8.4",
+    "requirement_raw": "A program is implemented to monitor TPSPs\u2019 PCI DSS compliance status at least once every 12 months.",
+    "expected_testing_raw": [
+      "Examine policies and procedures.",
+      "Examine documentation.",
+      "Interview responsible personnel."
+    ],
+    "applicability_notes": [
+      "Where a TPSP is responsible for meeting PCI DSS requirements on behalf of the entity, the entity must work with the TPSP to ensure the applicable requirements are met. If the TPSP does not meet them, those requirements are also not in place for the entity."
+    ],
+    "saq_completion_guidance": null,
+    "question": "Do you check at least yearly that your service providers remain PCI compliant where relevant?",
+    "help_text": "You should have a process to confirm their compliance status and react if it changes.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "vendor_and_incident_management",
+    "display_order": 25,
+    "tags": [
+      "Maintain an Information Security Policy",
+      "12"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Maintain an Information Security Policy",
+    "section_order": 7,
+    "group_title": "Requirement 12: Support Information Security with Organizational Policies and Programs",
+    "group_order": 1,
+    "id": "12.8.5",
+    "requirement_raw": "Information is maintained about which PCI DSS requirements are managed by each TPSP, which are managed by the entity, and any that are shared between the TPSP and the entity.",
+    "expected_testing_raw": [
+      "Examine policies and procedures.",
+      "Examine documentation.",
+      "Interview responsible personnel."
+    ],
+    "applicability_notes": [],
+    "saq_completion_guidance": "If requirements 12.8.1 through 12.8.5 are in place, the merchant has a list of and agreements with service providers that share account data or could impact the merchant\u2019s environment.",
+    "question": "Do you document which PCI responsibilities are handled by each service provider, which are handled by you, and which are shared?",
+    "help_text": "This helps avoid gaps where both parties assume the other is handling a control.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "vendor_and_incident_management",
+    "display_order": 26,
+    "tags": [
+      "Maintain an Information Security Policy",
+      "12"
+    ],
+    "risk_level": "medium",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  },
+  {
+    "section_title": "Maintain an Information Security Policy",
+    "section_order": 7,
+    "group_title": "Requirement 12: Support Information Security with Organizational Policies and Programs",
+    "group_order": 1,
+    "id": "12.10.1",
+    "requirement_raw": "An incident response plan exists and is ready to be activated in the event of a suspected or confirmed security incident. The plan includes roles, responsibilities, communication and contact strategies, notification of payment brands and acquirers, incident response procedures, business recovery and continuity procedures, data backup processes, analysis of legal reporting requirements, coverage of all critical system components, and reference or inclusion of payment brand incident response procedures.",
+    "expected_testing_raw": [
+      "Examine the incident response plan.",
+      "Interview personnel.",
+      "Examine documentation from previously reported incidents."
+    ],
+    "applicability_notes": [],
+    "saq_completion_guidance": "If this requirement is in place, the merchant has documented an incident response and escalation plan that is appropriate for the size and complexity of its operations and is readily available to personnel.",
+    "question": "Do you have an incident response plan that is ready to use if a security incident happens?",
+    "help_text": "The plan should cover who does what, who gets notified, containment steps, recovery steps, backups, and reporting obligations.",
+    "options": [
+      "In Place",
+      "In Place with CCW",
+      "Not Applicable",
+      "Action Needed"
+    ],
+    "requires_ccw_explanation": true,
+    "category": "vendor_and_incident_management",
+    "display_order": 27,
+    "tags": [
+      "Maintain an Information Security Policy",
+      "12"
+    ],
+    "risk_level": "high",
+    "ui_hint": "radio_with_ccw_and_optional_note",
+    "response_type": "single_select",
+    "evidence_examples": [
+      "Policy or procedure document",
+      "Screenshot or configuration proof",
+      "Observed process or staff confirmation"
+    ],
+    "show_requirement_id": true,
+    "allow_note": true
+  }
+]
