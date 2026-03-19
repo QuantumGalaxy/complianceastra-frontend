@@ -13,6 +13,9 @@ const APP_LINKS = [
 export function AppNav() {
   const pathname = usePathname();
 
+  // Hide dashboard nav on assessment start — keep focused onboarding flow
+  if (pathname === "/assessments/new") return null;
+
   return (
     <nav
       className="border-b border-slate-200 bg-slate-50/50"
