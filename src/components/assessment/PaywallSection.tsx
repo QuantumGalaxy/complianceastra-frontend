@@ -36,7 +36,7 @@ export function PaywallSection({
     >
       <div
         id="paywall-card"
-        className="w-full rounded-2xl border border-slate-200/80 bg-white shadow-xl shadow-slate-200/40 overflow-hidden"
+        className="w-full rounded-2xl border border-emerald-200/60 bg-gradient-to-br from-emerald-50/80 via-white to-emerald-50/60 shadow-xl shadow-slate-200/40 overflow-hidden"
       >
         <div className="mx-auto max-w-[520px] px-6 py-6 md:px-8 md:py-8">
           {/* Title */}
