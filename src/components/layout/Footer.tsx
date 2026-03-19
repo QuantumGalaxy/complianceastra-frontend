@@ -1,9 +1,35 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const LEGAL_DISCLAIMER =
   "This tool provides guidance and readiness insights only. Final compliance validation depends on your acquiring bank, payment processor, or qualified security assessor where applicable.";
 
 export function Footer() {
+  const pathname = usePathname();
+  const isAuthPage = pathname === "/login" || pathname === "/register";
+
+  if (isAuthPage) {
+    return (
+      <footer className="border-t border-slate-200/60 bg-slate-50/40">
+        <div className="container py-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+            <span>© {new Date().getFullYear()} ComplianceAstra LLC</span>
+            <div className="flex gap-4">
+              <Link href="/privacy" className="hover:text-slate-700">
+                Privacy
+              </Link>
+              <Link href="/terms" className="hover:text-slate-700">
+                Terms
+              </Link>
+            </div>
+          </div>
+        </div>
+      </footer>
+    );
+  }
+
   return (
     <footer className="border-t border-slate-200/80 bg-slate-50/60">
       <div className="container py-8">
