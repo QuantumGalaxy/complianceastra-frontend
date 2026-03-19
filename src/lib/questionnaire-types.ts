@@ -35,7 +35,11 @@ export type Questionnaire = {
 };
 
 /** Normalized response value for storage and reporting */
-export type QuestionnaireAnswerValue = "in_place" | "not_applicable" | "action_needed";
+export type QuestionnaireAnswerValue =
+  | "in_place"
+  | "in_place_ccw"
+  | "not_applicable"
+  | "action_needed";
 
 /** Stored answer for a single requirement */
 export type QuestionnaireAnswer = {
@@ -44,17 +48,27 @@ export type QuestionnaireAnswer = {
   optional_note: string;
   section_title: string;
   raw_requirement_text: string;
+  ccw_explanation?: string;
 };
 
 /** Map of requirement_id -> answer (for checklistState compatibility) */
 export type QuestionnaireAnswersMap = Record<
   string,
-  { answer: QuestionnaireAnswerValue | null; notes: string }
+  {
+    answer: QuestionnaireAnswerValue | null;
+    notes: string;
+    ccw_explanation?: string;
+  }
 >;
 
 /** Maps JSON option labels to normalized values */
 export const OPTION_TO_VALUE: Record<string, QuestionnaireAnswerValue> = {
   "In Place": "in_place",
+  "In Place with CCW": "in_place_ccw",
   "Not Applicable": "not_applicable",
   "Action Needed": "action_needed",
 };
+
+/** CCW helper text for non-technical users */
+export const CCW_HELPER_TEXT =
+  "A Compensating Control Worksheet (CCW) documents an alternative way you meet a requirement when the standard control isn't feasible. Your acquirer or assessor must approve it.";

@@ -11,7 +11,7 @@ import { ChecklistPreview } from "@/components/assessment/ChecklistPreview";
 import { PaywallSection } from "@/components/assessment/PaywallSection";
 import { PaymentModal } from "@/components/assessment/PaymentModal";
 import { ComplianceReportScreen } from "@/components/assessment/ComplianceReportScreen";
-import { CHECKLISTS, SaqType } from "@/components/assessment/checklist-data";
+import { CHECKLISTS, SaqType, type ChecklistState } from "@/components/assessment/checklist-data";
 import { JsonQuestionnaire } from "@/components/assessment/JsonQuestionnaire";
 import { QuestionnaireSummary } from "@/components/assessment/QuestionnaireSummary";
 import {
@@ -312,10 +312,7 @@ export default function AssessmentPage() {
       }
     );
   });
-  const [checklistState, setChecklistState] = useState<Record<
-    string,
-    { answer: "in_place" | "not_applicable" | "action_needed" | null; notes: string }
-  >>({});
+  const [checklistState, setChecklistState] = useState<ChecklistState>({});
   const [unlocked, setUnlocked] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);

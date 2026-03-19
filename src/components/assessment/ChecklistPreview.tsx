@@ -10,14 +10,14 @@ import {
   ChecklistAnswer,
   ChecklistDefinition,
   ChecklistItem,
+  ChecklistState,
   SaqType,
 } from "./checklist-data";
-
-type ChecklistState = Record<string, { answer: ChecklistAnswer; notes: string }>;
 
 const PREVIEW_ITEMS_COUNT = 3;
 const ANSWER_LABELS: { value: Exclude<ChecklistAnswer, null>; label: string }[] = [
   { value: "in_place", label: "In Place" },
+  { value: "in_place_ccw", label: "In Place with CCW" },
   { value: "not_applicable", label: "Not Applicable" },
   { value: "action_needed", label: "Action Needed" },
 ];
@@ -44,16 +44,38 @@ export function ChecklistPreview({ saq, state, onChange }: ChecklistPreviewProps
   const previewItems = useMemo(() => getPreviewItems(def), [def]);
 
   const handleAnswerChange = (id: string, answer: ChecklistAnswer) => {
+    const entry = state[id];
     onChange({
       ...state,
-      [id]: { answer, notes: state[id]?.notes ?? "" },
+      [id]: {
+        answer,
+        notes: entry?.notes ?? "",
+        ccw_explanation: answer === "in_place_ccw" ? entry?.ccw_explanation ?? "" : undefined,
+      },
     });
   };
 
   const handleNotesChange = (id: string, notes: string) => {
+    const entry = state[id];
     onChange({
       ...state,
-      [id]: { answer: state[id]?.answer ?? null, notes },
+      [id]: {
+        answer: entry?.answer ?? null,
+        notes,
+        ccw_explanation: entry?.ccw_explanation,
+      },
+    });
+  };
+
+  const handleCcwChange = (id: string, ccw_explanation: string) => {
+    const entry = state[id];
+    onChange({
+      ...state,
+      [id]: {
+        answer: entry?.answer ?? null,
+        notes: entry?.notes ?? "",
+        ccw_explanation: ccw_explanation || undefined,
+      },
     });
   };
 
@@ -165,6 +187,19 @@ export function ChecklistPreview({ saq, state, onChange }: ChecklistPreviewProps
                           );
                         })}
                       </div>
+                      {current?.answer === "in_place_ccw" && (
+                        <div className="space-y-1">
+                          <label className="text-xs font-medium text-slate-600">
+                            Describe your compensating control <span className="text-rose-500">*</span>
+                          </label>
+                          <Textarea
+                            value={current?.ccw_explanation ?? ""}
+                            onChange={(e) => handleCcwChange(item.id, e.target.value)}
+                            className="min-h-[60px] text-xs"
+                            placeholder="Explain how your alternative control meets the requirement..."
+                          />
+                        </div>
+                      )}
                       <div className="space-y-1">
                         <label className="text-xs font-medium text-slate-600">
                           Evidence / notes (optional)

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ChevronLeft, ChevronRight, Info } from "lucide-react";
 import type { Questionnaire, QuestionnaireItem, QuestionnaireSection, QuestionnaireAnswersMap } from "@/lib/questionnaire-types";
-import { OPTION_TO_VALUE } from "@/lib/questionnaire-types";
+import { OPTION_TO_VALUE, CCW_HELPER_TEXT } from "@/lib/questionnaire-types";
 
 type JsonQuestionnaireProps = {
   questionnaire: Questionnaire;
@@ -28,10 +28,13 @@ function flattenItems(questionnaire: Questionnaire): { item: QuestionnaireItem; 
   return result;
 }
 
-function optionToValue(opt: string): "in_place" | "not_applicable" | "action_needed" | null {
+type AnswerValue = "in_place" | "in_place_ccw" | "not_applicable" | "action_needed";
+
+function optionToValue(opt: string): AnswerValue | null {
   const v = OPTION_TO_VALUE[opt];
   return v ?? null;
 }
+
 
 export function JsonQuestionnaire({ questionnaire, state, onChange, onComplete }: JsonQuestionnaireProps) {
   const flat = useMemo(() => flattenItems(questionnaire), [questionnaire]);
@@ -45,12 +48,17 @@ export function JsonQuestionnaire({ questionnaire, state, onChange, onComplete }
   const currentState = current ? state[current.item.id] : undefined;
   const currentAnswer = currentState?.answer ?? null;
   const currentNotes = currentState?.notes ?? "";
+  const currentCcw = currentState?.ccw_explanation ?? "";
 
-  const handleAnswerChange = (value: "in_place" | "not_applicable" | "action_needed") => {
+  const handleAnswerChange = (value: AnswerValue) => {
     if (!current) return;
     onChange({
       ...state,
-      [current.item.id]: { answer: value, notes: currentNotes },
+      [current.item.id]: {
+        answer: value,
+        notes: currentNotes,
+        ccw_explanation: value === "in_place_ccw" ? currentCcw : undefined,
+      },
     });
   };
 
@@ -58,7 +66,23 @@ export function JsonQuestionnaire({ questionnaire, state, onChange, onComplete }
     if (!current) return;
     onChange({
       ...state,
-      [current.item.id]: { answer: currentAnswer, notes },
+      [current.item.id]: {
+        answer: currentAnswer,
+        notes,
+        ccw_explanation: currentAnswer === "in_place_ccw" ? currentCcw : undefined,
+      },
+    });
+  };
+
+  const handleCcwChange = (ccw_explanation: string) => {
+    if (!current) return;
+    onChange({
+      ...state,
+      [current.item.id]: {
+        answer: currentAnswer,
+        notes: currentNotes,
+        ccw_explanation: ccw_explanation || undefined,
+      },
     });
   };
 
@@ -77,13 +101,18 @@ export function JsonQuestionnaire({ questionnaire, state, onChange, onComplete }
   const answeredCount = Object.values(state).filter((s) => s.answer != null).length;
   const progressPercent = total > 0 ? (answeredCount / total) * 100 : 0;
 
+  const isCcwSelected = currentAnswer === "in_place_ccw";
+  const ccwRequiredButEmpty = isCcwSelected && !currentCcw.trim();
+  const canProceed = !ccwRequiredButEmpty;
+
   if (!current) {
     return null;
   }
 
   const options = current.item.options.map((opt) => ({
-    value: optionToValue(opt) ?? opt.toLowerCase().replace(/\s+/g, "_"),
+    value: optionToValue(opt) ?? (opt.toLowerCase().replace(/\s+/g, "_") as AnswerValue),
     label: opt,
+    isAdvanced: opt === "In Place with CCW",
   }));
 
   return (
@@ -137,7 +166,7 @@ export function JsonQuestionnaire({ questionnaire, state, onChange, onComplete }
                 <button
                   key={opt.value}
                   type="button"
-                  onClick={() => handleAnswerChange(opt.value as "in_place" | "not_applicable" | "action_needed")}
+                  onClick={() => handleAnswerChange(opt.value as AnswerValue)}
                   className={`w-full text-left rounded-lg border px-4 py-3 transition-colors ${
                     selected
                       ? "border-emerald-500 bg-emerald-50"
@@ -146,14 +175,45 @@ export function JsonQuestionnaire({ questionnaire, state, onChange, onComplete }
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-medium text-slate-900">{opt.label}</span>
-                    {selected && (
-                      <span className="text-xs font-semibold text-emerald-700">Selected</span>
-                    )}
+                    <span className="flex items-center gap-2">
+                      {opt.isAdvanced && (
+                        <span
+                          className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-500"
+                          title={CCW_HELPER_TEXT}
+                        >
+                          Advanced
+                        </span>
+                      )}
+                      {selected && (
+                        <span className="text-xs font-semibold text-emerald-700">Selected</span>
+                      )}
+                    </span>
                   </div>
                 </button>
               );
             })}
           </div>
+
+          {isCcwSelected && (
+            <div className="space-y-1 pt-2 border-t border-slate-100">
+              <p className="text-xs text-slate-500 mb-2">{CCW_HELPER_TEXT}</p>
+              <label className="text-xs font-medium text-slate-600">
+                Describe your compensating control <span className="text-rose-500">*</span>
+              </label>
+              <Textarea
+                value={currentCcw}
+                onChange={(e) => handleCcwChange(e.target.value)}
+                className={`min-h-[80px] text-sm ${ccwRequiredButEmpty ? "border-rose-300" : ""}`}
+                placeholder="Explain how your alternative control meets the requirement..."
+                required
+              />
+              {ccwRequiredButEmpty && (
+                <p className="text-xs text-rose-600">
+                  Please describe your compensating control before continuing.
+                </p>
+              )}
+            </div>
+          )}
 
           {current.item.allow_note && (
             <div className="space-y-1 pt-2 border-t border-slate-100">
@@ -187,6 +247,7 @@ export function JsonQuestionnaire({ questionnaire, state, onChange, onComplete }
           type="button"
           className="bg-emerald-600 hover:bg-emerald-700 gap-2"
           onClick={handleNext}
+          disabled={!canProceed}
         >
           {isLast ? "Complete assessment" : "Next"}
           <ChevronRight className="h-4 w-4" />

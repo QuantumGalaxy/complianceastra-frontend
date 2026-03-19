@@ -34,15 +34,10 @@ type ReportResult = {
   estimateLabel: string;
 };
 
-type ChecklistState = Record<
-  string,
-  { answer: "in_place" | "not_applicable" | "action_needed" | null; notes: string }
->;
-
 type ComplianceReportScreenProps = {
   result: ReportResult;
-  checklistState: ChecklistState;
-  onChecklistChange: (next: ChecklistState) => void;
+  checklistState: import("./checklist-data").ChecklistState;
+  onChecklistChange: (next: import("./checklist-data").ChecklistState) => void;
   onDownloadPdf?: () => void;
   /** Override checklist definition (e.g. from JSON-driven questionnaire for SAQ B) */
   checklistDef?: import("./checklist-data").ChecklistDefinition;
@@ -136,14 +131,16 @@ export function ComplianceReportScreen({
 
   const statusCounts = useMemo(() => {
     let inPlace = 0;
+    let inPlaceCcw = 0;
     let actionNeeded = 0;
     let notApplicable = 0;
     Object.values(checklistState).forEach((v) => {
       if (v.answer === "in_place") inPlace++;
+      else if (v.answer === "in_place_ccw") inPlaceCcw++;
       else if (v.answer === "action_needed") actionNeeded++;
       else if (v.answer === "not_applicable") notApplicable++;
     });
-    return { inPlace, actionNeeded, notApplicable };
+    return { inPlace, inPlaceCcw, actionNeeded, notApplicable };
   }, [checklistState]);
 
   const handleDownloadPdf = useCallback(() => {
@@ -226,7 +223,10 @@ export function ComplianceReportScreen({
       >
         <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200/80 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-900 shadow-sm">
           <span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden />
-          In Place ({statusCounts.inPlace})
+          In Place (
+            {statusCounts.inPlace + statusCounts.inPlaceCcw}
+            {statusCounts.inPlaceCcw > 0 ? `, ${statusCounts.inPlaceCcw} with CCW` : ""}
+          )
         </span>
         <span className="inline-flex items-center gap-2 rounded-full border border-amber-200/80 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-900 shadow-sm">
           <span className="h-2 w-2 rounded-full bg-amber-500" aria-hidden />

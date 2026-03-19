@@ -1,6 +1,19 @@
 export type SaqType = "A" | "A-EP" | "B" | "B-IP" | "C-VT" | "C" | "D_MERCHANT" | "D_SERVICE_PROVIDER";
 
-export type ChecklistAnswer = "in_place" | "not_applicable" | "action_needed" | null;
+export type ChecklistAnswer =
+  | "in_place"
+  | "in_place_ccw"
+  | "not_applicable"
+  | "action_needed"
+  | null;
+
+export type ChecklistStateEntry = {
+  answer: ChecklistAnswer;
+  notes: string;
+  ccw_explanation?: string;
+};
+
+export type ChecklistState = Record<string, ChecklistStateEntry>;
 
 export type ChecklistItem = {
   id: string;

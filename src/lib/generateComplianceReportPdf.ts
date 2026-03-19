@@ -1,6 +1,10 @@
 import { jsPDF } from "jspdf";
 import type { SaqType } from "@/components/assessment/checklist-data";
-import type { ChecklistDefinition, ChecklistSection } from "@/components/assessment/checklist-data";
+import type {
+  ChecklistDefinition,
+  ChecklistSection,
+  ChecklistState,
+} from "@/components/assessment/checklist-data";
 import { SAQ_LABELS } from "@/components/assessment/report-data";
 
 const MARGIN = 20;
@@ -31,10 +35,7 @@ type ReportInput = {
   riskLevel: string;
   topActions: string[];
   checklistDef: ChecklistDefinition;
-  checklistState: Record<
-    string,
-    { answer: "in_place" | "not_applicable" | "action_needed" | null; notes: string }
-  >;
+  checklistState: ChecklistState;
   completed: number;
   totalItems: number;
 };
@@ -183,14 +184,17 @@ export function generateComplianceReportPdf(input: ReportInput): void {
       const answerLabel =
         answer === "in_place"
           ? "In Place"
-          : answer === "not_applicable"
-            ? "Not Applicable"
-            : answer === "action_needed"
-              ? "Action Needed"
-              : "—";
+          : answer === "in_place_ccw"
+            ? "In Place with CCW"
+            : answer === "not_applicable"
+              ? "Not Applicable"
+              : answer === "action_needed"
+                ? "Action Needed"
+                : "—";
       const notes = state?.notes?.trim() ? state.notes : "";
+      const ccwExplanation = state?.ccw_explanation?.trim();
 
-      y = addNewPageIfNeeded(doc, y, LINE_HEIGHT * 4);
+      y = addNewPageIfNeeded(doc, y, LINE_HEIGHT * 5);
       doc.text(item.label, MARGIN + 2, y);
       y += LINE_HEIGHT;
       doc.setFontSize(8);
@@ -198,7 +202,16 @@ export function generateComplianceReportPdf(input: ReportInput): void {
       y += LINE_HEIGHT;
       doc.text(`Status: ${answerLabel}`, MARGIN + 2, y);
       y += LINE_HEIGHT;
+      if (ccwExplanation) {
+        doc.text("CCW description:", MARGIN + 2, y);
+        y += LINE_HEIGHT;
+        const ccwLines = doc.splitTextToSize(ccwExplanation, CONTENT_WIDTH - 4);
+        doc.text(ccwLines, MARGIN + 2, y);
+        y += ccwLines.length * (LINE_HEIGHT * 0.9) + 2;
+      }
       if (notes) {
+        doc.text("Notes:", MARGIN + 2, y);
+        y += LINE_HEIGHT;
         const noteLines = doc.splitTextToSize(notes, CONTENT_WIDTH - 4);
         doc.text(noteLines, MARGIN + 2, y);
         y += noteLines.length * (LINE_HEIGHT * 0.9);

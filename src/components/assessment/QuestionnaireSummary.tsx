@@ -5,10 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2, AlertCircle, MinusCircle } from "lucide-react";
 import type { Questionnaire } from "@/lib/questionnaire-types";
 
-type ChecklistState = Record<
-  string,
-  { answer: "in_place" | "not_applicable" | "action_needed" | null; notes: string }
->;
+import type { ChecklistState } from "./checklist-data";
 
 type QuestionnaireSummaryProps = {
   questionnaire: Questionnaire;
@@ -25,20 +22,22 @@ function countItems(questionnaire: Questionnaire): number {
 export function QuestionnaireSummary({ questionnaire, state }: QuestionnaireSummaryProps) {
   const total = useMemo(() => countItems(questionnaire), [questionnaire]);
 
-  const { completed, inPlace, notApplicable, actionNeeded } = useMemo(() => {
+  const { completed, inPlace, inPlaceCcw, notApplicable, actionNeeded } = useMemo(() => {
     let completed = 0;
     let inPlace = 0;
+    let inPlaceCcw = 0;
     let notApplicable = 0;
     let actionNeeded = 0;
     Object.values(state).forEach((v) => {
       if (v.answer) {
         completed++;
         if (v.answer === "in_place") inPlace++;
+        else if (v.answer === "in_place_ccw") inPlaceCcw++;
         else if (v.answer === "not_applicable") notApplicable++;
         else if (v.answer === "action_needed") actionNeeded++;
       }
     });
-    return { completed, inPlace, notApplicable, actionNeeded };
+    return { completed, inPlace, inPlaceCcw, notApplicable, actionNeeded };
   }, [state]);
 
   const progressPercent = total > 0 ? Math.round((completed / total) * 100) : 0;
@@ -73,8 +72,10 @@ export function QuestionnaireSummary({ questionnaire, state }: QuestionnaireSumm
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold text-emerald-900">{inPlace}</p>
-            <p className="text-xs text-emerald-700 mt-0.5">Controls implemented</p>
+            <p className="text-2xl font-bold text-emerald-900">{inPlace + inPlaceCcw}</p>
+            <p className="text-xs text-emerald-700 mt-0.5">
+              Controls implemented{inPlaceCcw > 0 ? ` (${inPlaceCcw} with CCW)` : ""}
+            </p>
           </CardContent>
         </Card>
         <Card className="border-amber-200 bg-amber-50/40">

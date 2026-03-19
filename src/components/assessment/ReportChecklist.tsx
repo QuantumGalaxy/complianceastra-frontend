@@ -5,12 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import type { ChecklistDefinition, ChecklistItem } from "./checklist-data";
-
-type ChecklistState = Record<
-  string,
-  { answer: "in_place" | "not_applicable" | "action_needed" | null; notes: string }
->;
+import type {
+  ChecklistDefinition,
+  ChecklistItem,
+  ChecklistState,
+  ChecklistAnswer,
+} from "./checklist-data";
 
 type ReportChecklistProps = {
   checklistDef: ChecklistDefinition;
@@ -22,11 +22,12 @@ type ReportChecklistProps = {
 };
 
 const ANSWER_OPTIONS: {
-  value: "in_place" | "not_applicable" | "action_needed";
+  value: ChecklistAnswer;
   label: string;
   className: string;
 }[] = [
   { value: "in_place", label: "In Place", className: "bg-emerald-100 text-emerald-800 border-emerald-300 hover:bg-emerald-200" },
+  { value: "in_place_ccw", label: "In Place with CCW", className: "bg-emerald-100 text-emerald-800 border-emerald-300 hover:bg-emerald-200" },
   { value: "action_needed", label: "Action Needed", className: "bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-200" },
   { value: "not_applicable", label: "Not Applicable", className: "bg-slate-100 text-slate-600 border-slate-300 hover:bg-slate-200" },
 ];
@@ -53,17 +54,39 @@ export function ReportChecklist({
     });
   };
 
-  const handleAnswer = (itemId: string, answer: "in_place" | "not_applicable" | "action_needed") => {
+  const handleAnswer = (itemId: string, answer: ChecklistAnswer) => {
+    const entry = state[itemId];
     onChange({
       ...state,
-      [itemId]: { answer, notes: state[itemId]?.notes ?? "" },
+      [itemId]: {
+        answer,
+        notes: entry?.notes ?? "",
+        ccw_explanation: answer === "in_place_ccw" ? entry?.ccw_explanation ?? "" : undefined,
+      },
     });
   };
 
   const handleNotes = (itemId: string, notes: string) => {
+    const entry = state[itemId];
     onChange({
       ...state,
-      [itemId]: { answer: state[itemId]?.answer ?? null, notes },
+      [itemId]: {
+        answer: entry?.answer ?? null,
+        notes,
+        ccw_explanation: entry?.ccw_explanation,
+      },
+    });
+  };
+
+  const handleCcwChange = (itemId: string, ccw_explanation: string) => {
+    const entry = state[itemId];
+    onChange({
+      ...state,
+      [itemId]: {
+        answer: entry?.answer ?? null,
+        notes: entry?.notes ?? "",
+        ccw_explanation: ccw_explanation || undefined,
+      },
     });
   };
 
@@ -128,6 +151,7 @@ export function ReportChecklist({
                     current={state[item.id]}
                     onAnswer={(answer) => handleAnswer(item.id, answer)}
                     onNotesChange={(notes) => handleNotes(item.id, notes)}
+                    onCcwChange={(ccw) => handleCcwChange(item.id, ccw)}
                   />
                 ))}
               </CardContent>
@@ -144,12 +168,15 @@ function ReportChecklistItem({
   current,
   onAnswer,
   onNotesChange,
+  onCcwChange,
 }: {
   item: ChecklistItem;
-  current: { answer: "in_place" | "not_applicable" | "action_needed" | null; notes: string } | undefined;
-  onAnswer: (answer: "in_place" | "not_applicable" | "action_needed") => void;
+  current: import("./checklist-data").ChecklistStateEntry | undefined;
+  onAnswer: (answer: ChecklistAnswer) => void;
   onNotesChange: (notes: string) => void;
+  onCcwChange: (ccw_explanation: string) => void;
 }) {
+  const isCcwSelected = current?.answer === "in_place_ccw";
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-4 space-y-3 shadow-sm">
       <div className="flex flex-wrap items-start justify-between gap-2">
@@ -162,7 +189,7 @@ function ReportChecklistItem({
         <p className="text-xs text-slate-600">{item.helpText}</p>
       )}
       <div className="flex flex-wrap gap-2">
-        {ANSWER_OPTIONS.map((opt) => {
+        {ANSWER_OPTIONS.filter((o) => o.value !== null).map((opt) => {
           const selected = current?.answer === opt.value;
           return (
             <Button
@@ -178,6 +205,19 @@ function ReportChecklistItem({
           );
         })}
       </div>
+      {isCcwSelected && (
+        <div className="space-y-1">
+          <label className="text-xs font-medium text-slate-600">
+            Compensating control description
+          </label>
+          <Textarea
+            value={current?.ccw_explanation ?? ""}
+            onChange={(e) => onCcwChange(e.target.value)}
+            className="min-h-[60px] text-xs bg-white"
+            placeholder="Describe how your alternative control meets the requirement..."
+          />
+        </div>
+      )}
       <div className="space-y-1">
         <label className="text-xs font-medium text-slate-600">Evidence / notes (optional)</label>
         <Textarea
