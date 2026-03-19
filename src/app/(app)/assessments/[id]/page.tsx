@@ -771,6 +771,7 @@ export default function AssessmentPage() {
               email={userEmail}
               onEmailChange={setUserEmail}
               onUnlockClick={() => setPaymentModalOpen(true)}
+              returnTo={`/assessments/${idParam}`}
             />
             <PaymentModal
               open={paymentModalOpen}

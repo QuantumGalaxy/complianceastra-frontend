@@ -1,16 +1,18 @@
 "use client";
 
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Check } from "lucide-react";
+import { Check, Lock } from "lucide-react";
 
 type PaywallSectionProps = {
   onUnlockClick: () => void;
   email: string;
   onEmailChange: (value: string) => void;
   isLoading?: boolean;
+  returnTo?: string;
 };
 
 const BENEFITS = [
@@ -26,7 +28,9 @@ export function PaywallSection({
   email,
   onEmailChange,
   isLoading = false,
+  returnTo,
 }: PaywallSectionProps) {
+  const loginHref = returnTo ? `/login?returnTo=${encodeURIComponent(returnTo)}` : "/login";
   return (
     <section
       className="relative rounded-2xl border border-slate-200 bg-gradient-to-b from-emerald-50/60 via-white to-slate-50/60 p-6 md:p-10 shadow-sm"
@@ -72,29 +76,54 @@ export function PaywallSection({
           </Card>
         </div>
 
-        <div className="space-y-4 rounded-xl border border-slate-200 bg-white p-6">
-          <Label htmlFor="paywall-email" className="text-slate-700">
-            Enter your email to save your assessment
-          </Label>
-          <Input
-            id="paywall-email"
-            type="email"
-            placeholder="you@company.com"
-            value={email}
-            onChange={(e) => onEmailChange(e.target.value)}
-            className="max-w-md"
-          />
+        <div className="space-y-6 rounded-xl border border-slate-200 bg-white p-6">
+          <div className="space-y-2">
+            <div className="h-px bg-slate-200" aria-hidden />
+            <Label htmlFor="paywall-email" className="text-base font-semibold text-slate-900">
+              Continue with your email
+            </Label>
+            <p className="text-sm text-slate-600">
+              We&apos;ll create your account and save your progress automatically.
+            </p>
+          </div>
 
-          <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
+          <div className="space-y-3">
+            <Input
+              id="paywall-email"
+              type="email"
+              placeholder="you@company.com"
+              value={email}
+              onChange={(e) => onEmailChange(e.target.value)}
+              className="h-11 max-w-md rounded-lg border-slate-200 focus-visible:border-emerald-500 focus-visible:ring-emerald-500/20"
+            />
+            <p className="text-sm text-slate-500">
+              Already have an account?{" "}
+              <Link
+                href={loginHref}
+                className="font-medium text-emerald-600 hover:text-emerald-700"
+              >
+                Log in
+              </Link>
+            </p>
+          </div>
+
+          <div className="space-y-3 pt-2">
             <Button
               size="lg"
-              className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 px-8 text-base font-semibold"
+              className="w-full h-11 bg-emerald-600 hover:bg-emerald-700 px-6 text-base font-semibold shadow-md shadow-emerald-500/20"
               onClick={onUnlockClick}
               disabled={isLoading}
             >
-              {isLoading ? "Opening…" : "Unlock Full Compliance Plan – $99"}
+              {isLoading ? (
+                "Opening…"
+              ) : (
+                <>
+                  <Lock className="mr-2 h-4 w-4" aria-hidden />
+                  Continue to payment – $99
+                </>
+              )}
             </Button>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-slate-500 text-center">
               One-time payment. No subscription.
             </p>
           </div>
