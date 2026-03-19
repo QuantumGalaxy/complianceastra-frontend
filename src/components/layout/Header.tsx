@@ -31,7 +31,7 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between gap-8">
         <Link
           href="/"
-          className="flex items-center gap-2 shrink-0"
+          className="flex items-center gap-1.5 shrink-0"
           aria-label="ComplianceAstra home"
         >
           <span className="flex h-7 w-7 shrink-0 items-center justify-center text-emerald-600">
@@ -58,10 +58,11 @@ export function Header() {
           ))}
           {user ? (
             <>
-              <Link href="/dashboard">
-                <Button variant="ghost" size="sm">
-                  Dashboard
-                </Button>
+              <Link
+                href="/dashboard"
+                className="hover:text-slate-900 transition-colors"
+              >
+                Dashboard
               </Link>
               <Link href="/assessments/new">
                 <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700">
@@ -71,10 +72,11 @@ export function Header() {
             </>
           ) : (
             <>
-              <Link href="/login">
-                <Button variant="ghost" size="sm">
-                  Log in
-                </Button>
+              <Link
+                href="/login"
+                className="hover:text-slate-900 transition-colors"
+              >
+                Log in
               </Link>
               <Link href="/assessments/new">
                 <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700">

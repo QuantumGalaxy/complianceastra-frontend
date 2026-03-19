@@ -183,7 +183,7 @@ export default function HomePage() {
       </section>
 
       {/* Trust / Value strip — clearly separated below hero */}
-      <section className="relative pt-4 pb-8 md:pb-10">
+      <section className="relative pt-4 pb-6 md:pb-8">
         <div className="container">
           <div className="rounded-xl border border-slate-100 bg-slate-50/70 backdrop-blur px-6 py-4 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
             <div className="grid gap-3 md:grid-cols-3 md:gap-8">
@@ -220,7 +220,7 @@ export default function HomePage() {
       </section>
 
       {/* Feature cards */}
-      <section className="py-12 md:py-16" aria-labelledby="features-heading">
+      <section className="pt-8 md:pt-10 pb-12 md:pb-16" aria-labelledby="features-heading">
         <div className="container">
           <div className="text-center mb-10">
             <h2 id="features-heading" className="text-3xl font-bold tracking-tight text-slate-900">
