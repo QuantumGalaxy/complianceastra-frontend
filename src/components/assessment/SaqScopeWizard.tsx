@@ -1,11 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { QuestionCard } from "@/components/assessment/QuestionCard";
 import { QUESTIONS_BY_ID, type WizardStateV2 } from "@/lib/saq-decision-config";
 import { getNextQuestionId } from "@/lib/saq-decision-engine";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 function approximateTotalSteps(channel: WizardStateV2["payment_channel"]): number {
   switch (channel) {
@@ -75,6 +75,16 @@ export function SaqScopeWizard({ state, onAnswer, onBack, canGoBack }: SaqScopeW
   const questionId = getNextQuestionId(state);
   const question = questionId ? QUESTIONS_BY_ID[questionId] : null;
 
+  const valueFromState = questionId ? currentValueForQuestion(state, questionId) : null;
+  const [selected, setSelected] = useState<string | null>(valueFromState);
+
+  // Reset local selection only when navigating to a different question (not on every parent state reference change).
+  useEffect(() => {
+    if (!questionId) return;
+    setSelected(currentValueForQuestion(state, questionId));
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional: avoid overwriting a pending choice before "Next"
+  }, [questionId]);
+
   const progressLabel = useMemo(() => {
     const ch = state.payment_channel;
     const total = approximateTotalSteps(ch);
@@ -111,11 +121,11 @@ export function SaqScopeWizard({ state, onAnswer, onBack, canGoBack }: SaqScopeW
         description={question.description}
         helpText={question.helpText}
         options={options}
-        value={currentValueForQuestion(state, questionId)}
-        onChange={(value) => onAnswer(questionId, value)}
+        value={selected}
+        onChange={setSelected}
       />
 
-      <div className="flex justify-start pt-2">
+      <div className="flex items-center justify-between gap-4 pt-2">
         <Button
           type="button"
           variant="outline"
@@ -123,9 +133,24 @@ export function SaqScopeWizard({ state, onAnswer, onBack, canGoBack }: SaqScopeW
           className="gap-2"
           onClick={onBack}
           disabled={!canGoBack}
+          aria-disabled={!canGoBack}
         >
           <ChevronLeft className="h-4 w-4" aria-hidden />
           Back
+        </Button>
+        <Button
+          type="button"
+          size="sm"
+          className="gap-2 bg-emerald-600 hover:bg-emerald-700"
+          onClick={() => {
+            if (selected == null) return;
+            onAnswer(questionId, selected);
+          }}
+          disabled={selected == null}
+          aria-disabled={selected == null}
+        >
+          Next
+          <ChevronRight className="h-4 w-4" aria-hidden />
         </Button>
       </div>
     </div>

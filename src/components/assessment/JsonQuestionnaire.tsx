@@ -105,7 +105,8 @@ export function JsonQuestionnaire({ questionnaire, state, onChange, onComplete }
 
   const isCcwSelected = currentAnswer === "in_place_ccw";
   const ccwRequiredButEmpty = isCcwSelected && !currentCcw.trim();
-  const canProceed = !ccwRequiredButEmpty;
+  const hasAnswer = currentAnswer != null;
+  const canProceed = hasAnswer && !ccwRequiredButEmpty;
 
   if (!current) {
     return null;
@@ -240,6 +241,7 @@ export function JsonQuestionnaire({ questionnaire, state, onChange, onComplete }
           variant="outline"
           onClick={handleBack}
           disabled={isFirst}
+          aria-disabled={isFirst}
           className="gap-2"
         >
           <ChevronLeft className="h-4 w-4" />
