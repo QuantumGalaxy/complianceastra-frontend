@@ -76,6 +76,95 @@ export function getNextQuestionId(state: WizardStateV2): string | null {
   return null;
 }
 
+/**
+ * Clears the last answered eligibility field for the current payment channel (inverse of completing the tree).
+ * Does not clear payment_channel. Used when the user wants to edit eligibility after seeing a result.
+ */
+export function stripLastEligibilityAnswer(state: WizardStateV2): WizardStateV2 {
+  const s: WizardStateV2 = { ...state, saq: null };
+  const ch = s.payment_channel;
+  if (!ch) return s;
+
+  if (ch === "service_provider") {
+    if (s.service_provider_handles_chd_for_others != null) {
+      return { ...s, service_provider_handles_chd_for_others: undefined };
+    }
+    return s;
+  }
+
+  if (ch === "card_present") {
+    if (s.card_present_stores_chd === "no" && s.card_present_how != null) {
+      return { ...s, card_present_how: undefined };
+    }
+    if (s.card_present_stores_chd != null) {
+      return { ...s, card_present_stores_chd: undefined, card_present_how: undefined };
+    }
+    return s;
+  }
+
+  if (ch === "moto") {
+    if (
+      s.moto_stores_chd === "no" &&
+      s.moto_fully_outsourced === "no" &&
+      s.moto_how_process != null
+    ) {
+      return { ...s, moto_how_process: undefined };
+    }
+    if (s.moto_stores_chd === "no" && s.moto_fully_outsourced != null) {
+      return { ...s, moto_fully_outsourced: undefined, moto_how_process: undefined };
+    }
+    if (s.moto_stores_chd != null) {
+      return {
+        ...s,
+        moto_stores_chd: undefined,
+        moto_fully_outsourced: undefined,
+        moto_how_process: undefined,
+      };
+    }
+    return s;
+  }
+
+  if (ch === "ecommerce") {
+    if (s.ecommerce_fully_outsourced === "yes" && s.ecommerce_payment_page != null) {
+      return { ...s, ecommerce_payment_page: undefined };
+    }
+    if (s.ecommerce_fully_outsourced != null) {
+      return { ...s, ecommerce_fully_outsourced: undefined, ecommerce_payment_page: undefined };
+    }
+    return s;
+  }
+
+  return s;
+}
+
+function eligibilityFieldsEqual(a: WizardStateV2, b: WizardStateV2): boolean {
+  return (
+    a.service_provider_handles_chd_for_others === b.service_provider_handles_chd_for_others &&
+    a.card_present_stores_chd === b.card_present_stores_chd &&
+    a.card_present_how === b.card_present_how &&
+    a.moto_stores_chd === b.moto_stores_chd &&
+    a.moto_fully_outsourced === b.moto_fully_outsourced &&
+    a.moto_how_process === b.moto_how_process &&
+    a.ecommerce_fully_outsourced === b.ecommerce_fully_outsourced &&
+    a.ecommerce_payment_page === b.ecommerce_payment_page
+  );
+}
+
+/**
+ * Produces wizard state where at least one eligibility question is unanswered again, so SaqScopeWizard can run.
+ * Keeps payment_channel (and preset from /assessments/new). Clears resolved SAQ until the user finishes again.
+ */
+export function stateForReopeningEligibilityWizard(state: WizardStateV2): WizardStateV2 {
+  let s: WizardStateV2 = { ...state, saq: null };
+  for (let i = 0; i < 12; i++) {
+    if (getNextQuestionId(s) !== null || !s.payment_channel) break;
+    const next = stripLastEligibilityAnswer(s);
+    if (eligibilityFieldsEqual(next, s)) break;
+    s = next;
+  }
+  return s;
+}
+
 export function resolveSaqDecision(state: WizardStateV2): SaqDecisionResult | null {
   if (getNextQuestionId(state) !== null) return null;
 

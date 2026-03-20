@@ -13,6 +13,8 @@ type JsonQuestionnaireProps = {
   state: QuestionnaireAnswersMap;
   onChange: (next: QuestionnaireAnswersMap) => void;
   onComplete: () => void;
+  /** Return to PCI eligibility wizard (same assessment session; avoids browser back to /assessments/new). */
+  onBackToEligibility?: () => void;
 };
 
 /** Flatten sections into ordered items with section context */
@@ -38,7 +40,13 @@ function optionToValue(opt: string): AnswerValue | null {
 }
 
 
-export function JsonQuestionnaire({ questionnaire, state, onChange, onComplete }: JsonQuestionnaireProps) {
+export function JsonQuestionnaire({
+  questionnaire,
+  state,
+  onChange,
+  onComplete,
+  onBackToEligibility,
+}: JsonQuestionnaireProps) {
   const flat = useMemo(() => flattenItems(questionnaire), [questionnaire]);
   const total = flat.length;
 
@@ -234,22 +242,34 @@ export function JsonQuestionnaire({ questionnaire, state, onChange, onComplete }
         </CardContent>
       </Card>
 
-      {/* Navigation */}
-      <div className="flex items-center justify-between gap-4 pt-2">
+      {/* Navigation — Back = previous requirement; “Eligibility” returns to PCI wizard in this session */}
+      <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleBack}
+            disabled={isFirst}
+            aria-disabled={isFirst}
+            className="gap-2"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Back
+          </Button>
+          {onBackToEligibility && (
+            <Button
+              type="button"
+              variant="ghost"
+              className="h-auto px-2 text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800"
+              onClick={onBackToEligibility}
+            >
+              Back to eligibility questions
+            </Button>
+          )}
+        </div>
         <Button
           type="button"
-          variant="outline"
-          onClick={handleBack}
-          disabled={isFirst}
-          aria-disabled={isFirst}
-          className="gap-2"
-        >
-          <ChevronLeft className="h-4 w-4" />
-          Back
-        </Button>
-        <Button
-          type="button"
-          className="bg-emerald-600 hover:bg-emerald-700 gap-2"
+          className="gap-2 bg-emerald-600 hover:bg-emerald-700 sm:shrink-0"
           onClick={handleNext}
           disabled={!canProceed}
         >

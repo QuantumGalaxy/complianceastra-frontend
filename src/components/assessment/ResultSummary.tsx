@@ -10,6 +10,8 @@ type ResultSummaryProps = {
   scopeSummary: string;
   estimateLabel: string;
   onContinueChecklist: () => void;
+  /** Return to PCI eligibility wizard to change answers (same session). */
+  onEditEligibility?: () => void;
   /** Optional risk hint from decision engine */
   riskLevel?: "Low" | "Medium" | "High";
 };
@@ -32,6 +34,7 @@ export function ResultSummary({
   scopeSummary,
   estimateLabel,
   onContinueChecklist,
+  onEditEligibility,
   riskLevel,
 }: ResultSummaryProps) {
   return (
@@ -97,14 +100,19 @@ export function ResultSummary({
         </Card>
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex flex-col items-center gap-3">
         <Button
           size="lg"
-          className="bg-emerald-600 hover:bg-emerald-700 px-10"
+          className="bg-emerald-600 px-10 hover:bg-emerald-700"
           onClick={onContinueChecklist}
         >
           Continue to compliance checklist
         </Button>
+        {onEditEligibility && (
+          <Button type="button" variant="ghost" size="sm" className="text-slate-600" onClick={onEditEligibility}>
+            Change eligibility answers
+          </Button>
+        )}
       </div>
     </div>
   );

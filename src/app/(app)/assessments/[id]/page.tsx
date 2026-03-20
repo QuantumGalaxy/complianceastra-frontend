@@ -19,7 +19,12 @@ import {
   questionnaireToChecklistDefinition,
 } from "@/lib/load-questionnaire";
 import type { PaymentChannel, WizardStateV2 } from "@/lib/saq-decision-config";
-import { applyAnswer, resolveSaqDecision, type SaqDecisionResult } from "@/lib/saq-decision-engine";
+import {
+  applyAnswer,
+  resolveSaqDecision,
+  stateForReopeningEligibilityWizard,
+  type SaqDecisionResult,
+} from "@/lib/saq-decision-engine";
 
 type WizardStep = "scope" | "eligibility" | "questionnaire" | "checklist" | "report";
 
@@ -232,6 +237,41 @@ export default function AssessmentPage() {
     }
   };
 
+  const reopenEligibilityWizard = useCallback(() => {
+    setWizardPast([]);
+    setWizardState(stateForReopeningEligibilityWizard(wizardState));
+    setDecisionResult(null);
+    setStep("scope");
+  }, [wizardState]);
+
+  /** From SAQ result screen — no questionnaire progress to lose yet */
+  const handleEditEligibilityFromSummary = useCallback(() => {
+    reopenEligibilityWizard();
+  }, [reopenEligibilityWizard]);
+
+  /** From JSON questionnaire — browser “back” would leave this session; explicit path to eligibility */
+  const handleBackToEligibilityFromQuestionnaire = useCallback(() => {
+    const answered = Object.keys(checklistState).some((id) => checklistState[id]?.answer != null);
+    if (
+      answered &&
+      typeof window !== "undefined" &&
+      !window.confirm(
+        "You’ll return to PCI eligibility questions. Your current questionnaire answers will be cleared so they stay in sync if your SAQ type changes. Continue?",
+      )
+    ) {
+      return;
+    }
+    setChecklistState({});
+    reopenEligibilityWizard();
+  }, [checklistState, reopenEligibilityWizard]);
+
+  /** After reopening eligibility, Back may be disabled — still allow changing POS / e-com / MOTO choice */
+  const handleResetPaymentChannel = useCallback(() => {
+    setWizardPast([]);
+    setWizardState(EMPTY_WIZARD);
+    setDecisionResult(null);
+  }, []);
+
   return (
     <div className="py-16">
       <div className={`container ${step === "report" ? "max-w-4xl" : "max-w-3xl"}`}>
@@ -268,6 +308,18 @@ export default function AssessmentPage() {
               onBack={handleWizardBack}
               canGoBack={wizardPast.length > 0}
             />
+            {wizardPast.length === 0 && wizardState.payment_channel != null && (
+              <p className="text-center text-sm text-slate-500">
+                <button
+                  type="button"
+                  className="font-medium text-emerald-700 underline-offset-2 hover:underline"
+                  onClick={handleResetPaymentChannel}
+                >
+                  Change how I accept payments
+                </button>{" "}
+                <span className="text-slate-400">(e.g. POS vs e-commerce)</span>
+              </p>
+            )}
           </div>
         )}
 
@@ -281,6 +333,7 @@ export default function AssessmentPage() {
               estimateLabel={result.estimateLabel}
               riskLevel={result.riskLevel}
               onContinueChecklist={handleContinueFromEligibility}
+              onEditEligibility={handleEditEligibilityFromSummary}
             />
           </div>
         )}
@@ -302,6 +355,7 @@ export default function AssessmentPage() {
               state={checklistState}
               onChange={setChecklistState}
               onComplete={() => setStep("checklist")}
+              onBackToEligibility={handleBackToEligibilityFromQuestionnaire}
             />
           </div>
         )}
