@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useState, Suspense } from "react";
 import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, FileCheck, Phone, ShieldCheck, Zap } from "lucide-react";
 
 const ENVIRONMENTS = [
@@ -108,42 +108,42 @@ function NewAssessmentContent() {
           </div>
         )}
 
-        {/* Cards: larger tap targets + generous row gap; flex-1 centers block in remaining viewport */}
+        {/* Cards: flex-1 centers block in remaining viewport */}
         <div className="flex min-h-0 flex-1 flex-col justify-center py-2 md:py-4">
-          <div className="grid gap-5 sm:gap-6 md:grid-cols-2 md:gap-x-8 md:gap-y-10 lg:gap-y-12">
+          <div className="grid gap-4 md:grid-cols-2 md:gap-x-6 md:gap-y-7 lg:gap-y-8">
             {ENVIRONMENTS.map((env) => {
               const Icon = env.icon;
               const isPreset = presetEnv === env.id;
               return (
                 <Card
                   key={env.id}
-                  className={`group cursor-pointer overflow-hidden rounded-2xl border-2 transition-all duration-200 ${
+                  className={`group cursor-pointer overflow-hidden rounded-xl border-2 transition-all duration-200 ${
                     isPreset
                       ? "border-emerald-400 bg-emerald-50/30 shadow-md shadow-emerald-500/10"
                       : "border-slate-200 bg-white/80 backdrop-blur hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md"
                   }`}
                   onClick={() => handleSelect(env.id)}
                 >
-                  <CardHeader className="flex flex-row items-center gap-4 px-5 py-5 sm:px-6 sm:py-6">
+                  <CardHeader className="flex flex-row items-center gap-3 px-4 py-4 sm:px-5 sm:py-4">
                     <div
-                      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${env.iconBg} ${env.iconColor}`}
+                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${env.iconBg} ${env.iconColor}`}
                     >
-                      <Icon className="h-6 w-6" aria-hidden />
+                      <Icon className="h-5 w-5" aria-hidden />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <CardTitle className="text-lg font-semibold leading-snug text-slate-900">
+                      <CardTitle className="text-base font-semibold leading-snug text-slate-900">
                         {env.title}
                       </CardTitle>
-                      <CardDescription className="mt-1.5 text-sm leading-relaxed text-slate-600">
+                      <CardDescription className="mt-1 text-xs leading-snug text-slate-600 sm:text-sm sm:leading-relaxed">
                         {env.description}
                       </CardDescription>
                     </div>
-                    <div className="flex shrink-0 flex-col items-end justify-center gap-0.5 self-stretch sm:flex-row sm:items-center sm:gap-2">
-                      <span className="text-sm font-semibold text-emerald-600 group-hover:text-emerald-700">
+                    <div className="flex shrink-0 flex-col items-end justify-center gap-0.5 self-stretch sm:flex-row sm:items-center sm:gap-1.5">
+                      <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 sm:text-sm">
                         Continue
                       </span>
                       <ArrowRight
-                        className="h-5 w-5 text-emerald-600 transition-transform group-hover:translate-x-0.5"
+                        className="h-4 w-4 text-emerald-600 transition-transform group-hover:translate-x-0.5"
                         aria-hidden
                       />
                     </div>
