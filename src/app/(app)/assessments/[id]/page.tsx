@@ -265,13 +265,6 @@ export default function AssessmentPage() {
     reopenEligibilityWizard();
   }, [checklistState, reopenEligibilityWizard]);
 
-  /** After reopening eligibility, Back may be disabled — still allow changing POS / e-com / MOTO choice */
-  const handleResetPaymentChannel = useCallback(() => {
-    setWizardPast([]);
-    setWizardState(EMPTY_WIZARD);
-    setDecisionResult(null);
-  }, []);
-
   return (
     <div className="py-16">
       <div className={`container ${step === "report" ? "max-w-4xl" : "max-w-3xl"}`}>
@@ -308,18 +301,6 @@ export default function AssessmentPage() {
               onBack={handleWizardBack}
               canGoBack={wizardPast.length > 0}
             />
-            {wizardPast.length === 0 && wizardState.payment_channel != null && (
-              <p className="text-center text-sm text-slate-500">
-                <button
-                  type="button"
-                  className="font-medium text-emerald-700 underline-offset-2 hover:underline"
-                  onClick={handleResetPaymentChannel}
-                >
-                  Change how I accept payments
-                </button>{" "}
-                <span className="text-slate-400">(e.g. POS vs e-commerce)</span>
-              </p>
-            )}
           </div>
         )}
 
