@@ -152,7 +152,7 @@ export function ComplianceReportScreen({
       result,
       scopeInfo,
       riskLevel,
-      topActions: actionCards.map((a) => a.title),
+      topActionCards: actionCards.slice(0, 5),
       checklistDef: def,
       checklistState,
       completed,

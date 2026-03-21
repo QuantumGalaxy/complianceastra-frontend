@@ -320,10 +320,8 @@ export default function AssessmentPage() {
                 {loadQuestionnaire(result.saq).framework}
               </h1>
               <p className="text-sm text-slate-600 max-w-2xl">
-                Work through each requirement in order. Response choices are set per question (for
-                example <strong>In Place</strong>, <strong>Not Applicable</strong>,{" "}
-                <strong>Action Needed</strong>, or others as shown). Add evidence / notes
-                anytime—they&apos;re kept for your records and export.
+                Answer each requirement and upload evidence or notes if needed. Your responses will
+                be saved for reporting.
               </p>
             </div>
             <JsonQuestionnaire
