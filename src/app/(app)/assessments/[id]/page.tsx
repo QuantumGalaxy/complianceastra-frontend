@@ -322,9 +322,8 @@ export default function AssessmentPage() {
               <p className="text-sm text-slate-600 max-w-2xl">
                 Work through each requirement in order. Response choices are set per question (for
                 example <strong>In Place</strong>, <strong>Not Applicable</strong>,{" "}
-                <strong>Action Needed</strong>, or others as shown). Use{" "}
-                <strong>In Place with CCW</strong> only when that option appears. Add evidence /
-                notes anytime—they&apos;re kept for your records and export.
+                <strong>Action Needed</strong>, or others as shown). Add evidence / notes
+                anytime—they&apos;re kept for your records and export.
               </p>
             </div>
             <JsonQuestionnaire
