@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -32,11 +32,6 @@ function buildMerchantResponseOptions(itemOptions: string[]): { value: Questionn
       (opt.toLowerCase().replace(/\s+/g, "_") as QuestionnaireAnswerValue),
     label: opt,
   }));
-}
-
-function getAssessorOnlyOptions(itemOptions: string[]): string[] {
-  const merchant = new Set(MERCHANT_RESPONSE_LABELS);
-  return itemOptions.map((o) => o.trim()).filter((o) => !merchant.has(o as (typeof MERCHANT_RESPONSE_LABELS)[number]));
 }
 
 type JsonQuestionnaireProps = {
@@ -74,7 +69,6 @@ export function JsonQuestionnaire({
   const total = flat.length;
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [auditorViewOpen, setAuditorViewOpen] = useState(false);
   const current = flat[currentIndex];
   const isFirst = currentIndex === 0;
   const isLast = currentIndex === total - 1;
@@ -140,22 +134,11 @@ export function JsonQuestionnaire({
   const hasAnswer = currentAnswer != null;
   const canProceed = hasAnswer && !ccwRequiredButEmpty;
 
-  useEffect(() => {
-    setAuditorViewOpen(false);
-  }, [currentIndex]);
-
-  useEffect(() => {
-    if (currentAnswer === "in_place_ccw") {
-      setAuditorViewOpen(true);
-    }
-  }, [currentAnswer]);
-
   if (!current) {
     return null;
   }
 
   const merchantOptions = buildMerchantResponseOptions(current.item.options);
-  const assessorOnlyOptionLabels = getAssessorOnlyOptions(current.item.options);
 
   return (
     <div className="space-y-6">
@@ -235,6 +218,24 @@ export function JsonQuestionnaire({
             </div>
           </div>
 
+          {isCcwSelected && (
+            <div className="space-y-2 rounded-lg border border-slate-200 bg-slate-50/80 p-3">
+              <p className="text-xs text-slate-500">{CCW_HELPER_TEXT}</p>
+              <label className="text-sm font-medium text-slate-700">
+                Compensating control description <span className="text-rose-500">*</span>
+              </label>
+              <Textarea
+                value={currentCcw}
+                onChange={(e) => handleCcwChange(e.target.value)}
+                className={`min-h-[80px] text-sm ${ccwRequiredButEmpty ? "border-rose-300" : ""}`}
+                placeholder="Explain how your alternative control meets the requirement..."
+              />
+              {ccwRequiredButEmpty && (
+                <p className="text-xs text-rose-600">Please describe your compensating control before continuing.</p>
+              )}
+            </div>
+          )}
+
           {current.item.allow_note !== false && (
             <div className="space-y-1 pt-1 border-t border-slate-100">
               <label className="text-sm font-medium text-slate-700">Notes / Evidence upload</label>
@@ -245,83 +246,6 @@ export function JsonQuestionnaire({
                 className="min-h-[88px] text-sm"
                 placeholder="Links, file names, ticket IDs, or other evidence…"
               />
-            </div>
-          )}
-
-          {(current.item.requirement_raw?.trim() ||
-            (current.item.expected_testing_raw && current.item.expected_testing_raw.length > 0) ||
-            assessorOnlyOptionLabels.length > 0) && (
-            <div className="pt-2 border-t border-slate-100">
-              <button
-                type="button"
-                onClick={() => setAuditorViewOpen((v) => !v)}
-                className="text-sm font-medium text-emerald-700 hover:text-emerald-800 underline-offset-2 hover:underline"
-              >
-                {auditorViewOpen ? "Hide" : "Show"} advanced / auditor view
-              </button>
-              {auditorViewOpen && (
-                <div className="mt-3 space-y-3 rounded-lg border border-slate-200 bg-slate-50/90 p-3 text-sm text-slate-700">
-                  {assessorOnlyOptionLabels.length > 0 && (
-                    <div className="space-y-2">
-                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                        Additional response options
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {assessorOnlyOptionLabels.map((label) => {
-                          const value =
-                            OPTION_TO_VALUE[label] ??
-                            (label.toLowerCase().replace(/\s+/g, "_") as QuestionnaireAnswerValue);
-                          const selected = currentAnswer === value;
-                          return (
-                            <button
-                              key={label}
-                              type="button"
-                              onClick={() => handleAnswerChange(value)}
-                              className={`rounded-md border px-3 py-2 text-xs font-medium ${
-                                selected
-                                  ? "border-emerald-500 bg-emerald-50"
-                                  : "border-slate-200 bg-white hover:bg-slate-100"
-                              }`}
-                            >
-                              {label}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-                  {current.item.requirement_raw?.trim() && (
-                    <div>
-                      <p className="text-xs font-semibold text-slate-600">Official requirement wording</p>
-                      <p className="mt-1.5 text-xs leading-relaxed text-slate-600">{current.item.requirement_raw}</p>
-                    </div>
-                  )}
-                  {current.item.expected_testing_raw && current.item.expected_testing_raw.length > 0 && (
-                    <div>
-                      <p className="text-xs font-semibold text-slate-600">Expected testing</p>
-                      <ul className="mt-1.5 list-disc space-y-1 pl-4 text-xs leading-relaxed text-slate-600">
-                        {current.item.expected_testing_raw.map((line, i) => (
-                          <li key={i}>{line}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {isCcwSelected && (
-                    <div className="space-y-1 border-t border-slate-200 pt-3">
-                      <p className="text-xs text-slate-500">{CCW_HELPER_TEXT}</p>
-                      <label className="text-xs font-medium text-slate-600">
-                        Compensating control description <span className="text-rose-500">*</span>
-                      </label>
-                      <Textarea
-                        value={currentCcw}
-                        onChange={(e) => handleCcwChange(e.target.value)}
-                        className={`min-h-[80px] text-sm ${ccwRequiredButEmpty ? "border-rose-300" : ""}`}
-                        placeholder="Explain how your alternative control meets the requirement..."
-                      />
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
           )}
         </CardContent>
