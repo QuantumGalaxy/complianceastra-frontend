@@ -7,7 +7,7 @@ import type { Questionnaire, QuestionnaireItem, QuestionnaireSection } from "./q
 import type { ChecklistDefinition, SaqType } from "@/components/assessment/checklist-data";
 import saqBJson from "@/data/saq_b_production_ready.json";
 import saqACorrectedJson from "@/data/saq_a_production_ready_corrected.json";
-import saqDMerchantFriendlyPrdJson from "@/data/saq_d_merchant_friendly_prd.json";
+import saqDOriginalRequirementsFullJson from "@/data/saq_d_original_requirements_full.json";
 
 export type SaqQuestionnaireType = "A" | "B" | "D_MERCHANT";
 
@@ -180,21 +180,6 @@ function loadSaqA(): Questionnaire {
   return questionnaire;
 }
 
-/** Source shape for `saq_d_merchant_friendly_prd.json` */
-type SaqDMerchantPrdSection = {
-  id: string;
-  requirement: string;
-  title: string;
-  merchant_friendly_summary: string;
-  questions: string[];
-};
-
-type SaqDMerchantPrdFile = {
-  document: { name: string; notes?: string[] };
-  saq_type: string;
-  sections: SaqDMerchantPrdSection[];
-};
-
 const SAQ_D_MERCHANT_RESPONSE_OPTIONS: string[] = [
   "In Place",
   "In Place with CCW",
@@ -203,46 +188,108 @@ const SAQ_D_MERCHANT_RESPONSE_OPTIONS: string[] = [
   "Not in Place",
 ];
 
-/**
- * Normalizes SAQ D merchant-friendly PRD JSON into the shared Questionnaire schema.
- * Section order follows the JSON array (Requirements 1–12).
- */
-export function normalizeSaqDMerchantFriendly(raw: SaqDMerchantPrdFile): Questionnaire {
-  if (!raw?.sections?.length) {
-    throw new Error("SAQ D merchant-friendly: JSON must contain sections.");
+/** One row from `saq_d_original_requirements_full.json` */
+type SaqDOriginalItem = {
+  id: string;
+  section_title: string;
+  requirement_title: string;
+  group_id: string;
+  group_title: string;
+  source_page?: number;
+  requirement_raw: string;
+  expected_testing_raw?: string[];
+  applicability_notes?: string[];
+};
+
+type SaqDOriginalFile = {
+  document: { name: string; item_count?: number };
+  items: SaqDOriginalItem[];
+};
+
+function slugSaqDSectionId(sectionTitle: string, sectionOrder: number): string {
+  const slug = sectionTitle
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 56);
+  return `${sectionOrder}-${slug || "section"}`;
+}
+
+function buildSaqDOriginalHelpText(row: SaqDOriginalItem): string | undefined {
+  const parts: string[] = [];
+  if (row.group_id && row.group_title) {
+    parts.push(`Subgroup ${row.group_id}: ${row.group_title}`);
   }
-  const sections: QuestionnaireSection[] = raw.sections.map((sec, idx) => {
+  if (row.expected_testing_raw?.length) {
+    parts.push(`Expected testing: ${row.expected_testing_raw.join(" ")}`);
+  }
+  if (row.applicability_notes?.length) {
+    parts.push(`Applicability: ${row.applicability_notes.join(" ")}`);
+  }
+  if (row.source_page != null) {
+    parts.push(`Approx. document page: ${row.source_page}`);
+  }
+  return parts.length ? parts.join("\n\n") : undefined;
+}
+
+/**
+ * Normalizes `saq_d_original_requirements_full.json` (flat `items`) into the shared
+ * {@link Questionnaire} schema. Sections follow PCI DSS high-level groupings in file order.
+ */
+export function normalizeSaqDOriginalRequirements(raw: SaqDOriginalFile): Questionnaire {
+  if (!raw?.items?.length) {
+    throw new Error("SAQ D original requirements: JSON must contain a non-empty items array.");
+  }
+
+  const sectionOrder: string[] = [];
+  const bySection = new Map<string, SaqDOriginalItem[]>();
+
+  for (const row of raw.items) {
+    const title = row.section_title;
+    if (!title) continue;
+    if (!bySection.has(title)) {
+      sectionOrder.push(title);
+      bySection.set(title, []);
+    }
+    bySection.get(title)!.push(row);
+  }
+
+  const sections: QuestionnaireSection[] = sectionOrder.map((sectionTitle, idx) => {
     const section_order = idx + 1;
-    const items: QuestionnaireItem[] = sec.questions.map((q, i) => ({
-      id: `${sec.id}_q${i}`,
-      section_id: sec.id,
-      requirement_raw: sec.requirement,
-      question: q,
-      help_text: i === 0 ? sec.merchant_friendly_summary : undefined,
+    const section_id = slugSaqDSectionId(sectionTitle, section_order);
+    const rows = bySection.get(sectionTitle)!;
+
+    const items: QuestionnaireItem[] = rows.map((row, i) => ({
+      id: row.id,
+      section_id,
+      requirement_raw: row.requirement_title,
+      question: row.requirement_raw,
+      help_text: buildSaqDOriginalHelpText(row),
       options: [...SAQ_D_MERCHANT_RESPONSE_OPTIONS],
       display_order: i + 1,
       show_requirement_id: true,
       allow_note: true,
+      category: row.group_title,
     }));
+
     return {
-      section_id: sec.id,
+      section_id,
       section_order,
-      section_title: sec.title,
-      section_summary: sec.merchant_friendly_summary,
+      section_title: sectionTitle,
       items,
     };
   });
 
   return {
-    framework: raw.document?.name ?? "PCI DSS SAQ D for Merchants",
-    source: "saq_d_merchant_friendly_prd.json (merchant-friendly PRD)",
+    framework: raw.document?.name ?? "PCI DSS v4.0.1 SAQ D for Merchants",
+    source: "saq_d_original_requirements_full.json (original PCI DSS requirement text)",
     sections,
   };
 }
 
 function loadSaqDMerchant(): Questionnaire {
-  const raw = saqDMerchantFriendlyPrdJson as SaqDMerchantPrdFile;
-  return normalizeSaqDMerchantFriendly(raw);
+  const raw = saqDOriginalRequirementsFullJson as SaqDOriginalFile;
+  return normalizeSaqDOriginalRequirements(raw);
 }
 
 const QUESTIONNAIRE_MAP: Record<SaqQuestionnaireType, () => Questionnaire> = {
@@ -281,9 +328,11 @@ export function questionnaireToChecklistDefinition(
           id: item.id,
           label: item.question,
           pciRef:
-            saq === "D_MERCHANT" && item.requirement_raw
-              ? `${item.requirement_raw} · ${item.id}`
-              : `PCI Ref: ${item.id}`,
+            saq === "D_MERCHANT"
+              ? `PCI DSS ${item.id}`
+              : item.requirement_raw
+                ? `${item.requirement_raw} · ${item.id}`
+                : `PCI Ref: ${item.id}`,
           type: "compliance_checkpoint" as const,
           helpText: item.help_text,
         })),

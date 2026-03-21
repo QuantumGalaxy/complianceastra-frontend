@@ -426,7 +426,7 @@ export const CHECKLISTS: Record<SaqType, ChecklistDefinition> = {
     saq: "D_MERCHANT",
     title: "SAQ D for Merchants",
     estimateLabel: "Merchant-friendly checklist (JSON-driven)",
-    /** Questions load from `saq_d_merchant_friendly_prd.json` — no static items here. */
+    /** Questions load from `saq_d_original_requirements_full.json` — no static items here. */
     sections: [],
   },
   D_SERVICE_PROVIDER: {

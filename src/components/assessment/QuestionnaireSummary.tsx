@@ -21,7 +21,9 @@ function countItems(questionnaire: Questionnaire): number {
 
 export function QuestionnaireSummary({ questionnaire, state }: QuestionnaireSummaryProps) {
   const total = useMemo(() => countItems(questionnaire), [questionnaire]);
-  const isSaqDMerchantPrd = questionnaire.source?.includes("saq_d_merchant_friendly") ?? false;
+  /** SAQ D JSON questionnaires use the 5-option model (no legacy “Action Needed” from SAQ A/B). */
+  const isSaqDFullQuestionnaireJson =
+    questionnaire.source?.includes("saq_d_original_requirements_full") ?? false;
 
   const {
     completed,
@@ -145,7 +147,7 @@ export function QuestionnaireSummary({ questionnaire, state }: QuestionnaireSumm
             <p className="mt-0.5 text-xs text-rose-800">Gap to remediate</p>
           </CardContent>
         </Card>
-        {!isSaqDMerchantPrd && (
+        {!isSaqDFullQuestionnaireJson && (
           <Card className="border-amber-200 bg-amber-50/40">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-sm font-medium text-amber-800">
