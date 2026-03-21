@@ -2,6 +2,11 @@
  * PCI SAQ eligibility decision tree — config-driven questions and copy.
  * Update rules here when PCI guidance or product copy changes.
  */
+/**
+ * PCI SAQ eligibility decision tree — config-driven questions and copy.
+ * Update rules here when PCI guidance or product copy changes.
+ */
+
 import type { SaqType } from "@/components/assessment/checklist-data";
 
 export type PaymentChannel =
@@ -26,8 +31,13 @@ export type WizardStateV2 = {
 
   // MOTO
   moto_stores_chd?: "yes" | "no" | "unsure";
-  moto_fully_outsourced?: "yes" | "no";
-  moto_how_process?: "virtual_terminal" | "pos_application" | "other";
+  moto_how_process?:
+    | "outsourced"
+    | "imprint_dial"
+    | "pts_ip"
+    | "pos_application"
+    | "virtual_terminal"
+    | "other";
 
   // Ecommerce
   ecommerce_payment_page?:
@@ -94,7 +104,8 @@ export const SERVICE_PROVIDER_QUESTION: SaqQuestionConfig = {
   id: "service_provider_handles_chd_for_others",
   channel: "service_provider",
   badge: "Service Provider",
-  title: "Do you provide payment-related services that store, process, or transmit cardholder data for other businesses?",
+  title:
+    "Do you provide payment-related services that store, process, or transmit cardholder data for other businesses?",
   description:
     "Examples include payment processing, managed payment platforms, or services that handle merchants’ cardholder data.",
   options: [
@@ -117,7 +128,8 @@ export const CARD_PRESENT_STORAGE_QUESTION: SaqQuestionConfig = {
   id: "card_present_stores_chd",
   channel: "card_present",
   badge: "Card-present",
-  title: "Do your systems store cardholder data after the transaction is completed?",
+  title:
+    "Do your systems store cardholder data after the transaction is completed?",
   description:
     "This includes card numbers, expiry dates, or similar payment data kept in systems, files, databases, recordings, or paper records.",
   helpText:
@@ -179,7 +191,8 @@ export const MOTO_STORAGE_QUESTION: SaqQuestionConfig = {
   id: "moto_stores_chd",
   channel: "moto",
   badge: "MOTO",
-  title: "Do your systems store cardholder data after the transaction is completed?",
+  title:
+    "Do your systems store cardholder data after the transaction is completed?",
   description:
     "This includes paper records, files, recordings, databases, or any other retained payment data.",
   options: [
@@ -197,29 +210,6 @@ export const MOTO_STORAGE_QUESTION: SaqQuestionConfig = {
       value: "unsure",
       label: "Not sure",
       description: "Use a conservative path until this is confirmed.",
-    },
-  ],
-};
-
-export const MOTO_OUTSOURCED_QUESTION: SaqQuestionConfig = {
-  id: "moto_fully_outsourced",
-  channel: "moto",
-  badge: "MOTO",
-  title: "Are payment functions completely outsourced to a PCI DSS compliant provider?",
-  description:
-    "For example, the provider handles the payment interaction and your systems do not electronically store, process, or transmit cardholder data.",
-  options: [
-    {
-      value: "yes",
-      label: "Yes",
-      description:
-        "The compliant provider handles payment processing; we do not touch card data electronically.",
-    },
-    {
-      value: "no",
-      label: "No",
-      description:
-        "We still use a terminal, application, or browser-based entry process.",
     },
   ],
 };
@@ -314,7 +304,6 @@ export const QUESTIONS_BY_ID: Record<string, SaqQuestionConfig> = {
   card_present_stores_chd: CARD_PRESENT_STORAGE_QUESTION,
   card_present_how: CARD_PRESENT_HOW_QUESTION,
   moto_stores_chd: MOTO_STORAGE_QUESTION,
-  moto_fully_outsourced: MOTO_OUTSOURCED_QUESTION,
   moto_how_process: MOTO_HOW_QUESTION,
   ecommerce_payment_page: ECOMMERCE_PAYMENT_PAGE_QUESTION,
 };
