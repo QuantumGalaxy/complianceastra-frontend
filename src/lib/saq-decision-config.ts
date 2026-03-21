@@ -228,10 +228,34 @@ export const MOTO_HOW_QUESTION: SaqQuestionConfig = {
   id: "moto_how_process",
   channel: "moto",
   badge: "MOTO",
-  title: "How do staff enter payment details?",
+  title: "How are MOTO payments processed?",
   description:
-    "Choose the method used when payment is not fully outsourced.",
+    "Choose the method used to process mail or telephone order payments.",
   options: [
+    {
+      value: "outsourced",
+      label: "Fully outsourced to a PCI DSS compliant provider",
+      description:
+        "Payment provider handles card data and processing; your systems do not process card data electronically.",
+    },
+    {
+      value: "imprint_dial",
+      label: "Imprint machine or dial-out terminal (no internet)",
+      description:
+        "Manual imprint or phone-line terminal with no internet connection.",
+    },
+    {
+      value: "pts_ip",
+      label: "Standalone PTS-approved payment terminal with internet",
+      description:
+        "Standalone payment terminal using Ethernet/Wi-Fi.",
+    },
+    {
+      value: "pos_application",
+      label: "POS system or payment application",
+      description:
+        "Payment application or POS software used to process the transaction.",
+    },
     {
       value: "virtual_terminal",
       label: "Browser-based virtual terminal",
@@ -239,16 +263,10 @@ export const MOTO_HOW_QUESTION: SaqQuestionConfig = {
         "Staff enter card details into a web-based payment terminal.",
     },
     {
-      value: "pos_application",
-      label: "POS system or payment application",
-      description:
-        "A payment application or POS software is used to process the transaction.",
-    },
-    {
       value: "other",
       label: "Other / mixed / unsure",
       description:
-        "Multiple methods, unclear flow, or something outside these options.",
+        "Multiple methods or unclear flow.",
     },
   ],
 };
