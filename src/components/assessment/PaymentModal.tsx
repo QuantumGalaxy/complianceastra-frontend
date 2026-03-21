@@ -3,13 +3,16 @@
 import * as React from "react";
 import { Dialog } from "@base-ui/react/dialog";
 import { Button } from "@/components/ui/button";
-import { XIcon, Lock, ShieldCheck } from "lucide-react";
+import { XIcon, Lock, ShieldCheck, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type PaymentModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSuccess: () => void;
+  /** Called when user confirms — runs sync + Stripe redirect or dev token login */
+  onConfirmPayment: () => Promise<void>;
+  isProcessing: boolean;
+  errorMessage?: string | null;
 };
 
 const PRODUCT_NAME = "PCI Compliance Plan";
@@ -19,17 +22,12 @@ const PRICE_LABEL = "One-time";
 export function PaymentModal({
   open,
   onOpenChange,
-  onSuccess,
+  onConfirmPayment,
+  isProcessing,
+  errorMessage,
 }: PaymentModalProps) {
-  const [simulating, setSimulating] = React.useState(false);
-
-  const handleSimulateSuccess = () => {
-    setSimulating(true);
-    setTimeout(() => {
-      setSimulating(false);
-      onSuccess();
-      onOpenChange(false);
-    }, 800);
+  const handlePay = async () => {
+    await onConfirmPayment();
   };
 
   return (
@@ -53,7 +51,7 @@ export function PaymentModal({
               <h2 className="text-lg font-semibold text-slate-900">Checkout</h2>
               <Dialog.Close
                 render={
-                  <Button variant="ghost" size="icon-sm" aria-label="Close" />
+                  <Button variant="ghost" size="icon-sm" aria-label="Close" disabled={isProcessing} />
                 }
               >
                 <XIcon className="h-4 w-4" />
@@ -68,7 +66,8 @@ export function PaymentModal({
                 <div className="min-w-0 flex-1">
                   <p className="font-semibold text-slate-900">{PRODUCT_NAME}</p>
                   <p className="text-sm text-slate-600 mt-0.5">
-                    Full SAQ checklist, progress tracking, evidence notes, and PDF export. Based on PCI DSS v4.0.1.
+                    Full SAQ checklist, progress tracking, evidence notes, and PDF export. Based on PCI DSS
+                    v4.0.1.
                   </p>
                 </div>
               </div>
@@ -86,24 +85,37 @@ export function PaymentModal({
                 Secure payment powered by Stripe
               </p>
 
-              <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
-                <strong>Demo:</strong> Use the button below to simulate a successful payment and unlock your compliance report.
-              </div>
+              {errorMessage && (
+                <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+                  {errorMessage}
+                </div>
+              )}
 
               <div className="flex gap-3 pt-1">
                 <Button
                   variant="outline"
                   className="flex-1"
                   onClick={() => onOpenChange(false)}
+                  disabled={isProcessing}
                 >
                   Cancel
                 </Button>
                 <Button
                   className="flex-1 bg-emerald-600 hover:bg-emerald-700"
-                  onClick={handleSimulateSuccess}
-                  disabled={simulating}
+                  onClick={() => void handlePay()}
+                  disabled={isProcessing}
                 >
-                  {simulating ? "Processing…" : `Pay ${PRICE}`}
+                  {isProcessing ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
+                      Processing…
+                    </>
+                  ) : (
+                    <>
+                      <Lock className="mr-2 h-4 w-4" aria-hidden />
+                      Pay {PRICE}
+                    </>
+                  )}
                 </Button>
               </div>
             </div>

@@ -21,6 +21,14 @@ export async function api<T>(
 }
 
 export const authApi = {
+  postCheckout: (sessionId: string) =>
+    api<{ access_token: string; token_type: string; user: { id: number; email: string; full_name: string | null; is_active: boolean } }>(
+      "/api/auth/post-checkout",
+      {
+        method: "POST",
+        body: JSON.stringify({ session_id: sessionId }),
+      },
+    ),
   register: (email: string, password: string, fullName?: string) =>
     api<{ access_token: string; user: { id: number; email: string; full_name: string | null } }>(
       "/api/auth/register",
@@ -86,6 +94,17 @@ export const assessmentsApi = {
       body: JSON.stringify({ assessment_id: assessmentId, token: anonymousId }),
       token,
     }),
+  /** Sync SAQ wizard state to backend (guest) before checkout */
+  saqSync: (body: {
+    client_session_id: string;
+    guest_email?: string | null;
+    environment_type: string;
+    scope_result: ScopeResult;
+  }) =>
+    api<{ assessment_id: number }>("/api/assessments/saq-sync", {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
 };
 
 export interface ScopeResult {
@@ -117,6 +136,15 @@ export interface ScopeResult {
 
 /** Phase 8: Reports and checkout */
 export const reportsApi = {
+  /** Guest checkout (no auth) — call assessmentsApi.saqSync first */
+  checkoutGuest: (body: { assessment_id: number; client_session_id: string; email: string }) =>
+    api<{ checkout_url: string; session_id: string; access_token?: string | null }>(
+      "/api/reports/checkout-guest",
+      {
+        method: "POST",
+        body: JSON.stringify(body),
+      },
+    ),
   checkout: (assessmentId: number, token: string) =>
     api<{ checkout_url: string; session_id: string }>("/api/reports/checkout", {
       method: "POST",

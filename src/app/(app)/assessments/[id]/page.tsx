@@ -1,8 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { assessmentsApi, reportsApi } from "@/lib/api";
+import { useAuth } from "@/lib/auth-context";
+import {
+  buildScopeResultForSync,
+  mapPaymentChannelToEnvironmentType,
+} from "@/lib/buildScopeResultForSync";
 import { ProgressHeader } from "@/components/assessment/ProgressHeader";
 import { ResultSummary } from "@/components/assessment/ResultSummary";
 import { PaywallSection } from "@/components/assessment/PaywallSection";
@@ -29,6 +35,7 @@ type WizardStep = "scope" | "eligibility" | "questionnaire" | "checklist" | "rep
 const STORAGE_KEY_PREFIX = "complianceastra_saq_wizard_v2_";
 const FLOW_STEP_KEY_PREFIX = "complianceastra_saq_flow_";
 const UNLOCKED_KEY_PREFIX = "complianceastra_unlocked_";
+const PAY_EMAIL_KEY_PREFIX = "complianceastra_pay_email_";
 
 const EMPTY_WIZARD: WizardStateV2 = {
   payment_channel: null,
@@ -116,6 +123,8 @@ function saveWizardState(id: string, state: WizardStateV2) {
 export default function AssessmentPage() {
   const params = useParams();
   const idParam = String(params.id);
+  const router = useRouter();
+  const { loginWithToken } = useAuth();
 
   const [step, setStep] = useState<WizardStep>(() => loadFlowStep(idParam));
   const [wizardState, setWizardState] = useState<WizardStateV2>(() => {
@@ -131,6 +140,25 @@ export default function AssessmentPage() {
   const [unlocked, setUnlocked] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      const s = window.localStorage.getItem(PAY_EMAIL_KEY_PREFIX + idParam);
+      if (s) setUserEmail(s);
+    } catch {
+      // ignore
+    }
+  }, [idParam]);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(PAY_EMAIL_KEY_PREFIX + idParam, userEmail);
+    } catch {
+      // ignore
+    }
+  }, [idParam, userEmail]);
 
   useEffect(() => {
     const wasUnlocked = loadUnlocked(idParam);
@@ -175,12 +203,6 @@ export default function AssessmentPage() {
     }
   }, [idParam, step, wizardState.saq]);
 
-  const handlePaymentSuccess = () => {
-    setUnlocked(true);
-    saveUnlocked(idParam, true);
-    setStep("report");
-  };
-
   const result = useMemo(() => {
     if (!wizardState.saq || !decisionResult) return null;
     const checklistDef = CHECKLISTS[wizardState.saq];
@@ -193,6 +215,62 @@ export default function AssessmentPage() {
       riskLevel: decisionResult.riskLevel,
     };
   }, [wizardState.saq, decisionResult]);
+
+  const handleConfirmPayment = useCallback(async () => {
+    if (!result || !decisionResult || !wizardState.saq) {
+      setCheckoutError("Complete the assessment first.");
+      return;
+    }
+    const trimmed = userEmail.trim();
+    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setCheckoutError("Enter a valid email address.");
+      return;
+    }
+    setCheckoutError(null);
+    setCheckoutLoading(true);
+    try {
+      const scope_result = buildScopeResultForSync({
+        saq: wizardState.saq,
+        decision: decisionResult,
+        paymentChannel: wizardState.payment_channel,
+      });
+      const environment_type = mapPaymentChannelToEnvironmentType(wizardState.payment_channel);
+      const { assessment_id } = await assessmentsApi.saqSync({
+        client_session_id: idParam,
+        guest_email: trimmed,
+        environment_type,
+        scope_result,
+      });
+      const co = await reportsApi.checkoutGuest({
+        assessment_id,
+        client_session_id: idParam,
+        email: trimmed,
+      });
+      if (co.access_token) {
+        await loginWithToken(co.access_token);
+        setPaymentModalOpen(false);
+        setUnlocked(true);
+        saveUnlocked(idParam, true);
+        router.push("/dashboard?report=success");
+        return;
+      }
+      window.location.href = co.checkout_url;
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Checkout failed";
+      setCheckoutError(msg);
+    } finally {
+      setCheckoutLoading(false);
+    }
+  }, [
+    result,
+    decisionResult,
+    wizardState.saq,
+    wizardState.payment_channel,
+    userEmail,
+    idParam,
+    loginWithToken,
+    router,
+  ]);
 
   const handleWizardAnswer = useCallback(
     (questionId: string, value: string) => {
@@ -358,7 +436,9 @@ export default function AssessmentPage() {
             <PaymentModal
               open={paymentModalOpen}
               onOpenChange={setPaymentModalOpen}
-              onSuccess={handlePaymentSuccess}
+              onConfirmPayment={handleConfirmPayment}
+              isProcessing={checkoutLoading}
+              errorMessage={checkoutError}
             />
           </div>
         )}

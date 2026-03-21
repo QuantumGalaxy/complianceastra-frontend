@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, useRef } from "react";
+import { authApi } from "@/lib/api";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,8 +13,10 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 function DashboardContent() {
   const searchParams = useSearchParams();
   const reportSuccess = searchParams.get("report") === "success";
-  const { user, token, isLoading, logout } = useAuth();
+  const stripeSessionId = searchParams.get("session_id");
+  const { user, token, isLoading, logout, loginWithToken } = useAuth();
   const router = useRouter();
+  const [postCheckoutError, setPostCheckoutError] = useState<string | null>(null);
   const [assessments, setAssessments] = useState<
     Array<{ id: number; environment_type: string; status: string; created_at: string }>
   >([]);
@@ -21,9 +24,26 @@ function DashboardContent() {
     Array<{ id: number; assessment_id: number; status: string; created_at: string }>
   >([]);
 
+  const postCheckoutDone = useRef(false);
+
+  useEffect(() => {
+    if (!stripeSessionId || postCheckoutDone.current || isLoading) return;
+    postCheckoutDone.current = true;
+    authApi
+      .postCheckout(stripeSessionId)
+      .then(async (res) => {
+        await loginWithToken(res.access_token);
+        router.replace("/dashboard?report=success");
+      })
+      .catch((e: Error) => {
+        postCheckoutDone.current = false;
+        setPostCheckoutError(e.message || "Could not complete sign-in after payment.");
+      });
+  }, [stripeSessionId, isLoading, loginWithToken, router]);
+
   useEffect(() => {
     const authToken = token || (typeof window !== "undefined" ? localStorage.getItem("complianceastra_token") : null);
-    if (!isLoading && !authToken) {
+    if (!isLoading && !authToken && !stripeSessionId) {
       router.push("/login");
       return;
     }
@@ -41,7 +61,7 @@ function DashboardContent() {
         .then((d) => setReports(d.reports || []))
         .catch(() => {});
     }
-  }, [token, isLoading, router]);
+  }, [token, isLoading, router, stripeSessionId]);
 
   if (isLoading) {
     return (
@@ -59,9 +79,14 @@ function DashboardContent() {
   return (
     <div className="py-16">
       <div className="container">
+        {postCheckoutError && (
+          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 text-red-800 text-sm">
+            {postCheckoutError}
+          </div>
+        )}
         {reportSuccess && (
           <div className="mb-6 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-800 text-sm">
-            Payment successful! Your report is being generated. Refresh in a moment to download.
+            Payment successful! Your report is ready — download from the list below.
           </div>
         )}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">

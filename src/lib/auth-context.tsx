@@ -9,6 +9,8 @@ const AuthContext = createContext<{
   user: User;
   token: string | null;
   login: (email: string, password: string) => Promise<void>;
+  /** Set session after Stripe post-checkout (no password). */
+  loginWithToken: (accessToken: string) => Promise<void>;
   register: (email: string, password: string, fullName?: string) => Promise<void>;
   logout: () => void;
   isLoading: boolean;
@@ -49,6 +51,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(res.user);
   };
 
+  const loginWithToken = async (accessToken: string) => {
+    localStorage.setItem(TOKEN_KEY, accessToken);
+    setToken(accessToken);
+    await loadUser(accessToken);
+  };
+
   const register = async (email: string, password: string, fullName?: string) => {
     const res = await authApi.register(email, password, fullName);
     localStorage.setItem(TOKEN_KEY, res.access_token);
@@ -63,7 +71,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, register, logout, isLoading }}>
+    <AuthContext.Provider value={{ user, token, login, loginWithToken, register, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
