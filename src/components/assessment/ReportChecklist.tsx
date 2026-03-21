@@ -28,8 +28,10 @@ const ANSWER_OPTIONS: {
 }[] = [
   { value: "in_place", label: "In Place", className: "bg-emerald-100 text-emerald-800 border-emerald-300 hover:bg-emerald-200" },
   { value: "in_place_ccw", label: "In Place with CCW", className: "bg-emerald-100 text-emerald-800 border-emerald-300 hover:bg-emerald-200" },
-  { value: "action_needed", label: "Action Needed", className: "bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-200" },
   { value: "not_applicable", label: "Not Applicable", className: "bg-slate-100 text-slate-600 border-slate-300 hover:bg-slate-200" },
+  { value: "not_tested", label: "Not Tested", className: "bg-violet-100 text-violet-900 border-violet-300 hover:bg-violet-200" },
+  { value: "not_in_place", label: "Not in Place", className: "bg-rose-100 text-rose-900 border-rose-300 hover:bg-rose-200" },
+  { value: "action_needed", label: "Action Needed", className: "bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-200" },
 ];
 
 export function ReportChecklist({

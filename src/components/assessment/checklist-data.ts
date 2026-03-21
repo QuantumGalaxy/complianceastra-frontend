@@ -4,6 +4,8 @@ export type ChecklistAnswer =
   | "in_place"
   | "in_place_ccw"
   | "not_applicable"
+  | "not_tested"
+  | "not_in_place"
   | "action_needed"
   | null;
 
@@ -422,36 +424,10 @@ export const CHECKLISTS: Record<SaqType, ChecklistDefinition> = {
   },
   D_MERCHANT: {
     saq: "D_MERCHANT",
-    title: "SAQ D – Merchants",
-    estimateLabel: "Varies – typically 100+ checkpoints",
-    sections: [
-      {
-        id: "d-1-12",
-        title: "Full SAQ D coverage",
-        description:
-          "This checklist represents a starting point. SAQ D covers all PCI DSS requirements, so expect to expand this list using your official SAQ D document.",
-        items: [
-          {
-            id: "d-1-1",
-            label: "Have you completed or planned a detailed network and data-flow diagram for all cardholder data flows?",
-            pciRef: "PCI Ref: SAQ D Req 1.1.2, 1.1.3",
-            type: "scope_question",
-          },
-          {
-            id: "d-6-1",
-            label: "Do you have a secure software development life cycle (SDLC) that includes security testing?",
-            pciRef: "PCI Ref: SAQ D Req 6.1.1",
-            type: "action_item",
-          },
-          {
-            id: "d-12-1",
-            label: "Is there an assigned PCI owner or coordinator responsible for tracking progress against the full SAQ D?",
-            pciRef: "PCI Ref: SAQ D Req 12.4",
-            type: "compliance_checkpoint",
-          },
-        ],
-      },
-    ],
+    title: "SAQ D for Merchants",
+    estimateLabel: "Merchant-friendly checklist (JSON-driven)",
+    /** Questions load from `saq_d_merchant_friendly_prd.json` — no static items here. */
+    sections: [],
   },
   D_SERVICE_PROVIDER: {
     saq: "D_SERVICE_PROVIDER",

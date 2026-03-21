@@ -326,9 +326,21 @@ export default function AssessmentPage() {
                 {loadQuestionnaire(result.saq).framework}
               </h1>
               <p className="text-sm text-slate-600 max-w-2xl">
-                Answer each requirement below. Use <strong>In Place</strong> when the control is
-                implemented, <strong>Not Applicable</strong> when it does not apply to your
-                environment, or <strong>Action Needed</strong> when work remains.
+                {result.saq === "D_MERCHANT" ? (
+                  <>
+                    Answer each checkpoint in merchant-friendly language. Choose{" "}
+                    <strong>In Place</strong>, <strong>In Place with CCW</strong>,{" "}
+                    <strong>Not Applicable</strong>, <strong>Not Tested</strong>, or{" "}
+                    <strong>Not in Place</strong>. Add evidence notes anytime—they&apos;re included
+                    in exports for your records.
+                  </>
+                ) : (
+                  <>
+                    Answer each requirement below. Use <strong>In Place</strong> when the control is
+                    implemented, <strong>Not Applicable</strong> when it does not apply to your
+                    environment, or <strong>Action Needed</strong> when work remains.
+                  </>
+                )}
               </p>
             </div>
             <JsonQuestionnaire

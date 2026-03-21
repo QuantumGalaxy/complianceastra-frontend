@@ -5,6 +5,8 @@
 
 export type QuestionnaireItem = {
   id: string;
+  /** Parent section id from source JSON (e.g. req_1) — for export/reporting */
+  section_id?: string;
   requirement_raw: string;
   question: string;
   help_text?: string;
@@ -24,6 +26,8 @@ export type QuestionnaireSection = {
   section_id: string;
   section_order: number;
   section_title: string;
+  /** Section-level merchant summary (e.g. SAQ D PRD) */
+  section_summary?: string;
   category?: string;
   items: QuestionnaireItem[];
 };
@@ -39,6 +43,9 @@ export type QuestionnaireAnswerValue =
   | "in_place"
   | "in_place_ccw"
   | "not_applicable"
+  | "not_tested"
+  | "not_in_place"
+  /** Legacy SAQ A/B option — keep for existing assessments */
   | "action_needed";
 
 /** Stored answer for a single requirement */
@@ -66,6 +73,8 @@ export const OPTION_TO_VALUE: Record<string, QuestionnaireAnswerValue> = {
   "In Place": "in_place",
   "In Place with CCW": "in_place_ccw",
   "Not Applicable": "not_applicable",
+  "Not Tested": "not_tested",
+  "Not in Place": "not_in_place",
   "Action Needed": "action_needed",
 };
 

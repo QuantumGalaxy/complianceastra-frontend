@@ -188,9 +188,13 @@ export function generateComplianceReportPdf(input: ReportInput): void {
             ? "In Place with CCW"
             : answer === "not_applicable"
               ? "Not Applicable"
-              : answer === "action_needed"
-                ? "Action Needed"
-                : "—";
+              : answer === "not_tested"
+                ? "Not Tested"
+                : answer === "not_in_place"
+                  ? "Not in Place"
+                  : answer === "action_needed"
+                    ? "Action Needed"
+                    : "—";
       const notes = state?.notes?.trim() ? state.notes : "";
       const ccwExplanation = state?.ccw_explanation?.trim();
 

@@ -7,8 +7,9 @@ import type { Questionnaire, QuestionnaireItem, QuestionnaireSection } from "./q
 import type { ChecklistDefinition, SaqType } from "@/components/assessment/checklist-data";
 import saqBJson from "@/data/saq_b_production_ready.json";
 import saqACorrectedJson from "@/data/saq_a_production_ready_corrected.json";
+import saqDMerchantFriendlyPrdJson from "@/data/saq_d_merchant_friendly_prd.json";
 
-export type SaqQuestionnaireType = "A" | "B"; // Future: "C" | "D" | ...
+export type SaqQuestionnaireType = "A" | "B" | "D_MERCHANT";
 
 /** Flat row format from saq_a_production_ready_corrected.json */
 type SaqACorrectedRow = {
@@ -179,9 +180,75 @@ function loadSaqA(): Questionnaire {
   return questionnaire;
 }
 
+/** Source shape for `saq_d_merchant_friendly_prd.json` */
+type SaqDMerchantPrdSection = {
+  id: string;
+  requirement: string;
+  title: string;
+  merchant_friendly_summary: string;
+  questions: string[];
+};
+
+type SaqDMerchantPrdFile = {
+  document: { name: string; notes?: string[] };
+  saq_type: string;
+  sections: SaqDMerchantPrdSection[];
+};
+
+const SAQ_D_MERCHANT_RESPONSE_OPTIONS: string[] = [
+  "In Place",
+  "In Place with CCW",
+  "Not Applicable",
+  "Not Tested",
+  "Not in Place",
+];
+
+/**
+ * Normalizes SAQ D merchant-friendly PRD JSON into the shared Questionnaire schema.
+ * Section order follows the JSON array (Requirements 1–12).
+ */
+export function normalizeSaqDMerchantFriendly(raw: SaqDMerchantPrdFile): Questionnaire {
+  if (!raw?.sections?.length) {
+    throw new Error("SAQ D merchant-friendly: JSON must contain sections.");
+  }
+  const sections: QuestionnaireSection[] = raw.sections.map((sec, idx) => {
+    const section_order = idx + 1;
+    const items: QuestionnaireItem[] = sec.questions.map((q, i) => ({
+      id: `${sec.id}_q${i}`,
+      section_id: sec.id,
+      requirement_raw: sec.requirement,
+      question: q,
+      help_text: i === 0 ? sec.merchant_friendly_summary : undefined,
+      options: [...SAQ_D_MERCHANT_RESPONSE_OPTIONS],
+      display_order: i + 1,
+      show_requirement_id: true,
+      allow_note: true,
+    }));
+    return {
+      section_id: sec.id,
+      section_order,
+      section_title: sec.title,
+      section_summary: sec.merchant_friendly_summary,
+      items,
+    };
+  });
+
+  return {
+    framework: raw.document?.name ?? "PCI DSS SAQ D for Merchants",
+    source: "saq_d_merchant_friendly_prd.json (merchant-friendly PRD)",
+    sections,
+  };
+}
+
+function loadSaqDMerchant(): Questionnaire {
+  const raw = saqDMerchantFriendlyPrdJson as SaqDMerchantPrdFile;
+  return normalizeSaqDMerchantFriendly(raw);
+}
+
 const QUESTIONNAIRE_MAP: Record<SaqQuestionnaireType, () => Questionnaire> = {
   A: loadSaqA,
   B: () => saqBJson as Questionnaire,
+  D_MERCHANT: loadSaqDMerchant,
 };
 
 export function loadQuestionnaire(saq: SaqQuestionnaireType): Questionnaire {
@@ -207,13 +274,16 @@ export function questionnaireToChecklistDefinition(
     .map((sec) => ({
       id: sec.section_id,
       title: sec.section_title,
-      description: undefined,
+      description: sec.section_summary,
       items: sec.items
         .sort((a, b) => (a.display_order ?? 999) - (b.display_order ?? 999))
         .map((item) => ({
           id: item.id,
           label: item.question,
-          pciRef: `PCI Ref: ${item.id}`,
+          pciRef:
+            saq === "D_MERCHANT" && item.requirement_raw
+              ? `${item.requirement_raw} · ${item.id}`
+              : `PCI Ref: ${item.id}`,
           type: "compliance_checkpoint" as const,
           helpText: item.help_text,
         })),
@@ -229,10 +299,11 @@ export function questionnaireToChecklistDefinition(
   };
 }
 
-/** Build structured response payload for submission/export (SAQ A and SAQ B) */
+/** Build structured response payload for submission/export (JSON-driven questionnaires) */
 export type QuestionnaireResponsePayload = {
   questionnaire_type: string;
   responses: {
+    section_id: string;
     requirement_id: string;
     section_title: string;
     requirement_raw: string;
@@ -257,6 +328,7 @@ export function buildQuestionnairePayload(
       const state = checklistState[item.id];
       if (!state?.answer) continue;
       responses.push({
+        section_id: section.section_id,
         requirement_id: item.id,
         section_title: section.section_title,
         requirement_raw: item.requirement_raw,

@@ -5,7 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ChevronLeft, ChevronRight, Info } from "lucide-react";
-import type { Questionnaire, QuestionnaireItem, QuestionnaireSection, QuestionnaireAnswersMap } from "@/lib/questionnaire-types";
+import type {
+  Questionnaire,
+  QuestionnaireItem,
+  QuestionnaireSection,
+  QuestionnaireAnswersMap,
+  QuestionnaireAnswerValue,
+} from "@/lib/questionnaire-types";
 import { OPTION_TO_VALUE, CCW_HELPER_TEXT } from "@/lib/questionnaire-types";
 
 type JsonQuestionnaireProps = {
@@ -32,9 +38,7 @@ function flattenItems(questionnaire: Questionnaire): { item: QuestionnaireItem; 
   return result;
 }
 
-type AnswerValue = "in_place" | "in_place_ccw" | "not_applicable" | "action_needed";
-
-function optionToValue(opt: string): AnswerValue | null {
+function optionToValue(opt: string): QuestionnaireAnswerValue | null {
   const v = OPTION_TO_VALUE[opt];
   return v ?? null;
 }
@@ -60,7 +64,7 @@ export function JsonQuestionnaire({
   const currentNotes = currentState?.notes ?? "";
   const currentCcw = currentState?.ccw_explanation ?? "";
 
-  const handleAnswerChange = (value: AnswerValue) => {
+  const handleAnswerChange = (value: QuestionnaireAnswerValue) => {
     if (!current) return;
     onChange({
       ...state,
@@ -121,7 +125,9 @@ export function JsonQuestionnaire({
   }
 
   const options = current.item.options.map((opt) => ({
-    value: optionToValue(opt) ?? (opt.toLowerCase().replace(/\s+/g, "_") as AnswerValue),
+    value:
+      optionToValue(opt) ??
+      (opt.toLowerCase().replace(/\s+/g, "_") as QuestionnaireAnswerValue),
     label: opt,
     isAdvanced: opt === "In Place with CCW",
   }));
@@ -154,8 +160,15 @@ export function JsonQuestionnaire({
         <CardHeader>
           <div className="flex items-start gap-3">
             {current.item.show_requirement_id !== false && (
-              <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
-                PCI Ref: {current.item.id}
+              <span className="inline-flex max-w-full flex-wrap items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+                {current.item.requirement_raw ? (
+                  <>
+                    <span>{current.item.requirement_raw}</span>
+                    <span className="font-normal text-slate-400">· {current.item.id}</span>
+                  </>
+                ) : (
+                  <>PCI Ref: {current.item.id}</>
+                )}
               </span>
             )}
             <div className="flex-1">
@@ -177,7 +190,7 @@ export function JsonQuestionnaire({
                 <button
                   key={opt.value}
                   type="button"
-                  onClick={() => handleAnswerChange(opt.value as AnswerValue)}
+                  onClick={() => handleAnswerChange(opt.value)}
                   className={`w-full text-left rounded-lg border px-4 py-3 transition-colors ${
                     selected
                       ? "border-emerald-500 bg-emerald-50"

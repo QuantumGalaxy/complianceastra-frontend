@@ -20,7 +20,10 @@ type ChecklistViewProps = {
 
 const ANSWER_LABELS: { value: Exclude<ChecklistAnswer, null>; label: string }[] = [
   { value: "in_place", label: "In Place" },
+  { value: "in_place_ccw", label: "In Place with CCW" },
   { value: "not_applicable", label: "Not Applicable" },
+  { value: "not_tested", label: "Not Tested" },
+  { value: "not_in_place", label: "Not in Place" },
   { value: "action_needed", label: "Action Needed" },
 ];
 

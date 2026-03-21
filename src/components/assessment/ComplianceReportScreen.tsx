@@ -134,13 +134,17 @@ export function ComplianceReportScreen({
     let inPlaceCcw = 0;
     let actionNeeded = 0;
     let notApplicable = 0;
+    let notTested = 0;
+    let notInPlace = 0;
     Object.values(checklistState).forEach((v) => {
       if (v.answer === "in_place") inPlace++;
       else if (v.answer === "in_place_ccw") inPlaceCcw++;
       else if (v.answer === "action_needed") actionNeeded++;
       else if (v.answer === "not_applicable") notApplicable++;
+      else if (v.answer === "not_tested") notTested++;
+      else if (v.answer === "not_in_place") notInPlace++;
     });
-    return { inPlace, inPlaceCcw, actionNeeded, notApplicable };
+    return { inPlace, inPlaceCcw, actionNeeded, notApplicable, notTested, notInPlace };
   }, [checklistState]);
 
   const handleDownloadPdf = useCallback(() => {
@@ -236,6 +240,18 @@ export function ComplianceReportScreen({
           <span className="h-2 w-2 rounded-full bg-slate-400" aria-hidden />
           Not Applicable ({statusCounts.notApplicable})
         </span>
+        {(statusCounts.notTested > 0 || statusCounts.notInPlace > 0) && (
+          <>
+            <span className="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-violet-50 px-4 py-2 text-sm font-medium text-violet-900 shadow-sm">
+              <span className="h-2 w-2 rounded-full bg-violet-500" aria-hidden />
+              Not Tested ({statusCounts.notTested})
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-rose-200 bg-rose-50 px-4 py-2 text-sm font-medium text-rose-900 shadow-sm">
+              <span className="h-2 w-2 rounded-full bg-rose-500" aria-hidden />
+              Not in Place ({statusCounts.notInPlace})
+            </span>
+          </>
+        )}
       </div>
 
       {/* Summary block: SAQ + Scope — clean white cards */}

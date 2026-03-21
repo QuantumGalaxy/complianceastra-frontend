@@ -1,0 +1,205 @@
+{
+  "document": {
+    "name": "PCI DSS v4.0.1 SAQ D for Merchants",
+    "type": "merchant_friendly_prd",
+    "source_file": "PCI-DSS-v4-0-1-SAQ-D-Merchant.pdf",
+    "version": "4.0.1",
+    "publication_date": "2024-10",
+    "notes": [
+      "This is a merchant-friendly PRD JSON derived from SAQ D for Merchants.",
+      "It is not a verbatim replacement for PCI DSS text.",
+      "Use this for product UX, checklist generation, scoring, and remediation flows.",
+      "Use the original PCI document for legal/compliance validation."
+    ],
+    "response_options": [
+      "in_place",
+      "in_place_with_ccw",
+      "not_applicable",
+      "not_tested",
+      "not_in_place"
+    ]
+  },
+  "saq_type": "D_MERCHANT",
+  "sections": [
+    {
+      "id": "req_1",
+      "requirement": "PCI DSS Requirement 1",
+      "title": "Firewalls & Network Security Controls",
+      "merchant_friendly_summary": "Protect the cardholder data environment with firewalls, approved connections, restricted traffic, and reviewed network rules.",
+      "questions": [
+        "Do you have network security controls such as firewalls protecting your cardholder data environment?",
+        "Are firewall and network security rules documented, approved, and kept up to date?",
+        "Do you maintain an accurate network diagram showing cardholder-data systems and connections?",
+        "Do you maintain a data-flow diagram showing where account data travels across systems and networks?",
+        "Are only necessary services, ports, and protocols allowed?",
+        "Are insecure protocols protected with additional security measures or removed?",
+        "Are network security control rules reviewed at least every six months?",
+        "Are wireless networks separated from the cardholder data environment unless explicitly authorized?",
+        "Is inbound and outbound traffic restricted to only what is required for business?",
+        "Are anti-spoofing controls in place to block forged source IP addresses?",
+        "Are systems that store card data blocked from direct access from untrusted networks?",
+        "Are laptops or other devices that connect to both the internet and the cardholder environment secured with enforced controls?"
+      ]
+    },
+    {
+      "id": "req_2",
+      "requirement": "PCI DSS Requirement 2",
+      "title": "Secure System Configurations",
+      "merchant_friendly_summary": "Use hardened configurations, change default settings, disable unnecessary functions, and protect admin access.",
+      "questions": [
+        "Do you have secure configuration standards for all systems in scope?",
+        "Are vendor default passwords and accounts changed, disabled, or removed before production use?",
+        "Are systems hardened using industry or vendor recommendations?",
+        "Do systems run only the services, protocols, and functions that are actually needed?",
+        "Are systems with different security levels separated or secured to the highest required level?",
+        "Are insecure services or protocols documented with business justification and compensating protections?",
+        "Are system security settings configured to prevent misuse?",
+        "Is all non-console administrative access encrypted using strong cryptography?",
+        "If wireless is used, are wireless defaults changed and encryption keys rotated when needed?"
+      ]
+    },
+    {
+      "id": "req_3",
+      "requirement": "PCI DSS Requirement 3",
+      "title": "Stored Card Data Protection",
+      "merchant_friendly_summary": "Store as little account data as possible, never retain sensitive authentication data after authorization, and protect any stored PAN with strong controls and key management.",
+      "questions": [
+        "Do you keep stored account data to the absolute minimum needed for legal, regulatory, or business reasons?",
+        "Do you have a documented retention and deletion policy for account data across all locations?",
+        "Do you verify at least every three months that expired stored account data is securely deleted or made unrecoverable?",
+        "Do you avoid storing sensitive authentication data after authorization, even if encrypted?",
+        "Do you prevent storage of full track data after authorization?",
+        "Do you prevent storage of card verification codes after authorization?",
+        "Do you prevent storage of PINs or PIN blocks after authorization?",
+        "If sensitive authentication data is stored before authorization, is it encrypted with strong cryptography?",
+        "Is the full PAN unreadable wherever it is stored, such as via truncation, strong encryption, tokens, or approved hashing?",
+        "If hashes are used for PAN, are they keyed cryptographic hashes with proper key management?",
+        "If disk or partition encryption is used, is PAN also protected appropriately where required?",
+        "Is full PAN masked when displayed so only authorized users can see more than the allowed digits?",
+        "Do remote access tools prevent unauthorized copying or relocation of PAN?",
+        "Are encryption keys for stored account data protected against disclosure and misuse?",
+        "Are secret and private keys stored securely in approved forms?",
+        "Is cleartext access to key components limited to the fewest custodians necessary?",
+        "Do you manage cryptographic keys securely throughout their lifecycle, including generation, distribution, storage, rotation, retirement, and protection against unauthorized substitution?"
+      ]
+    },
+    {
+      "id": "req_4",
+      "requirement": "PCI DSS Requirement 4",
+      "title": "Encryption During Transmission",
+      "merchant_friendly_summary": "Encrypt cardholder data whenever it travels across open or public networks, and avoid insecure transmission methods.",
+      "questions": [
+        "Is cardholder data encrypted with strong cryptography whenever it is transmitted over open or public networks?",
+        "Do you use only trusted, secure protocols and configurations for transmitting account data?",
+        "Are insecure protocols removed or protected with strong compensating controls?",
+        "Do you prevent PAN from being sent through end-user messaging technologies such as email, chat, or SMS unless explicitly protected and allowed?"
+      ]
+    },
+    {
+      "id": "req_5",
+      "requirement": "PCI DSS Requirement 5",
+      "title": "Malware Protection",
+      "merchant_friendly_summary": "Protect systems from malware using anti-malware tools or equivalent controls, and keep protections active and current.",
+      "questions": [
+        "Are systems commonly affected by malware protected with anti-malware tools or equivalent controls?",
+        "Are malware protections kept current, actively running, and generating audit logs?",
+        "Are periodic malware scans performed when continuous protection is not used?",
+        "Can users avoid or disable anti-malware protections only with documented management approval?"
+      ]
+    },
+    {
+      "id": "req_6",
+      "requirement": "PCI DSS Requirement 6",
+      "title": "Secure Software Development & Patching",
+      "merchant_friendly_summary": "Identify vulnerabilities, apply patches, and build or change software using secure development practices.",
+      "questions": [
+        "Do you identify and rank security vulnerabilities based on risk?",
+        "Are critical and high-risk security patches installed within required timeframes?",
+        "Are custom and bespoke applications developed using secure coding practices?",
+        "Are code changes reviewed, tested, and approved before production release?",
+        "Are public-facing applications protected against common attacks such as injection and script-based attacks?",
+        "Do change-control processes cover all production system changes?"
+      ]
+    },
+    {
+      "id": "req_7",
+      "requirement": "PCI DSS Requirement 7",
+      "title": "Access Control by Business Need",
+      "merchant_friendly_summary": "Grant access only to the people and systems that need it, and keep privileges limited and reviewed.",
+      "questions": [
+        "Is access to systems and cardholder data limited to what each user needs for their role?",
+        "Are roles and access responsibilities documented and understood?",
+        "Are privileged accounts tightly controlled and justified?",
+        "Are access rights reviewed regularly and removed when no longer needed?"
+      ]
+    },
+    {
+      "id": "req_8",
+      "requirement": "PCI DSS Requirement 8",
+      "title": "User Identification & Authentication",
+      "merchant_friendly_summary": "Give each user a unique identity, require strong authentication, and protect login credentials.",
+      "questions": [
+        "Does every user have a unique ID for access to systems in scope?",
+        "Are strong passwords or passphrases required and managed securely?",
+        "Is multi-factor authentication used where required, especially for administrative and remote access?",
+        "Are authentication factors protected from disclosure and misuse?",
+        "Are dormant, shared, generic, and service accounts controlled appropriately?"
+      ]
+    },
+    {
+      "id": "req_9",
+      "requirement": "PCI DSS Requirement 9",
+      "title": "Physical Security",
+      "merchant_friendly_summary": "Restrict physical access to cardholder data, media, systems, and sensitive areas.",
+      "questions": [
+        "Is physical access to cardholder-data areas restricted to authorized personnel?",
+        "Are visitors identified, authorized, logged, and escorted where required?",
+        "Are paper records and media containing cardholder data physically secured?",
+        "Are devices inspected and protected against tampering or substitution where applicable?",
+        "Is media securely destroyed when no longer needed?"
+      ]
+    },
+    {
+      "id": "req_10",
+      "requirement": "PCI DSS Requirement 10",
+      "title": "Logging & Monitoring",
+      "merchant_friendly_summary": "Log important events, protect logs from tampering, and review them so suspicious activity is detected quickly.",
+      "questions": [
+        "Are audit logs enabled for access to systems and cardholder data?",
+        "Do logs capture user activity, admin actions, authentication events, and security-relevant changes?",
+        "Are logs protected from unauthorized modification or deletion?",
+        "Are logs reviewed daily or according to risk for suspicious activity?",
+        "Are logs retained for the required retention period, including at least one year where required?"
+      ]
+    },
+    {
+      "id": "req_11",
+      "requirement": "PCI DSS Requirement 11",
+      "title": "Security Testing",
+      "merchant_friendly_summary": "Regularly test systems and networks using scans, penetration tests, and change-detection methods.",
+      "questions": [
+        "Do you run internal and external vulnerability scans as required?",
+        "Are ASV scans performed where applicable?",
+        "Do you perform penetration testing at required intervals and after significant changes?",
+        "Are wireless environments tested for unauthorized devices if wireless is present?",
+        "Do you use file-integrity or change-detection mechanisms where required?",
+        "Are security issues found during testing tracked and remediated?"
+      ]
+    },
+    {
+      "id": "req_12",
+      "requirement": "PCI DSS Requirement 12",
+      "title": "Security Policies, Risk, Vendors & Incident Response",
+      "merchant_friendly_summary": "Maintain governance, training, risk management, vendor oversight, and a workable incident response process.",
+      "questions": [
+        "Do you maintain and review an information security policy at least annually?",
+        "Are security responsibilities assigned and understood across the organization?",
+        "Are employees trained on security awareness when hired and regularly after that?",
+        "Do you perform risk assessments and use them to guide your security program?",
+        "Do you maintain an inventory and oversight process for third-party service providers?",
+        "Do you have an incident response plan that is tested and kept current?",
+        "Are PCI responsibilities for service providers clearly documented and monitored?"
+      ]
+    }
+  ]
+}
