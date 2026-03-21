@@ -66,10 +66,7 @@ export function getNextQuestionId(state: WizardStateV2): string | null {
   }
 
   if (state.payment_channel === "ecommerce") {
-    if (state.ecommerce_fully_outsourced == null) return "ecommerce_fully_outsourced";
-    if (state.ecommerce_fully_outsourced === "yes" && state.ecommerce_payment_page == null) {
-      return "ecommerce_payment_page";
-    }
+    if (state.ecommerce_payment_page == null) return "ecommerce_payment_page";
     return null;
   }
 
@@ -125,11 +122,8 @@ export function stripLastEligibilityAnswer(state: WizardStateV2): WizardStateV2 
   }
 
   if (ch === "ecommerce") {
-    if (s.ecommerce_fully_outsourced === "yes" && s.ecommerce_payment_page != null) {
+    if (s.ecommerce_payment_page != null) {
       return { ...s, ecommerce_payment_page: undefined };
-    }
-    if (s.ecommerce_fully_outsourced != null) {
-      return { ...s, ecommerce_fully_outsourced: undefined, ecommerce_payment_page: undefined };
     }
     return s;
   }
@@ -145,7 +139,6 @@ function eligibilityFieldsEqual(a: WizardStateV2, b: WizardStateV2): boolean {
     a.moto_stores_chd === b.moto_stores_chd &&
     a.moto_fully_outsourced === b.moto_fully_outsourced &&
     a.moto_how_process === b.moto_how_process &&
-    a.ecommerce_fully_outsourced === b.ecommerce_fully_outsourced &&
     a.ecommerce_payment_page === b.ecommerce_payment_page
   );
 }
@@ -320,17 +313,6 @@ export function resolveSaqDecision(state: WizardStateV2): SaqDecisionResult | nu
   }
 
   if (ch === "ecommerce") {
-    if (state.ecommerce_fully_outsourced === "no") {
-      return {
-        saq: "D_MERCHANT",
-        why: [
-          "Your systems store, process, or transmit cardholder data — this is outside the narrow merchant SAQs A / A-EP outsourcing model.",
-        ],
-        summary:
-          "Based on your answers, you should plan for SAQ D for Merchants or a full PCI DSS assessment.",
-        riskLevel: riskForSaq("D_MERCHANT"),
-      };
-    }
     const page = state.ecommerce_payment_page;
     if (page === "redirect" || page === "iframe_embedded") {
       return {
@@ -391,7 +373,6 @@ export function applyAnswer(
       next.moto_stores_chd = undefined;
       next.moto_fully_outsourced = undefined;
       next.moto_how_process = undefined;
-      next.ecommerce_fully_outsourced = undefined;
       next.ecommerce_payment_page = undefined;
       break;
     case "service_provider_handles_chd_for_others":
@@ -415,10 +396,6 @@ export function applyAnswer(
       break;
     case "moto_how_process":
       next.moto_how_process = value as WizardStateV2["moto_how_process"];
-      break;
-    case "ecommerce_fully_outsourced":
-      next.ecommerce_fully_outsourced = value as "yes" | "no";
-      next.ecommerce_payment_page = undefined;
       break;
     case "ecommerce_payment_page":
       next.ecommerce_payment_page = value as WizardStateV2["ecommerce_payment_page"];

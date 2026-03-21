@@ -16,7 +16,7 @@ function approximateTotalSteps(channel: WizardStateV2["payment_channel"]): numbe
     case "moto":
       return 4;
     case "ecommerce":
-      return 3;
+      return 2;
     default:
       return 1;
   }
@@ -31,7 +31,6 @@ function currentStepNumber(state: WizardStateV2): number {
   if (state.moto_stores_chd != null) n++;
   if (state.moto_fully_outsourced != null) n++;
   if (state.moto_how_process != null) n++;
-  if (state.ecommerce_fully_outsourced != null) n++;
   if (state.ecommerce_payment_page != null) n++;
   return Math.max(1, n);
 }
@@ -55,8 +54,6 @@ function currentValueForQuestion(
       return state.moto_fully_outsourced ?? null;
     case "moto_how_process":
       return state.moto_how_process ?? null;
-    case "ecommerce_fully_outsourced":
-      return state.ecommerce_fully_outsourced ?? null;
     case "ecommerce_payment_page":
       return state.ecommerce_payment_page ?? null;
     default:
