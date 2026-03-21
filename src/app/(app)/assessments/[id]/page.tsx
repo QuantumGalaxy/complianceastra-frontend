@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ProgressHeader } from "@/components/assessment/ProgressHeader";
 import { ResultSummary } from "@/components/assessment/ResultSummary";
-import { ChecklistPreview } from "@/components/assessment/ChecklistPreview";
 import { PaywallSection } from "@/components/assessment/PaywallSection";
 import { PaymentModal } from "@/components/assessment/PaymentModal";
 import { ComplianceReportScreen } from "@/components/assessment/ComplianceReportScreen";
@@ -15,7 +14,6 @@ import { QuestionnaireSummary } from "@/components/assessment/QuestionnaireSumma
 import { SaqScopeWizard } from "@/components/assessment/SaqScopeWizard";
 import {
   loadQuestionnaire,
-  hasJsonQuestionnaire,
   questionnaireToChecklistDefinition,
 } from "@/lib/load-questionnaire";
 import type { PaymentChannel, WizardStateV2 } from "@/lib/saq-decision-config";
@@ -230,11 +228,7 @@ export default function AssessmentPage() {
             : "scope";
 
   const handleContinueFromEligibility = () => {
-    if (result?.saq && hasJsonQuestionnaire(result.saq)) {
-      setStep("questionnaire");
-    } else {
-      setStep("checklist");
-    }
+    setStep("questionnaire");
   };
 
   const reopenEligibilityWizard = useCallback(() => {
@@ -271,7 +265,7 @@ export default function AssessmentPage() {
         {step !== "report" && (
           <ProgressHeader
             currentStep={currentStep}
-            showQuestionnaire={result?.saq ? hasJsonQuestionnaire(result.saq) : false}
+            showQuestionnaire={!!result?.saq}
           />
         )}
 
@@ -319,28 +313,18 @@ export default function AssessmentPage() {
           </div>
         )}
 
-        {step === "questionnaire" && result && hasJsonQuestionnaire(result.saq) && (
+        {step === "questionnaire" && result && (
           <div className="space-y-8">
             <div className="space-y-2">
               <h1 className="text-2xl font-bold text-slate-900">
                 {loadQuestionnaire(result.saq).framework}
               </h1>
               <p className="text-sm text-slate-600 max-w-2xl">
-                {result.saq === "D_MERCHANT" ? (
-                  <>
-                    Answer each checkpoint in merchant-friendly language. Choose{" "}
-                    <strong>In Place</strong>, <strong>In Place with CCW</strong>,{" "}
-                    <strong>Not Applicable</strong>, <strong>Not Tested</strong>, or{" "}
-                    <strong>Not in Place</strong>. Add evidence notes anytime—they&apos;re included
-                    in exports for your records.
-                  </>
-                ) : (
-                  <>
-                    Answer each requirement below. Use <strong>In Place</strong> when the control is
-                    implemented, <strong>Not Applicable</strong> when it does not apply to your
-                    environment, or <strong>Action Needed</strong> when work remains.
-                  </>
-                )}
+                Work through each requirement in order. Response choices are set per question (for
+                example <strong>In Place</strong>, <strong>Not Applicable</strong>,{" "}
+                <strong>Action Needed</strong>, or others as shown). Use{" "}
+                <strong>In Place with CCW</strong> only when that option appears. Add evidence /
+                notes anytime—they&apos;re kept for your records and export.
               </p>
             </div>
             <JsonQuestionnaire
@@ -357,37 +341,17 @@ export default function AssessmentPage() {
           <div className="space-y-8">
             <div className="space-y-2">
               <h1 className="text-2xl font-bold text-slate-900">
-                {hasJsonQuestionnaire(result.saq)
-                  ? loadQuestionnaire(result.saq).framework
-                  : CHECKLISTS[result.saq].title}
+                {loadQuestionnaire(result.saq).framework}
               </h1>
               <p className="text-sm text-slate-600 max-w-2xl">
-                {hasJsonQuestionnaire(result.saq) ? (
-                  <>
-                    You&apos;ve completed the questionnaire. Unlock to get your full compliance
-                    report, readiness summary, and remediation recommendations.
-                  </>
-                ) : (
-                  <>
-                    Work through these{" "}
-                    <span className="font-semibold">plain-English compliance checkpoints</span>.
-                    Unlock to get your full compliance report and checklist.
-                  </>
-                )}
+                You&apos;ve completed the questionnaire. Unlock to get your full compliance report,
+                readiness summary, and remediation recommendations.
               </p>
             </div>
-            {hasJsonQuestionnaire(result.saq) ? (
-              <QuestionnaireSummary
-                questionnaire={loadQuestionnaire(result.saq)}
-                state={checklistState}
-              />
-            ) : (
-              <ChecklistPreview
-                saq={result.saq}
-                state={checklistState}
-                onChange={setChecklistState}
-              />
-            )}
+            <QuestionnaireSummary
+              questionnaire={loadQuestionnaire(result.saq)}
+              state={checklistState}
+            />
             <PaywallSection
               email={userEmail}
               onEmailChange={setUserEmail}
@@ -413,11 +377,7 @@ export default function AssessmentPage() {
             }}
             checklistState={checklistState}
             onChecklistChange={setChecklistState}
-            checklistDef={
-              hasJsonQuestionnaire(result.saq)
-                ? questionnaireToChecklistDefinition(loadQuestionnaire(result.saq), result.saq)
-                : undefined
-            }
+            checklistDef={questionnaireToChecklistDefinition(loadQuestionnaire(result.saq), result.saq)}
           />
         )}
       </div>

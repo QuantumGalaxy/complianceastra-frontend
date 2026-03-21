@@ -1,312 +1,178 @@
 /**
- * Load questionnaire JSON by SAQ type.
- * Structured for future expansion: SAQ C, D, etc. can plug in their own JSON files.
+ * PCI SAQ questionnaires — single source of truth: `*_prd_ready.json` files in `src/data/`.
  */
 
 import type { Questionnaire, QuestionnaireItem, QuestionnaireSection } from "./questionnaire-types";
 import type { ChecklistDefinition, SaqType } from "@/components/assessment/checklist-data";
-import saqBJson from "@/data/saq_b_production_ready.json";
-import saqACorrectedJson from "@/data/saq_a_production_ready_corrected.json";
-import saqDOriginalRequirementsFullJson from "@/data/saq_d_original_requirements_full.json";
 
-export type SaqQuestionnaireType = "A" | "B" | "D_MERCHANT";
+import saqAPrdReady from "@/data/saq_a_prd_ready.json";
+import saqAEpPrdReady from "@/data/saq_a_ep_prd_ready.json";
+import saqBPrdReady from "@/data/saq_b_prd_ready.json";
+import saqBIpPrdReady from "@/data/saq_b_ip_prd_ready.json";
+import saqCPrdReady from "@/data/saq_c_prd_ready.json";
+import saqCVtPrdReady from "@/data/saq_c_vt_prd_ready.json";
+import saqDMerchantPrdReady from "@/data/saq_d_merchant_prd_ready.json";
+import saqDServiceProviderPrdReady from "@/data/saq_d_service_provider_prd_ready.json";
 
-/** Flat row format from saq_a_production_ready_corrected.json */
-type SaqACorrectedRow = {
-  section_title: string;
+/** Every merchant SAQ type is backed by a PRD JSON file. */
+export type SaqQuestionnaireType = SaqType;
+
+const PRD_FILE_BY_SAQ: Record<SaqQuestionnaireType, { data: unknown; filename: string }> = {
+  A: { data: saqAPrdReady, filename: "saq_a_prd_ready.json" },
+  "A-EP": { data: saqAEpPrdReady, filename: "saq_a_ep_prd_ready.json" },
+  B: { data: saqBPrdReady, filename: "saq_b_prd_ready.json" },
+  "B-IP": { data: saqBIpPrdReady, filename: "saq_b_ip_prd_ready.json" },
+  C: { data: saqCPrdReady, filename: "saq_c_prd_ready.json" },
+  "C-VT": { data: saqCVtPrdReady, filename: "saq_c_vt_prd_ready.json" },
+  D_MERCHANT: { data: saqDMerchantPrdReady, filename: "saq_d_merchant_prd_ready.json" },
+  D_SERVICE_PROVIDER: { data: saqDServiceProviderPrdReady, filename: "saq_d_service_provider_prd_ready.json" },
+};
+
+/** Raw section shape from PRD JSON (matches exported files). */
+type PrdSectionJson = {
+  section_id: string;
   section_order: number;
-  group_title?: string;
-  group_order?: number;
-  id: string;
-  requirement_raw: string;
-  question: string;
-  help_text?: string;
-  options: string[];
-  requires_ccw_explanation?: boolean;
-  display_order?: number;
-  show_requirement_id?: boolean;
-  allow_note?: boolean;
-  category?: string;
-  risk_level?: string;
-  ui_hint?: string;
-  response_type?: string;
-  evidence_examples?: string[];
-  tags?: string[];
-};
-
-/** Expected requirement IDs from corrected SAQ A (PCI DSS v4.0.1 SAQ A) */
-export const EXPECTED_SAQ_A_REQUIREMENT_IDS = [
-  "2.2.2",
-  "3.1.1",
-  "3.2.1",
-  "6.3.1",
-  "6.3.3",
-  "8.2.1",
-  "8.2.2",
-  "8.2.5",
-  "8.3.1",
-  "8.3.5",
-  "8.3.6",
-  "8.3.7",
-  "8.3.9",
-  "9.4.1",
-  "9.4.1.1",
-  "9.4.2",
-  "9.4.3",
-  "9.4.4",
-  "9.4.6",
-  "11.3.2",
-  "11.3.2.1",
-  "12.8.1",
-  "12.8.2",
-  "12.8.3",
-  "12.8.4",
-  "12.8.5",
-  "12.10.1",
-] as const;
-
-const FORBIDDEN_LEGACY_SAQ_A_IDS = new Set(["6.4.3", "6.4.3.1", "6.4.3.2"]);
-
-function slugSectionId(sectionOrder: number, sectionTitle: string): string {
-  const slug = sectionTitle
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "")
-    .slice(0, 48);
-  return `${sectionOrder}-${slug || "section"}`;
-}
-
-/** Normalize flat corrected SAQ A JSON into Questionnaire schema */
-function normalizeSaqACorrected(raw: SaqACorrectedRow[]): Questionnaire {
-  const rows = [...raw].sort(
-    (a, b) => (a.display_order ?? 999) - (b.display_order ?? 999),
-  );
-
-  const groupKey = (r: SaqACorrectedRow) => `${r.section_order}::${r.section_title}`;
-  const groupOrder: string[] = [];
-  for (const r of rows) {
-    const k = groupKey(r);
-    if (!groupOrder.includes(k)) groupOrder.push(k);
-  }
-
-  const sections: QuestionnaireSection[] = groupOrder.map((key) => {
-    const first = rows.find((r) => groupKey(r) === key)!;
-    const sectionItems = rows
-      .filter((r) => groupKey(r) === key)
-      .map((item) => ({
-        id: item.id,
-        requirement_raw: item.requirement_raw,
-        question: item.question,
-        help_text: item.help_text,
-        options: item.options,
-        display_order: item.display_order,
-        show_requirement_id: item.show_requirement_id ?? true,
-        allow_note: item.allow_note ?? true,
-        category: item.category,
-        risk_level: item.risk_level as QuestionnaireItem["risk_level"],
-        ui_hint: item.ui_hint,
-        response_type: item.response_type,
-        evidence_examples: item.evidence_examples,
-        tags: item.tags,
-      })) as QuestionnaireItem[];
-
-    return {
-      section_id: slugSectionId(first.section_order, first.section_title),
-      section_order: first.section_order,
-      section_title: first.section_title,
-      category: first.category,
-      items: sectionItems,
-    };
-  });
-
-  return {
-    framework: "PCI DSS v4.0.1 SAQ A",
-    source: "Corrected SAQ A questionnaire (production)",
-    sections,
-  };
-}
-
-/**
- * Validates corrected SAQ A loaded data before use.
- * Throws if required IDs are missing or legacy incorrect IDs appear.
- */
-export function validateSaqAQuestionnaire(questionnaire: Questionnaire): void {
-  const ids = new Set<string>();
-  for (const sec of questionnaire.sections) {
-    for (const item of sec.items) {
-      ids.add(item.id);
-      if (FORBIDDEN_LEGACY_SAQ_A_IDS.has(item.id)) {
-        throw new Error(
-          `SAQ A validation failed: legacy item "${item.id}" must not appear in corrected questionnaire.`,
-        );
-      }
-    }
-  }
-
-  const missing: string[] = [];
-  for (const expected of EXPECTED_SAQ_A_REQUIREMENT_IDS) {
-    if (!ids.has(expected)) missing.push(expected);
-  }
-  if (missing.length > 0) {
-    throw new Error(
-      `SAQ A validation failed: missing requirement ID(s): ${missing.join(", ")}. Expected ${EXPECTED_SAQ_A_REQUIREMENT_IDS.length} items.`,
-    );
-  }
-
-  const expectedSet = new Set<string>(EXPECTED_SAQ_A_REQUIREMENT_IDS);
-  const unexpected = [...ids].filter((id) => !expectedSet.has(id));
-  if (unexpected.length > 0) {
-    throw new Error(`SAQ A validation failed: unexpected requirement ID(s): ${unexpected.join(", ")}`);
-  }
-
-  let itemCount = 0;
-  for (const sec of questionnaire.sections) {
-    itemCount += sec.items.length;
-  }
-  if (itemCount !== EXPECTED_SAQ_A_REQUIREMENT_IDS.length) {
-    throw new Error(
-      `SAQ A validation failed: expected ${EXPECTED_SAQ_A_REQUIREMENT_IDS.length} items, found ${itemCount} (check for duplicates).`,
-    );
-  }
-}
-
-function loadSaqA(): Questionnaire {
-  const rows = saqACorrectedJson as SaqACorrectedRow[];
-  if (!Array.isArray(rows) || rows.length === 0) {
-    throw new Error("SAQ A: corrected JSON must be a non-empty array.");
-  }
-  const questionnaire = normalizeSaqACorrected(rows);
-  validateSaqAQuestionnaire(questionnaire);
-  return questionnaire;
-}
-
-const SAQ_D_MERCHANT_RESPONSE_OPTIONS: string[] = [
-  "In Place",
-  "In Place with CCW",
-  "Not Applicable",
-  "Not Tested",
-  "Not in Place",
-];
-
-/** One row from `saq_d_original_requirements_full.json` */
-type SaqDOriginalItem = {
-  id: string;
   section_title: string;
-  requirement_title: string;
-  group_id: string;
-  group_title: string;
-  source_page?: number;
-  requirement_raw: string;
-  expected_testing_raw?: string[];
-  applicability_notes?: string[];
+  category?: string;
+  items: Record<string, unknown>[];
 };
 
-type SaqDOriginalFile = {
-  document: { name: string; item_count?: number };
-  items: SaqDOriginalItem[];
+type PrdFileJson = {
+  framework?: string;
+  source?: string;
+  sections: PrdSectionJson[];
 };
 
-function slugSaqDSectionId(sectionTitle: string, sectionOrder: number): string {
-  const slug = sectionTitle
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "")
-    .slice(0, 56);
-  return `${sectionOrder}-${slug || "section"}`;
+function normalizeRisk(v: unknown): QuestionnaireItem["risk_level"] {
+  if (v === "low" || v === "medium" || v === "high") return v;
+  return undefined;
 }
 
-function buildSaqDOriginalHelpText(row: SaqDOriginalItem): string | undefined {
-  const parts: string[] = [];
-  if (row.group_id && row.group_title) {
-    parts.push(`Subgroup ${row.group_id}: ${row.group_title}`);
-  }
-  if (row.expected_testing_raw?.length) {
-    parts.push(`Expected testing: ${row.expected_testing_raw.join(" ")}`);
-  }
-  if (row.applicability_notes?.length) {
-    parts.push(`Applicability: ${row.applicability_notes.join(" ")}`);
-  }
-  if (row.source_page != null) {
-    parts.push(`Approx. document page: ${row.source_page}`);
-  }
-  return parts.length ? parts.join("\n\n") : undefined;
+function normalizePrdItem(raw: Record<string, unknown>, sectionId: string): QuestionnaireItem {
+  const options = Array.isArray(raw.options)
+    ? (raw.options as unknown[]).map((o) => String(o))
+    : ["In Place", "Not Applicable", "Action Needed"];
+
+  const expected = Array.isArray(raw.expected_testing_raw)
+    ? (raw.expected_testing_raw as unknown[]).map((x) => String(x).trim()).filter(Boolean)
+    : undefined;
+
+  return {
+    id: String(raw.id ?? "").trim(),
+    section_id: sectionId,
+    requirement_raw: String(raw.requirement_raw ?? ""),
+    question: String(raw.question ?? "").trim(),
+    help_text: raw.help_text != null ? String(raw.help_text) : undefined,
+    expected_testing_raw: expected?.length ? expected : undefined,
+    options,
+    display_order: typeof raw.display_order === "number" ? raw.display_order : undefined,
+    category: raw.category != null ? String(raw.category) : undefined,
+    tags: Array.isArray(raw.tags) ? (raw.tags as unknown[]).map((t) => String(t)) : undefined,
+    risk_level: normalizeRisk(raw.risk_level),
+    ui_hint: raw.ui_hint != null ? String(raw.ui_hint) : undefined,
+    response_type: raw.response_type != null ? String(raw.response_type) : undefined,
+    evidence_examples: Array.isArray(raw.evidence_examples)
+      ? (raw.evidence_examples as unknown[]).map((e) => String(e))
+      : undefined,
+    show_requirement_id: raw.show_requirement_id !== false,
+    allow_note: raw.allow_note !== false,
+  };
 }
 
 /**
- * Normalizes `saq_d_original_requirements_full.json` (flat `items`) into the shared
- * {@link Questionnaire} schema. Sections follow PCI DSS high-level groupings in file order.
+ * Validates PRD JSON at load time. Fails fast with a clear message if structure is wrong.
  */
-export function normalizeSaqDOriginalRequirements(raw: SaqDOriginalFile): Questionnaire {
-  if (!raw?.items?.length) {
-    throw new Error("SAQ D original requirements: JSON must contain a non-empty items array.");
+export function validatePrdQuestionnaireFile(raw: unknown, fileLabel: string): asserts raw is PrdFileJson {
+  if (!raw || typeof raw !== "object") {
+    throw new Error(`[${fileLabel}] Invalid questionnaire file: expected an object.`);
   }
-
-  const sectionOrder: string[] = [];
-  const bySection = new Map<string, SaqDOriginalItem[]>();
-
-  for (const row of raw.items) {
-    const title = row.section_title;
-    if (!title) continue;
-    if (!bySection.has(title)) {
-      sectionOrder.push(title);
-      bySection.set(title, []);
+  const o = raw as Record<string, unknown>;
+  if (!Array.isArray(o.sections) || o.sections.length === 0) {
+    throw new Error(`[${fileLabel}] Invalid questionnaire file: "sections" must be a non-empty array.`);
+  }
+  let itemCount = 0;
+  for (let si = 0; si < o.sections.length; si++) {
+    const sec = o.sections[si];
+    if (!sec || typeof sec !== "object") {
+      throw new Error(`[${fileLabel}] Invalid section at index ${si}.`);
     }
-    bySection.get(title)!.push(row);
+    const s = sec as Record<string, unknown>;
+    if (!Array.isArray(s.items)) {
+      throw new Error(`[${fileLabel}] Section "${String(s.section_title)}" has no items array.`);
+    }
+    for (let ii = 0; ii < s.items.length; ii++) {
+      const it = s.items[ii];
+      if (!it || typeof it !== "object") {
+        throw new Error(`[${fileLabel}] Invalid item at section ${si}, index ${ii}.`);
+      }
+      const item = it as Record<string, unknown>;
+      const id = typeof item.id === "string" ? item.id.trim() : "";
+      if (!id) {
+        throw new Error(`[${fileLabel}] Item at section ${si}, index ${ii} is missing a valid "id".`);
+      }
+      const q = typeof item.question === "string" ? item.question.trim() : "";
+      if (!q) {
+        throw new Error(`[${fileLabel}] Item "${id}" is missing a valid "question".`);
+      }
+      itemCount++;
+    }
   }
+  if (itemCount === 0) {
+    throw new Error(`[${fileLabel}] No questionnaire items found under sections.`);
+  }
+}
 
-  const sections: QuestionnaireSection[] = sectionOrder.map((sectionTitle, idx) => {
-    const section_order = idx + 1;
-    const section_id = slugSaqDSectionId(sectionTitle, section_order);
-    const rows = bySection.get(sectionTitle)!;
+function parsePrdQuestionnaire(raw: PrdFileJson, filename: string): Questionnaire {
+  const sections: QuestionnaireSection[] = [...raw.sections]
+    .sort((a, b) => (a.section_order ?? 0) - (b.section_order ?? 0))
+    .map((sec) => {
+      const section_id = String(sec.section_id ?? "").trim() || `sec-${sec.section_order}`;
+      const items = [...sec.items]
+        .map((row) => normalizePrdItem(row as Record<string, unknown>, section_id))
+        .sort((a, b) => (a.display_order ?? 999) - (b.display_order ?? 999));
 
-    const items: QuestionnaireItem[] = rows.map((row, i) => ({
-      id: row.id,
-      section_id,
-      requirement_raw: row.requirement_title,
-      question: row.requirement_raw,
-      help_text: buildSaqDOriginalHelpText(row),
-      options: [...SAQ_D_MERCHANT_RESPONSE_OPTIONS],
-      display_order: i + 1,
-      show_requirement_id: true,
-      allow_note: true,
-      category: row.group_title,
-    }));
-
-    return {
-      section_id,
-      section_order,
-      section_title: sectionTitle,
-      items,
-    };
-  });
+      return {
+        section_id,
+        section_order: sec.section_order,
+        section_title: sec.section_title,
+        category: sec.category,
+        items,
+      };
+    });
 
   return {
-    framework: raw.document?.name ?? "PCI DSS v4.0.1 SAQ D for Merchants",
-    source: "saq_d_original_requirements_full.json (original PCI DSS requirement text)",
+    framework: raw.framework ?? "PCI DSS SAQ",
+    source: `${filename} (PRD)`,
     sections,
   };
 }
 
-function loadSaqDMerchant(): Questionnaire {
-  const raw = saqDOriginalRequirementsFullJson as SaqDOriginalFile;
-  return normalizeSaqDOriginalRequirements(raw);
+function loadPrdForSaq(saq: SaqQuestionnaireType): Questionnaire {
+  const { data, filename } = PRD_FILE_BY_SAQ[saq];
+  validatePrdQuestionnaireFile(data, filename);
+  return parsePrdQuestionnaire(data as PrdFileJson, filename);
 }
 
 const QUESTIONNAIRE_MAP: Record<SaqQuestionnaireType, () => Questionnaire> = {
-  A: loadSaqA,
-  B: () => saqBJson as Questionnaire,
-  D_MERCHANT: loadSaqDMerchant,
+  A: () => loadPrdForSaq("A"),
+  "A-EP": () => loadPrdForSaq("A-EP"),
+  B: () => loadPrdForSaq("B"),
+  "B-IP": () => loadPrdForSaq("B-IP"),
+  C: () => loadPrdForSaq("C"),
+  "C-VT": () => loadPrdForSaq("C-VT"),
+  D_MERCHANT: () => loadPrdForSaq("D_MERCHANT"),
+  D_SERVICE_PROVIDER: () => loadPrdForSaq("D_SERVICE_PROVIDER"),
 };
 
 export function loadQuestionnaire(saq: SaqQuestionnaireType): Questionnaire {
   const loader = QUESTIONNAIRE_MAP[saq];
   if (!loader) {
-    throw new Error(`No questionnaire configured for SAQ type: ${saq}`);
+    throw new Error(`No PRD questionnaire configured for SAQ type: ${saq}`);
   }
   return loader();
 }
 
-/** Check if an SAQ type has a JSON-driven questionnaire */
+/** True when this SAQ type uses a PRD JSON checklist (all merchant SAQs in this app). */
 export function hasJsonQuestionnaire(saq: string): saq is SaqQuestionnaireType {
   return saq in QUESTIONNAIRE_MAP;
 }
@@ -314,7 +180,7 @@ export function hasJsonQuestionnaire(saq: string): saq is SaqQuestionnaireType {
 /** Convert questionnaire JSON to ChecklistDefinition for report/reporting compatibility */
 export function questionnaireToChecklistDefinition(
   questionnaire: Questionnaire,
-  saq: SaqType
+  saq: SaqType,
 ): ChecklistDefinition {
   const sections = questionnaire.sections
     .sort((a, b) => a.section_order - b.section_order)
@@ -327,12 +193,7 @@ export function questionnaireToChecklistDefinition(
         .map((item) => ({
           id: item.id,
           label: item.question,
-          pciRef:
-            saq === "D_MERCHANT"
-              ? `PCI DSS ${item.id}`
-              : item.requirement_raw
-                ? `${item.requirement_raw} · ${item.id}`
-                : `PCI Ref: ${item.id}`,
+          pciRef: `PCI DSS ${item.id}`,
           type: "compliance_checkpoint" as const,
           helpText: item.help_text,
         })),
@@ -366,7 +227,7 @@ export type QuestionnaireResponsePayload = {
 export function buildQuestionnairePayload(
   questionnaire: Questionnaire,
   checklistState: Record<string, { answer: string | null; notes: string; ccw_explanation?: string }>,
-  questionnaireType: string
+  questionnaireType: string,
 ): QuestionnaireResponsePayload {
   const responses: QuestionnaireResponsePayload["responses"] = [];
   for (const section of questionnaire.sections) {

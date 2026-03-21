@@ -158,18 +158,11 @@ export function JsonQuestionnaire({
       {/* Question card */}
       <Card className="border-slate-200">
         <CardHeader className="space-y-3">
-          {/* Requirement / PCI ref on its own row (matches SAQ A-style layout) */}
+          {/* PCI DSS requirement ID — primary reference (per PRD) */}
           {current.item.show_requirement_id !== false && (
             <div>
-              <span className="inline-flex max-w-full flex-wrap items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
-                {current.item.requirement_raw ? (
-                  <>
-                    <span>{current.item.requirement_raw}</span>
-                    <span className="font-normal text-slate-400">· {current.item.id}</span>
-                  </>
-                ) : (
-                  <>PCI Ref: {current.item.id}</>
-                )}
+              <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold tracking-wide text-slate-800">
+                PCI DSS {current.item.id}
               </span>
             </div>
           )}
@@ -180,6 +173,34 @@ export function JsonQuestionnaire({
             <div className="flex items-start gap-2 text-xs text-slate-500">
               <Info className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" aria-hidden />
               <span className="leading-relaxed">{current.item.help_text}</span>
+            </div>
+          )}
+          {current.item.requirement_raw?.trim() && (
+            <details className="rounded-lg border border-slate-100 bg-slate-50/80 px-3 py-2 text-xs text-slate-600">
+              <summary className="cursor-pointer font-medium text-slate-700">
+                Official requirement wording
+              </summary>
+              <p className="mt-2 leading-relaxed">{current.item.requirement_raw}</p>
+            </details>
+          )}
+          {current.item.expected_testing_raw && current.item.expected_testing_raw.length > 0 && (
+            <div className="rounded-lg border border-slate-100 bg-slate-50/80 p-3 text-xs text-slate-600">
+              <p className="font-medium text-slate-700">Expected testing</p>
+              <ul className="mt-1.5 list-disc space-y-1 pl-4 leading-relaxed">
+                {current.item.expected_testing_raw.map((line, i) => (
+                  <li key={i}>{line}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {current.item.evidence_examples && current.item.evidence_examples.length > 0 && (
+            <div className="rounded-lg border border-emerald-100 bg-emerald-50/40 p-3 text-xs text-slate-700">
+              <p className="font-medium text-emerald-900">Evidence ideas</p>
+              <ul className="mt-1.5 list-disc space-y-1 pl-4 leading-relaxed">
+                {current.item.evidence_examples.map((ex, i) => (
+                  <li key={i}>{ex}</li>
+                ))}
+              </ul>
             </div>
           )}
         </CardHeader>

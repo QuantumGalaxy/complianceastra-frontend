@@ -10,6 +10,8 @@ export type QuestionnaireItem = {
   requirement_raw: string;
   question: string;
   help_text?: string;
+  /** PCI “expected testing” lines from PRD JSON (assessor-facing). */
+  expected_testing_raw?: string[];
   options: string[];
   display_order?: number;
   category?: string;

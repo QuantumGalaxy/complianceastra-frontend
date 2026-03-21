@@ -21,10 +21,6 @@ function countItems(questionnaire: Questionnaire): number {
 
 export function QuestionnaireSummary({ questionnaire, state }: QuestionnaireSummaryProps) {
   const total = useMemo(() => countItems(questionnaire), [questionnaire]);
-  /** SAQ D JSON questionnaires use the 5-option model (no legacy “Action Needed” from SAQ A/B). */
-  const isSaqDFullQuestionnaireJson =
-    questionnaire.source?.includes("saq_d_original_requirements_full") ?? false;
-
   const {
     completed,
     inPlace,
@@ -147,20 +143,18 @@ export function QuestionnaireSummary({ questionnaire, state }: QuestionnaireSumm
             <p className="mt-0.5 text-xs text-rose-800">Gap to remediate</p>
           </CardContent>
         </Card>
-        {!isSaqDFullQuestionnaireJson && (
-          <Card className="border-amber-200 bg-amber-50/40">
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-sm font-medium text-amber-800">
-                <AlertCircle className="h-4 w-4 shrink-0" />
-                Action Needed
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold text-amber-900">{actionNeeded}</p>
-              <p className="mt-0.5 text-xs text-amber-700">Remediation required</p>
-            </CardContent>
-          </Card>
-        )}
+        <Card className="border-amber-200 bg-amber-50/40">
+          <CardHeader className="pb-2">
+            <CardTitle className="flex items-center gap-2 text-sm font-medium text-amber-800">
+              <AlertCircle className="h-4 w-4 shrink-0" />
+              Action Needed
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold text-amber-900">{actionNeeded}</p>
+            <p className="mt-0.5 text-xs text-amber-700">Remediation required</p>
+          </CardContent>
+        </Card>
       </div>
 
       <Card className="border-slate-200">
