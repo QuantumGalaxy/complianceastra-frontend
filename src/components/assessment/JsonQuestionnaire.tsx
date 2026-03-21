@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,7 +12,32 @@ import type {
   QuestionnaireAnswersMap,
   QuestionnaireAnswerValue,
 } from "@/lib/questionnaire-types";
-import { OPTION_TO_VALUE, CCW_HELPER_TEXT } from "@/lib/questionnaire-types";
+import { CCW_HELPER_TEXT, OPTION_TO_VALUE } from "@/lib/questionnaire-types";
+
+/** Merchant-facing response options (main view). Order matches product spec. */
+const MERCHANT_RESPONSE_LABELS = ["In Place", "Action Needed", "Not Applicable"] as const;
+
+function buildMerchantResponseOptions(itemOptions: string[]): { value: QuestionnaireAnswerValue; label: string }[] {
+  const normalized = new Set(itemOptions.map((o) => o.trim()));
+  const rows: { value: QuestionnaireAnswerValue; label: string }[] = [];
+  for (const label of MERCHANT_RESPONSE_LABELS) {
+    if (!normalized.has(label)) continue;
+    const value = OPTION_TO_VALUE[label];
+    if (value) rows.push({ value, label });
+  }
+  if (rows.length > 0) return rows;
+  return itemOptions.map((opt) => ({
+    value:
+      OPTION_TO_VALUE[opt.trim()] ??
+      (opt.toLowerCase().replace(/\s+/g, "_") as QuestionnaireAnswerValue),
+    label: opt,
+  }));
+}
+
+function getAssessorOnlyOptions(itemOptions: string[]): string[] {
+  const merchant = new Set(MERCHANT_RESPONSE_LABELS);
+  return itemOptions.map((o) => o.trim()).filter((o) => !merchant.has(o as (typeof MERCHANT_RESPONSE_LABELS)[number]));
+}
 
 type JsonQuestionnaireProps = {
   questionnaire: Questionnaire;
@@ -38,12 +63,6 @@ function flattenItems(questionnaire: Questionnaire): { item: QuestionnaireItem; 
   return result;
 }
 
-function optionToValue(opt: string): QuestionnaireAnswerValue | null {
-  const v = OPTION_TO_VALUE[opt];
-  return v ?? null;
-}
-
-
 export function JsonQuestionnaire({
   questionnaire,
   state,
@@ -55,6 +74,7 @@ export function JsonQuestionnaire({
   const total = flat.length;
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [auditorViewOpen, setAuditorViewOpen] = useState(false);
   const current = flat[currentIndex];
   const isFirst = currentIndex === 0;
   const isLast = currentIndex === total - 1;
@@ -120,17 +140,22 @@ export function JsonQuestionnaire({
   const hasAnswer = currentAnswer != null;
   const canProceed = hasAnswer && !ccwRequiredButEmpty;
 
+  useEffect(() => {
+    setAuditorViewOpen(false);
+  }, [currentIndex]);
+
+  useEffect(() => {
+    if (currentAnswer === "in_place_ccw") {
+      setAuditorViewOpen(true);
+    }
+  }, [currentAnswer]);
+
   if (!current) {
     return null;
   }
 
-  const options = current.item.options.map((opt) => ({
-    value:
-      optionToValue(opt) ??
-      (opt.toLowerCase().replace(/\s+/g, "_") as QuestionnaireAnswerValue),
-    label: opt,
-    isAdvanced: opt === "In Place with CCW",
-  }));
+  const merchantOptions = buildMerchantResponseOptions(current.item.options);
+  const assessorOnlyOptionLabels = getAssessorOnlyOptions(current.item.options);
 
   return (
     <div className="space-y-6">
@@ -170,33 +195,15 @@ export function JsonQuestionnaire({
             {current.item.question}
           </CardTitle>
           {current.item.help_text && (
-            <div className="flex items-start gap-2 text-xs text-slate-500">
+            <div className="flex items-start gap-2 text-sm text-slate-600">
               <Info className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" aria-hidden />
               <span className="leading-relaxed">{current.item.help_text}</span>
             </div>
           )}
-          {current.item.requirement_raw?.trim() && (
-            <details className="rounded-lg border border-slate-100 bg-slate-50/80 px-3 py-2 text-xs text-slate-600">
-              <summary className="cursor-pointer font-medium text-slate-700">
-                Official requirement wording
-              </summary>
-              <p className="mt-2 leading-relaxed">{current.item.requirement_raw}</p>
-            </details>
-          )}
-          {current.item.expected_testing_raw && current.item.expected_testing_raw.length > 0 && (
-            <div className="rounded-lg border border-slate-100 bg-slate-50/80 p-3 text-xs text-slate-600">
-              <p className="font-medium text-slate-700">Expected testing</p>
-              <ul className="mt-1.5 list-disc space-y-1 pl-4 leading-relaxed">
-                {current.item.expected_testing_raw.map((line, i) => (
-                  <li key={i}>{line}</li>
-                ))}
-              </ul>
-            </div>
-          )}
           {current.item.evidence_examples && current.item.evidence_examples.length > 0 && (
-            <div className="rounded-lg border border-emerald-100 bg-emerald-50/40 p-3 text-xs text-slate-700">
-              <p className="font-medium text-emerald-900">Evidence ideas</p>
-              <ul className="mt-1.5 list-disc space-y-1 pl-4 leading-relaxed">
+            <div className="rounded-lg border border-emerald-100 bg-emerald-50/50 p-3 text-sm text-slate-700">
+              <p className="font-semibold text-emerald-900">Evidence ideas</p>
+              <ul className="mt-2 list-disc space-y-1.5 pl-5 leading-relaxed text-slate-700">
                 {current.item.evidence_examples.map((ex, i) => (
                   <li key={i}>{ex}</li>
                 ))}
@@ -205,73 +212,116 @@ export function JsonQuestionnaire({
           )}
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-2" role="radiogroup" aria-label={current.item.question}>
-            {options.map((opt) => {
-              const selected = currentAnswer === opt.value;
-              return (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => handleAnswerChange(opt.value)}
-                  className={`w-full text-left rounded-lg border px-4 py-3 transition-colors ${
-                    selected
-                      ? "border-emerald-500 bg-emerald-50"
-                      : "border-slate-200 hover:border-slate-300 hover:bg-slate-50"
-                  }`}
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="font-medium text-slate-900">{opt.label}</span>
-                    <span className="flex items-center gap-2">
-                      {opt.isAdvanced && (
-                        <span
-                          className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-500"
-                          title={CCW_HELPER_TEXT}
-                        >
-                          Advanced
-                        </span>
-                      )}
-                      {selected && (
-                        <span className="text-xs font-semibold text-emerald-700">Selected</span>
-                      )}
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
+          <div className="space-y-2">
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Response</p>
+            <div className="grid gap-2 sm:grid-cols-3" role="radiogroup" aria-label={current.item.question}>
+              {merchantOptions.map((opt) => {
+                const selected = currentAnswer === opt.value;
+                return (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => handleAnswerChange(opt.value)}
+                    className={`rounded-lg border px-3 py-3 text-center text-sm font-medium transition-colors ${
+                      selected
+                        ? "border-emerald-500 bg-emerald-50 text-emerald-900 shadow-sm"
+                        : "border-slate-200 bg-white text-slate-800 hover:border-slate-300 hover:bg-slate-50"
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          {isCcwSelected && (
-            <div className="space-y-1 pt-2 border-t border-slate-100">
-              <p className="text-xs text-slate-500 mb-2">{CCW_HELPER_TEXT}</p>
-              <label className="text-xs font-medium text-slate-600">
-                Describe your compensating control <span className="text-rose-500">*</span>
-              </label>
-              <Textarea
-                value={currentCcw}
-                onChange={(e) => handleCcwChange(e.target.value)}
-                className={`min-h-[80px] text-sm ${ccwRequiredButEmpty ? "border-rose-300" : ""}`}
-                placeholder="Explain how your alternative control meets the requirement..."
-                required
-              />
-              {ccwRequiredButEmpty && (
-                <p className="text-xs text-rose-600">
-                  Please describe your compensating control before continuing.
-                </p>
-              )}
-            </div>
-          )}
-
-          {current.item.allow_note && (
-            <div className="space-y-1 pt-2 border-t border-slate-100">
-              <label className="text-xs font-medium text-slate-600">
-                Evidence / notes (optional)
-              </label>
+          {current.item.allow_note !== false && (
+            <div className="space-y-1 pt-1 border-t border-slate-100">
+              <label className="text-sm font-medium text-slate-700">Notes / Evidence upload</label>
+              <p className="text-xs text-slate-500">Optional — saved with your assessment and export.</p>
               <Textarea
                 value={currentNotes}
                 onChange={(e) => handleNotesChange(e.target.value)}
-                className="min-h-[80px] text-sm"
-                placeholder="Where is this control documented or implemented?"
+                className="min-h-[88px] text-sm"
+                placeholder="Links, file names, ticket IDs, or other evidence…"
               />
+            </div>
+          )}
+
+          {(current.item.requirement_raw?.trim() ||
+            (current.item.expected_testing_raw && current.item.expected_testing_raw.length > 0) ||
+            assessorOnlyOptionLabels.length > 0) && (
+            <div className="pt-2 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => setAuditorViewOpen((v) => !v)}
+                className="text-sm font-medium text-emerald-700 hover:text-emerald-800 underline-offset-2 hover:underline"
+              >
+                {auditorViewOpen ? "Hide" : "Show"} advanced / auditor view
+              </button>
+              {auditorViewOpen && (
+                <div className="mt-3 space-y-3 rounded-lg border border-slate-200 bg-slate-50/90 p-3 text-sm text-slate-700">
+                  {assessorOnlyOptionLabels.length > 0 && (
+                    <div className="space-y-2">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        Additional response options
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {assessorOnlyOptionLabels.map((label) => {
+                          const value =
+                            OPTION_TO_VALUE[label] ??
+                            (label.toLowerCase().replace(/\s+/g, "_") as QuestionnaireAnswerValue);
+                          const selected = currentAnswer === value;
+                          return (
+                            <button
+                              key={label}
+                              type="button"
+                              onClick={() => handleAnswerChange(value)}
+                              className={`rounded-md border px-3 py-2 text-xs font-medium ${
+                                selected
+                                  ? "border-emerald-500 bg-emerald-50"
+                                  : "border-slate-200 bg-white hover:bg-slate-100"
+                              }`}
+                            >
+                              {label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                  {current.item.requirement_raw?.trim() && (
+                    <div>
+                      <p className="text-xs font-semibold text-slate-600">Official requirement wording</p>
+                      <p className="mt-1.5 text-xs leading-relaxed text-slate-600">{current.item.requirement_raw}</p>
+                    </div>
+                  )}
+                  {current.item.expected_testing_raw && current.item.expected_testing_raw.length > 0 && (
+                    <div>
+                      <p className="text-xs font-semibold text-slate-600">Expected testing</p>
+                      <ul className="mt-1.5 list-disc space-y-1 pl-4 text-xs leading-relaxed text-slate-600">
+                        {current.item.expected_testing_raw.map((line, i) => (
+                          <li key={i}>{line}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {isCcwSelected && (
+                    <div className="space-y-1 border-t border-slate-200 pt-3">
+                      <p className="text-xs text-slate-500">{CCW_HELPER_TEXT}</p>
+                      <label className="text-xs font-medium text-slate-600">
+                        Compensating control description <span className="text-rose-500">*</span>
+                      </label>
+                      <Textarea
+                        value={currentCcw}
+                        onChange={(e) => handleCcwChange(e.target.value)}
+                        className={`min-h-[80px] text-sm ${ccwRequiredButEmpty ? "border-rose-300" : ""}`}
+                        placeholder="Explain how your alternative control meets the requirement..."
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
         </CardContent>
