@@ -157,9 +157,10 @@ export function JsonQuestionnaire({
 
       {/* Question card */}
       <Card className="border-slate-200">
-        <CardHeader>
-          <div className="flex items-start gap-3">
-            {current.item.show_requirement_id !== false && (
+        <CardHeader className="space-y-3">
+          {/* Requirement / PCI ref on its own row (matches SAQ A-style layout) */}
+          {current.item.show_requirement_id !== false && (
+            <div>
               <span className="inline-flex max-w-full flex-wrap items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
                 {current.item.requirement_raw ? (
                   <>
@@ -170,15 +171,15 @@ export function JsonQuestionnaire({
                   <>PCI Ref: {current.item.id}</>
                 )}
               </span>
-            )}
-            <div className="flex-1">
-              <CardTitle className="text-slate-900">{current.item.question}</CardTitle>
             </div>
-          </div>
+          )}
+          <CardTitle className="text-left text-lg font-semibold leading-snug text-slate-900">
+            {current.item.question}
+          </CardTitle>
           {current.item.help_text && (
-            <div className="mt-3 inline-flex items-start gap-2 text-xs text-slate-500">
-              <Info className="h-4 w-4 text-slate-400 mt-0.5 shrink-0" aria-hidden />
-              <span>{current.item.help_text}</span>
+            <div className="flex items-start gap-2 text-xs text-slate-500">
+              <Info className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" aria-hidden />
+              <span className="leading-relaxed">{current.item.help_text}</span>
             </div>
           )}
         </CardHeader>
