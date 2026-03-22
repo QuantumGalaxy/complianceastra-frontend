@@ -15,7 +15,9 @@ export function Footer() {
       <footer className="border-t border-slate-200/60 bg-slate-50/40">
         <div className="container py-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
-            <span>© {new Date().getFullYear()} ComplianceAstra LLC</span>
+            <span>
+              © {new Date().getFullYear()} Dama AI LLC. All rights reserved.
+            </span>
             <div className="flex gap-4">
               <Link href="/privacy" className="hover:text-slate-700">
                 Privacy
@@ -64,7 +66,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-6 pt-6 border-t border-slate-200/60 text-xs text-slate-500">
-          © {new Date().getFullYear()} ComplianceAstra LLC. All rights reserved.
+          © {new Date().getFullYear()} Dama AI LLC. All rights reserved.
         </div>
       </div>
     </footer>

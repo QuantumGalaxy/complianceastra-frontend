@@ -6,7 +6,7 @@ export default function PrivacyPage() {
         <p className="mt-2 text-slate-500">Last updated: March 2025</p>
         <div className="mt-8 prose prose-slate max-w-none text-slate-600 space-y-4">
           <p>
-            ComplianceAstra LLC (&quot;we&quot;, &quot;our&quot;) respects your privacy. This policy
+            Dama AI LLC (&quot;we&quot;, &quot;our&quot;) respects your privacy. This policy
             describes how we collect, use, and protect your information when you use our platform.
           </p>
           <h2 className="text-xl font-semibold text-slate-900 mt-8">Information We Collect</h2>

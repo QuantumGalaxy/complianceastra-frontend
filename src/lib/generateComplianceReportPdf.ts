@@ -411,7 +411,13 @@ function applyFooters(doc: jsPDF, pageCount: number): void {
       { align: "center" },
     );
     doc.setFontSize(6.8);
-    doc.text("Confidential — For internal use only", PAGE_WIDTH / 2, PAGE_HEIGHT - 10, { align: "center" });
+    const year = new Date().getFullYear();
+    doc.text(
+      `© ${year} Dama AI LLC. All rights reserved.`,
+      PAGE_WIDTH / 2,
+      PAGE_HEIGHT - 10,
+      { align: "center" },
+    );
     doc.setTextColor(0, 0, 0);
   }
 }
