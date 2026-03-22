@@ -183,21 +183,11 @@ export function JsonQuestionnaire({
               <span className="leading-relaxed">{current.item.help_text}</span>
             </div>
           )}
-          {current.item.evidence_examples && current.item.evidence_examples.length > 0 && (
-            <div className="rounded-lg border border-emerald-100 bg-emerald-50/50 p-3 text-sm text-slate-700">
-              <p className="font-semibold text-emerald-900">Evidence ideas</p>
-              <ul className="mt-2 list-disc space-y-1.5 pl-5 leading-relaxed text-slate-700">
-                {current.item.evidence_examples.map((ex, i) => (
-                  <li key={i}>{ex}</li>
-                ))}
-              </ul>
-            </div>
-          )}
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Response</p>
-            <div className="grid gap-2 sm:grid-cols-3" role="radiogroup" aria-label={current.item.question}>
+            <div className="flex flex-col gap-2" role="radiogroup" aria-label={current.item.question}>
               {merchantOptions.map((opt) => {
                 const selected = currentAnswer === opt.value;
                 return (
@@ -205,7 +195,7 @@ export function JsonQuestionnaire({
                     key={opt.value}
                     type="button"
                     onClick={() => handleAnswerChange(opt.value)}
-                    className={`rounded-lg border px-3 py-3 text-center text-sm font-medium transition-colors ${
+                    className={`w-full rounded-lg border px-4 py-3 text-left text-sm font-medium transition-colors ${
                       selected
                         ? "border-emerald-500 bg-emerald-50 text-emerald-900 shadow-sm"
                         : "border-slate-200 bg-white text-slate-800 hover:border-slate-300 hover:bg-slate-50"
