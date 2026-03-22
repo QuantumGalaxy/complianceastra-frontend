@@ -105,8 +105,8 @@ function LoginContent() {
                   Password
                 </Label>
                 <Link
-                  href="/contact"
-                  className="text-xs text-slate-500 hover:text-emerald-600 transition-colors"
+                  href="/auth/forgot-password"
+                  className="text-xs text-emerald-600 hover:text-emerald-700 transition-colors font-medium"
                 >
                   Forgot password?
                 </Link>

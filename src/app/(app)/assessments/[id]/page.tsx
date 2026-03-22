@@ -246,6 +246,11 @@ export default function AssessmentPage() {
         client_session_id: idParam,
         email: trimmed,
       });
+      if (co.needs_password_setup && co.setup_token) {
+        setPaymentModalOpen(false);
+        router.push(`/auth/set-password?token=${encodeURIComponent(co.setup_token)}`);
+        return;
+      }
       if (co.access_token) {
         await loginWithToken(co.access_token);
         setPaymentModalOpen(false);
