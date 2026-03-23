@@ -7,6 +7,8 @@ export type QuestionnaireItem = {
   id: string;
   /** Parent section id from source JSON (e.g. req_1) — for export/reporting */
   section_id?: string;
+  /** PCI DSS requirement numbers (e.g. "1.2.1") — merchant-facing traceability */
+  maps_to_requirements?: string[];
   requirement_raw: string;
   question: string;
   help_text?: string;

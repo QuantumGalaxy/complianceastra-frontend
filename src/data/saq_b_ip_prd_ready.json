@@ -1,2556 +1,606 @@
 {
-  "framework": "PCI DSS v4.0.1 SAQ B-IP",
-  "source": "Section 2 questionnaire",
+  "saq_type": "SAQ B-IP",
+  "version": "PCI DSS v4.0.1",
   "sections": [
     {
-      "section_id": "1",
+      "section_id": "network_security",
       "section_order": 1,
-      "section_title": "Install and Maintain Network Security Controls",
+      "section_title": "Network Security",
+      "description": "Define and protect network boundaries for systems that handle or route payment activity.",
       "category": "network_security",
-      "items": [
+      "questions": [
         {
-          "id": "1.2",
-          "requirement_raw": "Network security controls (NSCs) are configured and maintained.",
-          "question": "Do you have controls in place to ensure that network security controls (NSCs) are configured and maintained?",
-          "help_text": "Network security controls (NSCs) are configured and maintained.",
-          "expected_testing_raw": [],
+          "id": "nsc_documented",
+          "question": "Are network security controls (such as firewalls or routers) documented and in place between your payment environment and the internet?",
+          "help_text": "Applies to IP-connected terminals; dial-only setups may differ—answer for what you actually use.",
+          "maps_to_requirements": [
+            "1.1.1",
+            "1.2.1"
+          ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 1,
-          "category": "network_security",
-          "tags": [
-            "firewalls",
-            "network security",
-            "rules"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Firewall or router configuration",
-            "Network diagram",
-            "Change ticket or review record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 1
         },
         {
-          "id": "1.2.3",
-          "requirement_raw": "An accurate network diagram(s) is maintained that shows all connections between the CDE and other networks, including any wireless networks.",
-          "question": "Do you maintain an accurate network diagram for the in-scope environment?",
-          "help_text": "An accurate network diagram(s) is maintained that shows all connections between the CDE and other networks, including any wireless networks. A current network diagram(s) or other technical or topological solution that identifies network connections and...",
-          "expected_testing_raw": [
-            "Examine network diagrams.",
-            "Examine network configurations.",
-            "Interview responsible personnel."
+          "id": "nsc_rules_reviewed",
+          "question": "Are rules for allowed traffic reviewed at least when the network changes or at least annually?",
+          "help_text": "Keeps only necessary connections active.",
+          "maps_to_requirements": [
+            "1.2.7",
+            "1.2.8"
           ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 2,
-          "category": "network_security",
-          "tags": [
-            "firewalls",
-            "network security",
-            "rules"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Firewall or router configuration",
-            "Network diagram",
-            "Change ticket or review record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 2
         },
         {
-          "id": "1.2.5",
-          "requirement_raw": "All services, protocols and ports allowed are identified, approved, and have a defined business need.",
-          "question": "Do you have controls in place to ensure that all services, protocols and ports allowed are identified, approved, and have a defined business need?",
-          "help_text": "All services, protocols and ports allowed are identified, approved, and have a defined business need.",
-          "expected_testing_raw": [
-            "Examine documentation.",
-            "Examine configuration settings."
+          "id": "mgmt_interfaces_protected",
+          "question": "Are administrative interfaces for routers, firewalls, or terminals protected from open internet access (VPN, jump host, or local only)?",
+          "help_text": "Reduces remote takeover risk.",
+          "maps_to_requirements": [
+            "1.2.2",
+            "8.4.2"
           ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 3,
-          "category": "network_security",
-          "tags": [
-            "firewalls",
-            "network security",
-            "rules"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Firewall or router configuration",
-            "Network diagram",
-            "Change ticket or review record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 3
         },
         {
-          "id": "1.2.6",
-          "requirement_raw": "Security features are defined and implemented for all services, protocols, and ports that are in use and considered to be insecure, such that the risk is mitigated.",
-          "question": "Do you have controls in place to ensure that security features are defined and implemented for all services, protocols, and ports that are in use and considered to be insecure, such that the risk is mitigated?",
-          "help_text": "Security features are defined and implemented for all services, protocols, and ports that are in use and considered to be insecure, such that the risk is mitigated.",
-          "expected_testing_raw": [
-            "Examine documentation.",
-            "Examine configuration settings.",
-            "PCI DSS Requirement Expected Testing",
-            "Applicable Not in Place"
+          "id": "segmentation_clarity",
+          "question": "Have you defined which networks and devices are in scope for PCI versus general business use?",
+          "help_text": "Helps auditors understand your card data paths.",
+          "maps_to_requirements": [
+            "1.1.2",
+            "1.3.1"
           ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 4,
-          "category": "network_security",
-          "tags": [
-            "firewalls",
-            "network security",
-            "rules"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Firewall or router configuration",
-            "Network diagram",
-            "Change ticket or review record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 4
         },
         {
-          "id": "1.3",
-          "requirement_raw": "Network access to and from the cardholder data environment is restricted.",
-          "question": "Do you have controls in place to ensure that network access to and from the cardholder data environment is restricted?",
-          "help_text": "Network access to and from the cardholder data environment is restricted.",
-          "expected_testing_raw": [],
+          "id": "inbound_outbound_restricted",
+          "question": "Are inbound and outbound connections restricted to what your payment application needs?",
+          "help_text": "Default deny is the goal.",
+          "maps_to_requirements": [
+            "1.2.1",
+            "1.3.2"
+          ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 5,
-          "category": "network_security",
-          "tags": [
-            "firewalls",
-            "network security",
-            "rules"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Firewall or router configuration",
-            "Network diagram",
-            "Change ticket or review record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 5
         },
         {
-          "id": "1.3.1",
-          "requirement_raw": "Inbound traffic to the CDE is restricted as follows: To only traffic that is necessary. All other traffic is specifically denied.",
-          "question": "Do you have controls in place to ensure that inbound traffic to the CDE is restricted as follows: To only traffic that is necessary. All other traffic is specifically denied?",
-          "help_text": "Inbound traffic to the CDE is restricted as follows: To only traffic that is necessary. All other traffic is specifically denied.",
-          "expected_testing_raw": [
-            "Examine NSC configuration standards.",
-            "Examine NSC configurations."
+          "id": "wireless_if_used",
+          "question": "If wireless is used in or near the payment path, is it secured and separated appropriately?",
+          "help_text": "Not Applicable if no wireless touches payment traffic.",
+          "maps_to_requirements": [
+            "1.5.1",
+            "2.2.2"
           ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 6,
-          "category": "network_security",
-          "tags": [
-            "firewalls",
-            "network security",
-            "rules"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Firewall or router configuration",
-            "Network diagram",
-            "Change ticket or review record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "1.3.2",
-          "requirement_raw": "Outbound traffic from the CDE is restricted as follows: To only traffic that is necessary. All other traffic is specifically denied.",
-          "question": "Do you have controls in place to ensure that outbound traffic from the CDE is restricted as follows: To only traffic that is necessary. All other traffic is specifically denied?",
-          "help_text": "Outbound traffic from the CDE is restricted as follows: To only traffic that is necessary. All other traffic is specifically denied.",
-          "expected_testing_raw": [
-            "Examine NSC configuration standards.",
-            "Examine NSC configurations."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 7,
-          "category": "network_security",
-          "tags": [
-            "firewalls",
-            "network security",
-            "rules"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Firewall or router configuration",
-            "Network diagram",
-            "Change ticket or review record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "1.3.3",
-          "requirement_raw": "NSCs are installed between all wireless networks and the CDE, regardless of whether the wireless network is a CDE, such that: All wireless traffic from wireless networks into the CDE is denied by default. Only wireless traffic with an authorized business purpose is allowed into the CDE.",
-          "question": "Do you have controls in place to ensure that nSCs are installed between all wireless networks and the CDE, regardless of whether the wireless network is a CDE, such that: All wireless traffic from wireless networks into the CDE is denied by default. Only wireless traffic with an authorized business purpose is allowed into the CDE?",
-          "help_text": "NSCs are installed between all wireless networks and the CDE, regardless of whether the wireless network is a CDE, such that: All wireless traffic from wireless networks into the CDE is denied by default. Only wireless traffic with an authorized business...",
-          "expected_testing_raw": [
-            "Examine configuration settings.",
-            "Examine network diagrams."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 8,
-          "category": "network_security",
-          "tags": [
-            "firewalls",
-            "network security",
-            "rules"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Firewall or router configuration",
-            "Network diagram",
-            "Change ticket or review record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "1.4",
-          "requirement_raw": "Network connections between trusted and untrusted networks are controlled.",
-          "question": "Do you have controls in place to ensure that network connections between trusted and untrusted networks are controlled?",
-          "help_text": "Network connections between trusted and untrusted networks are controlled.",
-          "expected_testing_raw": [],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 9,
-          "category": "network_security",
-          "tags": [
-            "firewalls",
-            "network security",
-            "rules"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Firewall or router configuration",
-            "Network diagram",
-            "Change ticket or review record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "1.4.3",
-          "requirement_raw": "Anti-spoofing measures are implemented to detect and block forged source IP addresses from entering the trusted network.",
-          "question": "Do you have anti-spoofing controls to detect and block forged source IP traffic?",
-          "help_text": "Anti-spoofing measures are implemented to detect and block forged source IP addresses from entering the trusted network.",
-          "expected_testing_raw": [
-            "Examine NSC documentation.",
-            "Examine NSC configurations."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 10,
-          "category": "network_security",
-          "tags": [
-            "firewalls",
-            "network security",
-            "rules"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Firewall or router configuration",
-            "Network diagram",
-            "Change ticket or review record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 6
         }
       ]
     },
     {
-      "section_id": "2",
+      "section_id": "secure_configurations",
       "section_order": 2,
-      "section_title": "Apply Secure Configurations to All System Components",
+      "section_title": "Secure Configurations",
+      "description": "Harden systems and software against unsafe defaults and misconfiguration.",
       "category": "secure_configuration",
-      "items": [
+      "questions": [
         {
-          "id": "2.2",
-          "requirement_raw": "System components are configured and managed securely.",
-          "question": "Do you have controls in place to ensure that system components are configured and managed securely?",
-          "help_text": "System components are configured and managed securely.",
-          "expected_testing_raw": [],
+          "id": "config_standards",
+          "question": "Do you follow written configuration standards for terminals and any in-scope network devices?",
+          "help_text": "Include removing defaults and unnecessary services.",
+          "maps_to_requirements": [
+            "2.2.1",
+            "2.2.2"
+          ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 1,
-          "category": "secure_configuration",
-          "tags": [
-            "configuration",
-            "defaults",
-            "hardening"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Hardening standard",
-            "System configuration screenshot",
-            "Default password change record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 1
         },
         {
-          "id": "2.2.2",
-          "requirement_raw": "Vendor default accounts are managed as follows: If the vendor default account(s) will be used, the default password is changed per Requirement 8.3.6. If the vendor default account(s) will not be used, the account is removed or disabled.",
-          "question": "Have you changed or disabled all vendor default passwords, accounts, and insecure default settings?",
-          "help_text": "Vendor default accounts are managed as follows: If the vendor default account(s) will be used, the default password is changed per Requirement 8.3.6. If the vendor default account(s) will not be used, the account is removed or disabled.",
-          "expected_testing_raw": [
-            "Examine system configuration standards.",
-            "Examine vendor documentation.",
-            "Observe a system administrator logging on",
-            "using vendor default accounts.",
-            "Examine configuration files.",
-            "Interview personnel."
+          "id": "terminal_inventory",
+          "question": "Do you keep an up-to-date list of payment terminals and which sites or registers they belong to?",
+          "help_text": "Helps with replacements and audits.",
+          "maps_to_requirements": [
+            "2.4.1",
+            "9.5.1"
           ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 2,
-          "category": "secure_configuration",
-          "tags": [
-            "configuration",
-            "defaults",
-            "hardening"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Hardening standard",
-            "System configuration screenshot",
-            "Default password change record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 2
         },
         {
-          "id": "2.2.7",
-          "requirement_raw": "All non-console administrative access is encrypted using strong cryptography.",
-          "question": "Do you have controls in place to ensure that all non-console administrative access is encrypted using strong cryptography?",
-          "help_text": "All non-console administrative access is encrypted using strong cryptography. This includes administrative access via browser-based interfaces and application programming interfaces (APIs). PCI DSS Requirement Expected Testing Applicable Not in Place",
-          "expected_testing_raw": [
-            "Examine system configuration standards.",
-            "Observe an administrator log on.",
-            "Examine system configurations.",
-            "Examine vendor documentation.",
-            "Interview personnel."
+          "id": "backup_integrity",
+          "question": "Are backups of settlement or terminal configuration data encrypted or otherwise protected from unauthorized access?",
+          "help_text": "Applies if you back up payment-related systems.",
+          "maps_to_requirements": [
+            "3.5.1",
+            "9.5.1"
           ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 3,
-          "category": "secure_configuration",
-          "tags": [
-            "configuration",
-            "defaults",
-            "hardening"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Hardening standard",
-            "System configuration screenshot",
-            "Default password change record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "2.3",
-          "requirement_raw": "Wireless environments are configured and managed securely.",
-          "question": "Do you have controls in place to ensure that wireless environments are configured and managed securely?",
-          "help_text": "Wireless environments are configured and managed securely.",
-          "expected_testing_raw": [],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 4,
-          "category": "secure_configuration",
-          "tags": [
-            "configuration",
-            "defaults",
-            "hardening"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Hardening standard",
-            "System configuration screenshot",
-            "Default password change record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "2.3.1",
-          "requirement_raw": "For wireless environments connected to the CDE or transmitting account data, all wireless vendor defaults are changed at installation or are confirmed to be secure, including but not limited to: Default wireless encryption keys. Passwords on wireless access points. SNMP defaults. Any other security-related wireless vendor defaults.",
-          "question": "Have you changed or disabled all vendor default passwords, accounts, and insecure default settings?",
-          "help_text": "For wireless environments connected to the CDE or transmitting account data, all wireless vendor defaults are changed at installation or are confirmed to be secure, including but not limited to: Default wireless encryption keys. Passwords on wireless...",
-          "expected_testing_raw": [
-            "Examine policies and procedures.",
-            "Review vendor documentation.",
-            "Examine wireless configuration settings.",
-            "Interview personnel."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 5,
-          "category": "secure_configuration",
-          "tags": [
-            "configuration",
-            "defaults",
-            "hardening"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Hardening standard",
-            "System configuration screenshot",
-            "Default password change record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "2.3.2",
-          "requirement_raw": "For wireless environments connected to the CDE or transmitting account data, wireless encryption keys are changed as follows: Whenever personnel with knowledge of the key leave the company or the role for which the knowledge was necessary. Whenever a key is suspected of or known to be compromised.",
-          "question": "Do you have controls in place to ensure that for wireless environments connected to the CDE or transmitting account data, wireless encryption keys are changed as follows: Whenever personnel with knowledge of the key leave the company or the role for which the knowledge was necessary. Whenever a key is suspected of or known to be compromised?",
-          "help_text": "For wireless environments connected to the CDE or transmitting account data, wireless encryption keys are changed as follows: Whenever personnel with knowledge of the key leave the company or the role for which the knowledge was necessary. Whenever a key...",
-          "expected_testing_raw": [
-            "Examine key-management documentation.",
-            "Interview personnel."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 6,
-          "category": "secure_configuration",
-          "tags": [
-            "configuration",
-            "defaults",
-            "hardening"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Hardening standard",
-            "System configuration screenshot",
-            "Default password change record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 3
         }
       ]
     },
     {
-      "section_id": "3",
+      "section_id": "protect_cardholder_data",
       "section_order": 3,
-      "section_title": "Protect Stored Account Data",
+      "section_title": "Protect Cardholder Data",
+      "description": "Collect, store, and dispose of card data only as your business truly needs.",
       "category": "data_protection",
-      "items": [
+      "questions": [
         {
-          "id": "3.1",
-          "requirement_raw": "Processes and mechanisms for protecting stored account data are defined and understood.",
-          "question": "Do you have controls in place to ensure that processes and mechanisms for protecting stored account data are defined and understood?",
-          "help_text": "Processes and mechanisms for protecting stored account data are defined and understood.",
-          "expected_testing_raw": [],
+          "id": "no_pan_storage",
+          "question": "Do you avoid storing full card numbers, magnetic stripe, or CVV on your systems after authorization?",
+          "help_text": "SAQ B assumes you do not store cardholder data electronically.",
+          "maps_to_requirements": [
+            "3.3.1",
+            "3.3.2"
+          ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 1,
-          "category": "data_protection",
-          "tags": [
-            "card-data",
-            "storage",
-            "retention"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Data retention policy",
-            "Encryption configuration",
-            "Secure disposal record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 1
         },
         {
-          "id": "3.1.1",
-          "requirement_raw": "All security policies and operational procedures that are identified in Requirement 3 are: Documented. Kept up to date. In use. Known to all affected parties.",
-          "question": "Do you have documented, current procedures for Protect Stored Account Data, and do the affected teams know and follow them?",
-          "help_text": "All security policies and operational procedures that are identified in Requirement 3 are: Documented. Kept up to date. In use. Known to all affected parties. SAQ Completion Guidance:",
-          "expected_testing_raw": [
-            "Examine documentation.",
-            "Interview personnel.",
-            "Selection of any of the In Place responses for Requirement 3.1.1 means that, if the merchant has paper storage of account data, the merchant has policies and",
-            "procedures in place that govern merchant activities for Requirement 3. This helps to ensure personnel are aware of and following security policies and documented",
-            "operational procedures for managing the secure storage of any paper records with account data.",
-            "If merchant does not store paper records with account data, mark this requirement as Not Applicable and complete Appendix C: Explanation of Requirements Noted as",
-            "Not Applicable.",
-            "PCI DSS Requirement Expected Testing",
-            "In",
-            "In Place"
+          "id": "paper_media",
+          "question": "If paper receipts exist, are they handled and destroyed in a way that limits exposure of full card numbers?",
+          "help_text": "Truncation or secure disposal is typical.",
+          "maps_to_requirements": [
+            "3.2.1",
+            "9.5.1"
           ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 2,
-          "category": "data_protection",
-          "tags": [
-            "card-data",
-            "storage",
-            "retention"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Data retention policy",
-            "Encryption configuration",
-            "Secure disposal record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "3.3",
-          "requirement_raw": "Sensitive authentication data (SAD) is not stored after authorization.",
-          "question": "Do you avoid storing sensitive authentication data after authorization is complete?",
-          "help_text": "Sensitive authentication data (sensitive authentication data) is not stored after authorization.",
-          "expected_testing_raw": [],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 3,
-          "category": "data_protection",
-          "tags": [
-            "card-data",
-            "storage",
-            "retention"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Data retention policy",
-            "Encryption configuration",
-            "Secure disposal record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "3.3.1",
-          "requirement_raw": "SAD is not stored after authorization, even if encrypted. All sensitive authentication data received is rendered unrecoverable upon completion of the authorization process.",
-          "question": "Do you avoid storing sensitive authentication data after authorization is complete?",
-          "help_text": "sensitive authentication data is not stored after authorization, even if encrypted. All sensitive authentication data received is rendered unrecoverable upon completion of the authorization process.",
-          "expected_testing_raw": [
-            "Examine documented policies and",
-            "procedures.",
-            "Examine system configurations.",
-            "Observe the secure data deletion",
-            "processes."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 4,
-          "category": "data_protection",
-          "tags": [
-            "card-data",
-            "storage",
-            "retention"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Data retention policy",
-            "Encryption configuration",
-            "Secure disposal record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "3.3.1.1",
-          "requirement_raw": "The full contents of any track are not stored upon completion of the authorization process.",
-          "question": "Do you have controls in place to ensure that the full contents of any track are not stored upon completion of the authorization process?",
-          "help_text": "The full contents of any track are not stored upon completion of the authorization process.",
-          "expected_testing_raw": [
-            "Examine data sources."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 5,
-          "category": "data_protection",
-          "tags": [
-            "card-data",
-            "storage",
-            "retention"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Data retention policy",
-            "Encryption configuration",
-            "Secure disposal record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "3.3.1.2",
-          "requirement_raw": "The card verification code is not stored upon completion of the authorization process.",
-          "question": "Do you have controls in place to ensure that the card verification code is not stored upon completion of the authorization process?",
-          "help_text": "The card verification code is not stored upon completion of the authorization process.",
-          "expected_testing_raw": [
-            "Examine data sources."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 6,
-          "category": "data_protection",
-          "tags": [
-            "card-data",
-            "storage",
-            "retention"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Data retention policy",
-            "Encryption configuration",
-            "Secure disposal record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "3.3.1.3",
-          "requirement_raw": "The personal identification number (PIN) and the PIN block are not stored upon completion of the authorization process.",
-          "question": "Do you have controls in place to ensure that the personal identification number (PIN) and the PIN block are not stored upon completion of the authorization process?",
-          "help_text": "The personal identification number (PIN) and the PIN block are not stored upon completion of the authorization process.",
-          "expected_testing_raw": [
-            "Examine data sources."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 7,
-          "category": "data_protection",
-          "tags": [
-            "card-data",
-            "storage",
-            "retention"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Data retention policy",
-            "Encryption configuration",
-            "Secure disposal record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "3.4",
-          "requirement_raw": "Access to displays of full PAN and ability to copy PAN are restricted.",
-          "question": "Do you have controls in place to ensure that access to displays of full PAN and ability to copy PAN are restricted?",
-          "help_text": "Access to displays of full full card number (PAN) and ability to copy full card number (PAN) are restricted.",
-          "expected_testing_raw": [],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 8,
-          "category": "data_protection",
-          "tags": [
-            "card-data",
-            "storage",
-            "retention"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Data retention policy",
-            "Encryption configuration",
-            "Secure disposal record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "3.4.1",
-          "requirement_raw": "PAN is masked when displayed (the BIN and last four digits are the maximum number of digits to be displayed), such that only personnel with a legitimate business need can see more than the BIN and last four digits of the PAN.",
-          "question": "Do you have controls in place to ensure that pAN is masked when displayed (the BIN and last four digits are the maximum number of digits to be displayed), such that only personnel with a legitimate business need can see more than the BIN and last four digits of the PAN?",
-          "help_text": "full card number (PAN) is masked when displayed (the BIN and last four digits are the maximum number of digits to be displayed), such that only personnel with a legitimate business need can see more than the BIN and last four digits of the full card number...",
-          "expected_testing_raw": [
-            "Examine documented policies and",
-            "procedures.",
-            "Examine system configurations.",
-            "Examine the documented list of",
-            "roles that need access to more",
-            "than the BIN and last four digits of",
-            "the PAN (includes full PAN).",
-            "Examine displays of PAN (for",
-            "example, on screen, on paper",
-            "receipts)."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 9,
-          "category": "data_protection",
-          "tags": [
-            "card-data",
-            "storage",
-            "retention"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Data retention policy",
-            "Encryption configuration",
-            "Secure disposal record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 2
         }
       ]
     },
     {
-      "section_id": "4",
+      "section_id": "encryption_transmission",
       "section_order": 4,
-      "section_title": "Protect Cardholder Data with Strong Cryptography During Transmission Over Open, Public Networks",
-      "category": "transmission_security",
-      "items": [
+      "section_title": "Encryption & Transmission Security",
+      "description": "Protect card data in motion across networks and manage keys responsibly.",
+      "category": "encryption",
+      "questions": [
         {
-          "id": "4.2",
-          "requirement_raw": "PAN is protected with strong cryptography during transmission.",
-          "question": "Is account data encrypted with strong cryptography whenever it is sent over open or public networks?",
-          "help_text": "full card number (PAN) is protected with strong cryptography during transmission.",
-          "expected_testing_raw": [],
+          "id": "encryption_transit",
+          "question": "Is cardholder data encrypted with strong cryptography when sent over open or public networks?",
+          "help_text": "Often validated through your processor’s terminal program.",
+          "maps_to_requirements": [
+            "4.1",
+            "4.2.1"
+          ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 1,
-          "category": "transmission_security",
-          "tags": [
-            "encryption",
-            "transmission",
-            "tls"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "TLS or VPN configuration",
-            "Certificate or protocol settings"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 1
         },
         {
-          "id": "4.2.1",
-          "requirement_raw": "Strong cryptography and security protocols are implemented as follows to safeguard PAN during transmission over open, public networks: Only trusted keys and certificates are accepted. • Examine documented policies and procedures.",
-          "question": "Is account data encrypted with strong cryptography whenever it is sent over open or public networks?",
-          "help_text": "Strong cryptography and security protocols are implemented as follows to safeguard full card number (PAN) during transmission over open, public networks: Only trusted keys and certificates are accepted. • Examine documented policies and procedures....",
-          "expected_testing_raw": [
-            "Interview personnel.",
-            "Examine system configurations.",
-            "Examine cardholder data",
-            "transmissions.",
-            "Examine keys and certificates.",
-            "Certificates used to safeguard PAN during",
-            "transmission over open, public networks are",
-            "confirmed as valid and are not expired or",
-            "revoked. This bullet is a best practice until its",
-            "effective date; refer to Applicability Notes below",
-            "for details.",
-            "The protocol in use supports only secure",
-            "versions or configurations and does not support",
-            "fallback to, or use of insecure versions,",
-            "algorithms, key sizes, or implementations.",
-            "The encryption strength is appropriate for the",
-            "encryption methodology in use.",
-            "PCI DSS Requirement Expected Testing",
-            "4.2.1",
-            "(cont.)",
-            "Part of this Applicability Note was intentionally removed as it does not apply to this SAQ.",
-            "The bullet above (for confirming that certificates used to safeguard PAN during transmission over",
-            "open, public networks are valid and are not expired or revoked) is a best practice until 31 March",
-            "2025, after which it will be required as part of Requirement 4.2.1 and must be fully considered",
-            "during a PCI DSS assessment.",
-            "Selection of any of the In Place responses for Requirement 4.2.1 means the merchant has confirmed that strong cryptography and security controls are",
-            "implemented to safeguard PAN during transmission over open, public networks either because 1) the controls are enabled and active on the PTS POI device or 2)",
-            "the merchant has implemented controls that provide this functionality."
+          "id": "key_mgmt",
+          "question": "If you manage encryption keys for payment traffic, are they stored and rotated using approved practices?",
+          "help_text": "Often handled by your processor—Not Applicable if you never touch keys.",
+          "maps_to_requirements": [
+            "4.2.2",
+            "3.6.1"
           ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 2,
-          "category": "transmission_security",
-          "tags": [
-            "encryption",
-            "transmission",
-            "tls"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "TLS or VPN configuration",
-            "Certificate or protocol settings"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 2
+        },
+        {
+          "display_order": 3
         }
       ]
     },
     {
-      "section_id": "6",
+      "section_id": "malware_protection",
       "section_order": 5,
-      "section_title": "Develop and Maintain Secure Systems and Software",
-      "category": "secure_software",
-      "items": [
+      "section_title": "Malware Protection",
+      "description": "Prevent, detect, and respond to malicious software on in-scope systems.",
+      "category": "malware",
+      "questions": [
         {
-          "id": "6.3",
-          "requirement_raw": "Security vulnerabilities are identified and addressed. Note: For SAQ B-IP, this requirement applies to the merchant’s firewall/router devices that connect PTS POI devices to the payment processor. Identification and management of security vulnerabilities for PTS POI devices are often handled by the merchant’s terminal provider or processor. The merchant should contact the entity managing its terminals to understand how this requirement is met and the responsibilities of the merchant and of the entity managing the terminals.",
-          "question": "Do you have controls in place to ensure that security vulnerabilities are identified and addressed. Note: For SAQ B-IP, this requirement applies to the merchant’s firewall/router devices that connect PTS POI devices to the payment processor. Identification and management of security vulnerabilities for PTS POI devices are often handled by the merchant’s terminal provider or processor. The merchant should contact the entity managing its terminals to understand how this requirement is met and the responsibilities of the merchant and of the entity managing the terminals?",
-          "help_text": "Security vulnerabilities are identified and addressed. Note: For SAQ B-IP, this requirement applies to the merchant’s firewall/router devices that connect PTS POI devices to the payment processor. Identification and management of security vulnerabilities...",
-          "expected_testing_raw": [],
+          "id": "malware_on_systems",
+          "question": "Are PCs or servers that manage terminals or settlement protected against malware where applicable?",
+          "help_text": "Choose Not Applicable if no such systems exist.",
+          "maps_to_requirements": [
+            "5.2.1",
+            "5.3.2"
+          ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 1,
-          "category": "secure_software",
-          "tags": [
-            "patching",
-            "development",
-            "vulnerabilities"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Patch record",
-            "Change ticket",
-            "Vulnerability remediation evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 1
         },
         {
-          "id": "6.3.1",
-          "requirement_raw": "Security vulnerabilities are identified and managed as follows: New security vulnerabilities are identified using industry-recognized sources for security vulnerability information, including alerts from international and national computer emergency response teams (CERTs). Vulnerabilities are assigned a risk ranking based on industry best practices and consideration of potential impact. Risk rankings identify, at a minimum, all vulnerabilities considered to be a high-risk or critical to the environment. Bullet intentionally left blank for this SAQ.",
-          "question": "Do you identify, rank, and manage security vulnerabilities based on risk?",
-          "help_text": "Security vulnerabilities are identified and managed as follows: New security vulnerabilities are identified using industry-recognized sources for security vulnerability information, including alerts from international and national computer emergency...",
-          "expected_testing_raw": [
-            "Examine policies and procedures.",
-            "Interview responsible personnel.",
-            "Examine documentation.",
-            "Observe processes."
+          "id": "api_to_processor",
+          "question": "Are APIs or file transfers to your processor authenticated and encrypted end-to-end?",
+          "help_text": "No clear-text credentials in batch uploads.",
+          "maps_to_requirements": [
+            "4.1",
+            "4.2.1"
           ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 2,
-          "category": "secure_software",
-          "tags": [
-            "patching",
-            "development",
-            "vulnerabilities"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Patch record",
-            "Change ticket",
-            "Vulnerability remediation evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "6.3.3",
-          "requirement_raw": "All system components are protected from known vulnerabilities by installing applicable security patches/updates as follows: Patches/updates for critical vulnerabilities (identified according to the risk ranking process at Requirement 6.3.1) are installed within one month of release. Bullet intentionally left blank for this SAQ.",
-          "question": "Do you install security patches and updates within the required timeframes?",
-          "help_text": "All system components are protected from known vulnerabilities by installing applicable security patches/updates as follows: Patches/updates for critical vulnerabilities (identified according to the risk ranking process at Requirement 6.3.1) are installed...",
-          "expected_testing_raw": [
-            "Examine policies and procedures.",
-            "Examine system components and",
-            "related software.",
-            "Compare list of security patches",
-            "installed to recent vendor patch lists."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 3,
-          "category": "secure_software",
-          "tags": [
-            "patching",
-            "development",
-            "vulnerabilities"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Patch record",
-            "Change ticket",
-            "Vulnerability remediation evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 2
         }
       ]
     },
     {
-      "section_id": "7",
+      "section_id": "secure_development_patching",
       "section_order": 6,
-      "section_title": "Restrict Access to System Components and Cardholder Data by Business Need to Know",
-      "category": "access_control",
-      "items": [
+      "section_title": "Secure Development & Patching",
+      "description": "Control code and configuration changes and keep components patched.",
+      "category": "development",
+      "questions": [
         {
-          "id": "7.2",
-          "requirement_raw": "Access to system components and data is appropriately defined and assigned.",
-          "question": "Do you have controls in place to ensure that access to system components and data is appropriately defined and assigned?",
-          "help_text": "Access to system components and data is appropriately defined and assigned.",
-          "expected_testing_raw": [],
+          "id": "change_control",
+          "question": "Are changes to payment terminals or network gear approved and tracked?",
+          "help_text": "Even a simple ticket or sign-off process counts.",
+          "maps_to_requirements": [
+            "6.5.1",
+            "6.3.1"
+          ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 1,
-          "category": "access_control",
-          "tags": [
-            "least privilege",
-            "access"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Access matrix",
-            "Role approval",
-            "Access review record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "7.2.2",
-          "requirement_raw": "Access is assigned to users, including privileged users, based on: Job classification and function. Least privileges necessary to perform job responsibilities.",
-          "question": "Do you have controls in place to ensure that access is assigned to users, including privileged users, based on: Job classification and function. Least privileges necessary to perform job responsibilities?",
-          "help_text": "Access is assigned to users, including privileged users, based on: Job classification and function. Least privileges necessary to perform job responsibilities.",
-          "expected_testing_raw": [
-            "Examine policies and procedures.",
-            "Examine user access settings,",
-            "including for privileged users.",
-            "Interview responsible management",
-            "personnel.",
-            "Interview personnel responsible for",
-            "assigning access."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 2,
-          "category": "access_control",
-          "tags": [
-            "least privilege",
-            "access"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Access matrix",
-            "Role approval",
-            "Access review record"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 1
         }
       ]
     },
     {
-      "section_id": "8",
+      "section_id": "access_control",
       "section_order": 7,
-      "section_title": "Identify Users and Authenticate Access to System Components",
-      "category": "authentication",
-      "items": [
+      "section_title": "Access Control",
+      "description": "Grant access to systems and data on a need-to-know basis.",
+      "category": "access",
+      "questions": [
         {
-          "id": "8.1",
-          "requirement_raw": "Processes and mechanisms for identifying users and authenticating access to system components are defined and understood.",
-          "question": "Do you have controls in place to ensure that processes and mechanisms for identifying users and authenticating access to system components are defined and understood?",
-          "help_text": "Processes and mechanisms for identifying users and authenticating access to system components are defined and understood.",
-          "expected_testing_raw": [],
+          "id": "access_limited",
+          "question": "Is access to terminal settings and back-office tools limited to people who need it?",
+          "help_text": "Includes vendor remote access if used.",
+          "maps_to_requirements": [
+            "7.1",
+            "7.2.1"
+          ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 1,
-          "category": "authentication",
-          "tags": [
-            "authentication",
-            "accounts",
-            "mfa"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "MFA setting",
-            "Password policy",
-            "User account list"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 1
         },
         {
-          "id": "8.1.1",
-          "requirement_raw": "All security policies and operational procedures that are identified in Requirement 8 are: Documented. Kept up to date. In use. Known to all affected parties.",
-          "question": "Do you have documented, current procedures for Identify Users and Authenticate Access to System Components, and do the affected teams know and follow them?",
-          "help_text": "All security policies and operational procedures that are identified in Requirement 8 are: Documented. Kept up to date. In use. Known to all affected parties. SAQ Completion Guidance:",
-          "expected_testing_raw": [
-            "Examine documentation.",
-            "Interview personnel.",
-            "Selection of any of the In Place responses for Requirement 8.1.1 means that the merchant has policies and procedures in place that govern merchant activities for",
-            "Requirement 8.",
-            "PCI DSS Requirement Expected Testing"
+          "id": "secure_remote_support",
+          "question": "Is remote access for vendors or admins into payment systems authenticated strongly and time-limited?",
+          "help_text": "Unique credentials per vendor rep; disable when not needed.",
+          "maps_to_requirements": [
+            "8.4.2",
+            "8.5.1"
           ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 2,
-          "category": "authentication",
-          "tags": [
-            "authentication",
-            "accounts",
-            "mfa"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "MFA setting",
-            "Password policy",
-            "User account list"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "8.2",
-          "requirement_raw": "User identification and related accounts for users and administrators are strictly managed throughout an account’s lifecycle.",
-          "question": "Do you have controls in place to ensure that user identification and related accounts for users and administrators are strictly managed throughout an account’s lifecycle?",
-          "help_text": "User identification and related accounts for users and administrators are strictly managed throughout an account’s lifecycle.",
-          "expected_testing_raw": [],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 3,
-          "category": "authentication",
-          "tags": [
-            "authentication",
-            "accounts",
-            "mfa"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "MFA setting",
-            "Password policy",
-            "User account list"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "8.2.2",
-          "requirement_raw": "Group, shared, or generic IDs, or other shared authentication credentials are only used when necessary on an exception basis, and are managed as follows: ID use is prevented unless needed for an exceptional circumstance. Use is limited to the time needed for the exceptional circumstance. Business justification for use is documented. Use is explicitly approved by management. Individual user identity is confirmed before access to an account is granted. Every action taken is attributable to an individual user.",
-          "question": "Do you have controls in place to ensure that group, shared, or generic IDs, or other shared authentication credentials are only used when necessary on an exception basis, and are managed as follows: ID use is prevented unless needed for an exceptional circumstance. Use is limited to the time needed for the exceptional circumstance. Business justification for use is documented. Use is explicitly approved by management. Individual user identity is confirmed before access to an account is granted. Every action taken is attributable to an individual user?",
-          "help_text": "Group, shared, or generic IDs, or other shared authentication credentials are only used when necessary on an exception basis, and are managed as follows: ID use is prevented unless needed for an exceptional circumstance. Use is limited to the time needed...",
-          "expected_testing_raw": [
-            "Examine user account lists on system",
-            "components and applicable",
-            "documentation.",
-            "Examine authentication policies and",
-            "procedures.",
-            "Interview system administrators."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 4,
-          "category": "authentication",
-          "tags": [
-            "authentication",
-            "accounts",
-            "mfa"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "MFA setting",
-            "Password policy",
-            "User account list"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "8.2.7",
-          "requirement_raw": "Accounts used by third parties to access, support, or maintain system components via remote access are managed as follows: Enabled only during the time period needed and disabled when not in use. Use is monitored for unexpected activity.",
-          "question": "Do you have controls in place to ensure that accounts used by third parties to access, support, or maintain system components via remote access are managed as follows: Enabled only during the time period needed and disabled when not in use. Use is monitored for unexpected activity?",
-          "help_text": "Accounts used by third parties to access, support, or maintain system components via remote access are managed as follows: Enabled only during the time period needed and disabled when not in use. Use is monitored for unexpected activity.",
-          "expected_testing_raw": [
-            "Interview responsible personnel.",
-            "Examine documentation for managing",
-            "accounts.",
-            "Examine evidence.",
-            "PCI DSS Requirement Expected Testing"
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 5,
-          "category": "authentication",
-          "tags": [
-            "authentication",
-            "accounts",
-            "mfa"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "MFA setting",
-            "Password policy",
-            "User account list"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "8.4",
-          "requirement_raw": "Multi-factor authentication (MFA) is implemented to secure access into the CDE.",
-          "question": "Is multi-factor authentication used where this requirement applies?",
-          "help_text": "Multi-factor authentication (MFA) is implemented to secure access into the CDE.",
-          "expected_testing_raw": [],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 6,
-          "category": "authentication",
-          "tags": [
-            "authentication",
-            "accounts",
-            "mfa"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "MFA setting",
-            "Password policy",
-            "User account list"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "8.4.3",
-          "requirement_raw": "MFA is implemented for all remote access originating from outside the entity’s network that could access or impact the CDE.",
-          "question": "Do you have controls in place to ensure that mFA is implemented for all remote access originating from outside the entity’s network that could access or impact the CDE?",
-          "help_text": "MFA is implemented for all remote access originating from outside the entity’s network that could access or impact the CDE.",
-          "expected_testing_raw": [
-            "Examine network and/or system",
-            "configurations for remote access",
-            "servers and systems.",
-            "Observe personnel (for example, users",
-            "and administrators) and third parties",
-            "connecting remotely to the network."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 7,
-          "category": "authentication",
-          "tags": [
-            "authentication",
-            "accounts",
-            "mfa"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "MFA setting",
-            "Password policy",
-            "User account list"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 2
         }
       ]
     },
     {
-      "section_id": "9",
+      "section_id": "user_authentication",
       "section_order": 8,
-      "section_title": "Restrict Physical Access to Cardholder Data",
-      "category": "physical_security",
-      "items": [
+      "section_title": "User Authentication",
+      "description": "Verify users and administrators before granting access.",
+      "category": "authentication",
+      "questions": [
         {
-          "id": "9.1",
-          "requirement_raw": "Processes and mechanisms for restricting physical access to cardholder data are defined and understood.",
-          "question": "Is physical access to sensitive areas, systems, and media restricted to authorized people only?",
-          "help_text": "Processes and mechanisms for restricting physical access to cardholder data are defined and understood.",
-          "expected_testing_raw": [],
+          "id": "unique_accounts",
+          "question": "Does each person use their own login for systems that can change payment settings?",
+          "help_text": "No shared passwords for admin tasks.",
+          "maps_to_requirements": [
+            "8.2.1",
+            "8.3.1"
+          ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 1,
-          "category": "physical_security",
-          "tags": [
-            "physical security",
-            "media",
-            "visitors"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Visitor log",
-            "Badge/access control record",
-            "Locked storage evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "9.1.1",
-          "requirement_raw": "All security policies and operational procedures that are identified in Requirement 9 are: Documented. Kept up to date. In use. Known to all affected parties.",
-          "question": "Do you have documented, current procedures for Restrict Physical Access to Cardholder Data, and do the affected teams know and follow them?",
-          "help_text": "All security policies and operational procedures that are identified in Requirement 9 are: Documented. Kept up to date. In use. Known to all affected parties. SAQ Completion Guidance:",
-          "expected_testing_raw": [
-            "Examine documentation.",
-            "Interview personnel.",
-            "Selection of any of the In Place responses for Requirement 9.1.1 means that the merchant has policies and procedures in place that govern merchant activities for",
-            "Requirement 9, including how any paper media with cardholder data is secured, and how POI devices are protected."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 2,
-          "category": "physical_security",
-          "tags": [
-            "physical security",
-            "media",
-            "visitors"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Visitor log",
-            "Badge/access control record",
-            "Locked storage evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "9.2",
-          "requirement_raw": "Physical access controls manage entry into facilities and systems containing cardholder data.",
-          "question": "Is physical access to sensitive areas, systems, and media restricted to authorized people only?",
-          "help_text": "Physical access controls manage entry into facilities and systems containing cardholder data.",
-          "expected_testing_raw": [],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 3,
-          "category": "physical_security",
-          "tags": [
-            "physical security",
-            "media",
-            "visitors"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Visitor log",
-            "Badge/access control record",
-            "Locked storage evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "9.2.2",
-          "requirement_raw": "Physical and/or logical controls are implemented to restrict use of publicly accessible network jacks within the facility.",
-          "question": "Do you have controls in place to ensure that physical and/or logical controls are implemented to restrict use of publicly accessible network jacks within the facility?",
-          "help_text": "Physical and/or logical controls are implemented to restrict use of publicly accessible network jacks within the facility.",
-          "expected_testing_raw": [
-            "Interview responsible personnel.",
-            "Observe locations of publicly",
-            "accessible network jacks."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 4,
-          "category": "physical_security",
-          "tags": [
-            "physical security",
-            "media",
-            "visitors"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Visitor log",
-            "Badge/access control record",
-            "Locked storage evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "9.4",
-          "requirement_raw": "Media with cardholder data is securely stored, accessed, distributed, and destroyed. Note: For SAQ B-IP, Requirements at 9.4 only apply to merchants with paper records (for example, receipts or printed reports) with account data, including primary account numbers (PANs).",
-          "question": "Do you have controls in place to ensure that media with cardholder data is securely stored, accessed, distributed, and destroyed. Note: For SAQ B-IP, Requirements at 9.4 only apply to merchants with paper records (for example, receipts or printed reports) with account data, including primary account numbers (PANs)?",
-          "help_text": "Media with cardholder data is securely stored, accessed, distributed, and destroyed. Note: For SAQ B-IP, Requirements at 9.4 only apply to merchants with paper records (for example, receipts or printed reports) with account data, including primary account...",
-          "expected_testing_raw": [],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 5,
-          "category": "physical_security",
-          "tags": [
-            "physical security",
-            "media",
-            "visitors"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Visitor log",
-            "Badge/access control record",
-            "Locked storage evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "9.4.1",
-          "requirement_raw": "All media with cardholder data is physically secured. • Examine documentation.",
-          "question": "Do you have controls in place to ensure that all media with cardholder data is physically secured. • Examine documentation?",
-          "help_text": "All media with cardholder data is physically secured. • Examine documentation.",
-          "expected_testing_raw": [],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 6,
-          "category": "physical_security",
-          "tags": [
-            "physical security",
-            "media",
-            "visitors"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Visitor log",
-            "Badge/access control record",
-            "Locked storage evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "9.4.1.1",
-          "requirement_raw": "Offline media backups with cardholder data are stored in a secure location.",
-          "question": "Do you have controls in place to ensure that offline media backups with cardholder data are stored in a secure location?",
-          "help_text": "Offline media backups with cardholder data are stored in a secure location.",
-          "expected_testing_raw": [
-            "Examine documented procedures.",
-            "Examine logs or other documentation.",
-            "Interview responsible personnel at the",
-            "storge location(s).",
-            "PCI DSS Requirement Expected Testing"
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 7,
-          "category": "physical_security",
-          "tags": [
-            "physical security",
-            "media",
-            "visitors"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Visitor log",
-            "Badge/access control record",
-            "Locked storage evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "9.4.2",
-          "requirement_raw": "All media with cardholder data is classified in accordance with the sensitivity of the data.",
-          "question": "Do you have controls in place to ensure that all media with cardholder data is classified in accordance with the sensitivity of the data?",
-          "help_text": "All media with cardholder data is classified in accordance with the sensitivity of the data.",
-          "expected_testing_raw": [
-            "Examine documented procedures.",
-            "Examine media logs or other",
-            "documentation."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 8,
-          "category": "physical_security",
-          "tags": [
-            "physical security",
-            "media",
-            "visitors"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Visitor log",
-            "Badge/access control record",
-            "Locked storage evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "9.4.3",
-          "requirement_raw": "Media with cardholder data sent outside the facility is secured as follows: Bullet intentionally left blank for this SAQ. Media is sent by secured courier or other delivery method that can be accurately tracked. Bullet intentionally left blank for this SAQ.",
-          "question": "Do you have controls in place to ensure that media with cardholder data sent outside the facility is secured as follows: Bullet intentionally left blank for this SAQ. Media is sent by secured courier or other delivery method that can be accurately tracked. Bullet intentionally left blank for this SAQ?",
-          "help_text": "Media with cardholder data sent outside the facility is secured as follows: Bullet intentionally left blank for this SAQ. Media is sent by secured courier or other delivery method that can be accurately tracked. Bullet intentionally left blank for this SAQ.",
-          "expected_testing_raw": [
-            "Examine documented procedures.",
-            "Interview personnel.",
-            "Examine records.",
-            "Examine offsite tracking logs for all",
-            "media."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 9,
-          "category": "physical_security",
-          "tags": [
-            "physical security",
-            "media",
-            "visitors"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Visitor log",
-            "Badge/access control record",
-            "Locked storage evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "9.4.4",
-          "requirement_raw": "Management approves all media with cardholder data that is moved outside the facility (including when media is distributed to individuals).",
-          "question": "Do you have controls in place to ensure that management approves all media with cardholder data that is moved outside the facility (including when media is distributed to individuals)?",
-          "help_text": "Management approves all media with cardholder data that is moved outside the facility (including when media is distributed to individuals).",
-          "expected_testing_raw": [
-            "Examine documented procedures.",
-            "Examine offsite media tracking logs.",
-            "Interview responsible personnel."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 10,
-          "category": "physical_security",
-          "tags": [
-            "physical security",
-            "media",
-            "visitors"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Visitor log",
-            "Badge/access control record",
-            "Locked storage evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "9.4.6",
-          "requirement_raw": "Hard-copy materials with cardholder data are destroyed when no longer needed for business or legal reasons, as follows: Materials are cross-cut shredded, incinerated, or pulped so that cardholder data cannot be reconstructed. Materials are stored in secure storage containers prior to destruction.",
-          "question": "Do you have controls in place to ensure that hard-copy materials with cardholder data are destroyed when no longer needed for business or legal reasons, as follows: Materials are cross-cut shredded, incinerated, or pulped so that cardholder data cannot be reconstructed. Materials are stored in secure storage containers prior to destruction?",
-          "help_text": "Hard-copy materials with cardholder data are destroyed when no longer needed for business or legal reasons, as follows: Materials are cross-cut shredded, incinerated, or pulped so that cardholder data cannot be reconstructed. Materials are stored in secure...",
-          "expected_testing_raw": [
-            "Examine the media destruction policy.",
-            "Observe processes.",
-            "Interview personnel.",
-            "Observe storage containers."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 11,
-          "category": "physical_security",
-          "tags": [
-            "physical security",
-            "media",
-            "visitors"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Visitor log",
-            "Badge/access control record",
-            "Locked storage evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "9.5",
-          "requirement_raw": "Point-of-interaction (POI) devices are protected from tampering and unauthorized substitution.",
-          "question": "Do you have controls in place to ensure that point-of-interaction (POI) devices are protected from tampering and unauthorized substitution?",
-          "help_text": "Point-of-interaction (POI) devices are protected from tampering and unauthorized substitution.",
-          "expected_testing_raw": [],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 12,
-          "category": "physical_security",
-          "tags": [
-            "physical security",
-            "media",
-            "visitors"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Visitor log",
-            "Badge/access control record",
-            "Locked storage evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "9.5.1",
-          "requirement_raw": "POI devices that capture payment card data via direct physical interaction with the payment card form factor are protected from tampering and unauthorized substitution, including the following: Maintaining a list of POI devices. Periodically inspecting POI devices to look for tampering or unauthorized substitution. Training personnel to be aware of suspicious behavior and to report tampering or unauthorized substitution of devices.",
-          "question": "Do you have controls in place to ensure that pOI devices that capture payment card data via direct physical interaction with the payment card form factor are protected from tampering and unauthorized substitution, including the following: Maintaining a list of POI devices. Periodically inspecting POI devices to look for tampering or unauthorized substitution. Training personnel to be aware of suspicious behavior and to report tampering or unauthorized substitution of devices?",
-          "help_text": "POI devices that capture payment card data via direct physical interaction with the payment card form factor are protected from tampering and unauthorized substitution, including the following: Maintaining a list of POI devices. Periodically inspecting POI...",
-          "expected_testing_raw": [
-            "Examine documented policies and",
-            "procedures."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 13,
-          "category": "physical_security",
-          "tags": [
-            "physical security",
-            "media",
-            "visitors"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Visitor log",
-            "Badge/access control record",
-            "Locked storage evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "9.5.1.1",
-          "requirement_raw": "An up-to-date list of POI devices is maintained, including: Make and model of the device. Location of device. Device serial number or other methods of unique identification.",
-          "question": "Does every user have a unique ID or account for access to in-scope systems?",
-          "help_text": "An up-to-date list of POI devices is maintained, including: Make and model of the device. Location of device. Device serial number or other methods of unique identification.",
-          "expected_testing_raw": [
-            "Examine the list of POI devices.",
-            "Observe POI devices and device",
-            "locations.",
-            "Interview personnel."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 14,
-          "category": "physical_security",
-          "tags": [
-            "physical security",
-            "media",
-            "visitors"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Visitor log",
-            "Badge/access control record",
-            "Locked storage evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "9.5.1.2",
-          "requirement_raw": "POI device surfaces are periodically inspected to detect tampering and unauthorized substitution.",
-          "question": "Do you have controls in place to ensure that pOI device surfaces are periodically inspected to detect tampering and unauthorized substitution?",
-          "help_text": "POI device surfaces are periodically inspected to detect tampering and unauthorized substitution.",
-          "expected_testing_raw": [
-            "Examine documented procedures.",
-            "Interview responsible personnel.",
-            "Observe inspection processes."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 15,
-          "category": "physical_security",
-          "tags": [
-            "physical security",
-            "media",
-            "visitors"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Visitor log",
-            "Badge/access control record",
-            "Locked storage evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "9.5.1.2.1",
-          "requirement_raw": "Requirement intentionally left blank for this SAQ. PCI DSS Requirement Expected Testing",
-          "question": "Do you have controls in place to ensure that requirement intentionally left blank for this SAQ. PCI DSS Requirement Expected Testing?",
-          "help_text": "Requirement intentionally left blank for this SAQ. PCI DSS Requirement Expected Testing",
-          "expected_testing_raw": [],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 16,
-          "category": "physical_security",
-          "tags": [
-            "physical security",
-            "media",
-            "visitors"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Visitor log",
-            "Badge/access control record",
-            "Locked storage evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "9.5.1.3",
-          "requirement_raw": "Training is provided for personnel in POI environments to be aware of attempted tampering or replacement of POI devices, and includes: Verifying the identity of any third-party persons claiming to be repair or maintenance personnel, before granting them access to modify or troubleshoot devices. Procedures to ensure devices are not installed, replaced, or returned without verification. Being aware of suspicious behavior around devices. Reporting suspicious behavior and indications of device tampering or substitution to appropriate personnel.",
-          "question": "Do you have controls in place to ensure that training is provided for personnel in POI environments to be aware of attempted tampering or replacement of POI devices, and includes: Verifying the identity of any third-party persons claiming to be repair or maintenance personnel, before granting them access to modify or troubleshoot devices. Procedures to ensure devices are not installed, replaced, or returned without verification. Being aware of suspicious behavior around devices. Reporting suspicious behavior and indications of device tampering or substitution to appropriate personnel?",
-          "help_text": "Training is provided for personnel in POI environments to be aware of attempted tampering or replacement of POI devices, and includes: Verifying the identity of any third-party persons claiming to be repair or maintenance personnel, before granting them...",
-          "expected_testing_raw": [
-            "Review training materials for",
-            "personnel in POI environments.",
-            "Interview responsible personnel.",
-            "Selection of any of the In Place responses for Requirements at 9.5 means that the merchant has policies and procedures in place for Requirements 9.5.1, 9.5.1.1,",
-            "9.5.1.2, and 9.5.1.3, and that they maintain a current list of devices, conduct periodic device inspections, and train employees about what to look for to detect",
-            "tampered or substituted devices."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 17,
-          "category": "physical_security",
-          "tags": [
-            "physical security",
-            "media",
-            "visitors"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Visitor log",
-            "Badge/access control record",
-            "Locked storage evidence"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 1
         }
       ]
     },
     {
-      "section_id": "11",
+      "section_id": "physical_security",
       "section_order": 9,
-      "section_title": "Test Security of Systems and Networks Regularly",
-      "category": "security_testing",
-      "items": [
+      "section_title": "Physical Security",
+      "description": "Protect devices and facilities that can reach cardholder environments.",
+      "category": "physical",
+      "questions": [
         {
-          "id": "11.3",
-          "requirement_raw": "External and internal vulnerabilities are regularly identified, prioritized, and addressed.",
-          "question": "Do you have controls in place to ensure that external and internal vulnerabilities are regularly identified, prioritized, and addressed?",
-          "help_text": "External and internal vulnerabilities are regularly identified, prioritized, and addressed.",
-          "expected_testing_raw": [],
+          "id": "device_physical",
+          "question": "Are terminals and any in-scope devices protected from tampering or theft (for example, secured counters or cables)?",
+          "help_text": "Basic physical care for payment devices.",
+          "maps_to_requirements": [
+            "9.2.1",
+            "9.4.1"
+          ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 1,
-          "category": "security_testing",
-          "tags": [
-            "scanning",
-            "testing",
-            "penetration"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Scan report",
-            "Pen test report",
-            "Remediation ticket"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "11.3.2",
-          "requirement_raw": "External vulnerability scans are performed as follows: At least once every three months. By a PCI SSC Approved Scanning Vendor (ASV). Vulnerabilities are resolved and ASV Program Guide requirements for a passing scan are met. Rescans are performed as needed to confirm that vulnerabilities are resolved per the ASV Program Guide requirements for a passing scan.",
-          "question": "Do you perform required vulnerability scans and address any findings?",
-          "help_text": "External vulnerability scans are performed as follows: At least once every three months. By a PCI SSC Approved Scanning Vendor (ASV). Vulnerabilities are resolved and ASV Program Guide requirements for a passing scan are met. Rescans are performed as...",
-          "expected_testing_raw": [
-            "Examine ASV scan reports."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 2,
-          "category": "security_testing",
-          "tags": [
-            "scanning",
-            "testing",
-            "penetration"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Scan report",
-            "Pen test report",
-            "Remediation ticket"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "11.4",
-          "requirement_raw": "External and internal penetration testing is regularly performed, and exploitable vulnerabilities and security weaknesses are corrected.",
-          "question": "Do you perform penetration testing when required and after significant changes?",
-          "help_text": "External and internal penetration testing is regularly performed, and exploitable vulnerabilities and security weaknesses are corrected.",
-          "expected_testing_raw": [],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 3,
-          "category": "security_testing",
-          "tags": [
-            "scanning",
-            "testing",
-            "penetration"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Scan report",
-            "Pen test report",
-            "Remediation ticket"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "11.4.5",
-          "requirement_raw": "If segmentation is used to isolate the CDE from other networks, penetration tests are performed on segmentation controls as follows: At least once every 12 months and after any changes to segmentation controls/methods. Covering all segmentation controls/methods in use. Bullet intentionally left blank for this SAQ. Confirming that the segmentation controls/methods are operational and effective, and isolate the CDE from all out-of-scope systems. Confirming effectiveness of any use of isolation to separate systems with differing security levels (see Requirement 2.2.3). Performed by a qualified internal resource or qualified external third party. Organizational independence of the tester exists (not required to be a QSA or ASV).",
-          "question": "Do you have controls in place to ensure that if segmentation is used to isolate the CDE from other networks, penetration tests are performed on segmentation controls as follows: At least once every 12 months and after any changes to segmentation controls/methods. Covering all segmentation controls/methods in use. Bullet intentionally left blank for this SAQ. Confirming that the segmentation controls/methods are operational and effective, and isolate the CDE from all out-of-scope systems. Confirming effectiveness of any use of isolation to separate systems with differing security levels (see Requirement 2.2.3). Performed by a qualified internal resource or qualified external third party. Organizational independence of the tester exists (not required to be a QSA or ASV)?",
-          "help_text": "If segmentation is used to isolate the CDE from other networks, penetration tests are performed on segmentation controls as follows: At least once every 12 months and after any changes to segmentation controls/methods. Covering all segmentation...",
-          "expected_testing_raw": [
-            "Examine segmentation controls.",
-            "Review penetration-testing",
-            "methodology.",
-            "Examine the results from the most",
-            "recent penetration test.",
-            "Interview responsible personnel."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 4,
-          "category": "security_testing",
-          "tags": [
-            "scanning",
-            "testing",
-            "penetration"
-          ],
-          "risk_level": "high",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Scan report",
-            "Pen test report",
-            "Remediation ticket"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 1
         }
       ]
     },
     {
-      "section_id": "12",
+      "section_id": "logging_monitoring",
       "section_order": 10,
-      "section_title": "Support Information Security with Organizational Policies and Programs",
-      "category": "policy_governance",
-      "items": [
+      "section_title": "Logging & Monitoring",
+      "description": "Keep useful audit trails and review them for suspicious activity.",
+      "category": "logging",
+      "questions": [
         {
-          "id": "12.1",
-          "requirement_raw": "A comprehensive information security policy that governs and provides direction for protection of the entity’s information assets is known and current.",
-          "question": "Do you have controls in place to ensure that a comprehensive information security policy that governs and provides direction for protection of the entity’s information assets is known and current?",
-          "help_text": "A comprehensive information security policy that governs and provides direction for protection of the entity’s information assets is known and current.",
-          "expected_testing_raw": [],
+          "id": "audit_logs",
+          "question": "Do you capture audit logs for access to payment systems where logging is available, and protect logs from tampering?",
+          "help_text": "May be limited on some terminals—answer for systems you control.",
+          "maps_to_requirements": [
+            "10.2.1",
+            "10.5.1"
+          ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 1,
-          "category": "policy_governance",
-          "tags": [
-            "policy",
-            "training",
-            "vendors",
-            "incident response"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Written policy",
-            "Training record",
-            "Incident response plan"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 1
         },
         {
-          "id": "12.1.1",
-          "requirement_raw": "An overall information security policy is: Established. Published. Maintained. Disseminated to all relevant personnel, as well as to relevant vendors and business partners.",
-          "question": "Do you have controls in place to ensure that an overall information security policy is: Established. Published. Maintained. Disseminated to all relevant personnel, as well as to relevant vendors and business partners?",
-          "help_text": "An overall information security policy is: Established. Published. Maintained. Disseminated to all relevant personnel, as well as to relevant vendors and business partners.",
-          "expected_testing_raw": [
-            "Examine the information security",
-            "policy.",
-            "Interview personnel."
+          "id": "pen_test_or_asv",
+          "question": "Do you run external vulnerability scans or penetration tests for internet-facing payment systems as required?",
+          "help_text": "Coordinate with your acquirer or ASV program.",
+          "maps_to_requirements": [
+            "11.3.1",
+            "11.3.2"
           ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 2,
-          "category": "policy_governance",
-          "tags": [
-            "policy",
-            "training",
-            "vendors",
-            "incident response"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Written policy",
-            "Training record",
-            "Incident response plan"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "12.1.2",
-          "requirement_raw": "The information security policy is:",
-          "question": "Do you have controls in place to ensure that the information security policy is:?",
-          "help_text": "The information security policy is: SAQ Completion Guidance:",
-          "expected_testing_raw": [
-            "Reviewed at least once every 12 months.",
-            "Updated as needed to reflect changes to business",
-            "objectives or risks to the environment.",
-            "Examine the information security",
-            "policy.",
-            "Interview responsible personnel.",
-            "Selection of any of the In Place responses for Requirements 12.1.1 and 12.1.2 means that the merchant has a security policy that is reasonable for the size and",
-            "complexity of the merchant’s operations, and that the policy is reviewed at least once every 12 months and updated if needed.",
-            "For example, such a policy could be a simple document that covers how to protect the store and payment devices in accordance with the solution provider’s",
-            "guidance/instruction manual, and who to call in an emergency.",
-            "PCI DSS Requirement Expected Testing"
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 3,
-          "category": "policy_governance",
-          "tags": [
-            "policy",
-            "training",
-            "vendors",
-            "incident response"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Written policy",
-            "Training record",
-            "Incident response plan"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "12.1.3",
-          "requirement_raw": "The security policy clearly defines information security roles and responsibilities for all personnel, and all personnel are aware of and acknowledge their information security responsibilities.",
-          "question": "Do you have controls in place to ensure that the security policy clearly defines information security roles and responsibilities for all personnel, and all personnel are aware of and acknowledge their information security responsibilities?",
-          "help_text": "The security policy clearly defines information security roles and responsibilities for all personnel, and all personnel are aware of and acknowledge their information security responsibilities. SAQ Completion Guidance:",
-          "expected_testing_raw": [
-            "Examine the information security",
-            "policy.",
-            "Interview responsible personnel.",
-            "Examine documented evidence.",
-            "Selection of any of the In Place responses for Requirement 12.1.3 means that the merchant’s security policy defines basic security responsibilities for all personnel,",
-            "consistent with the size and complexity of the merchant’s operations. For example, security responsibilities could be defined according to basic responsibilities by",
-            "employee levels, such as the responsibilities expected of a manager/owner and those expected of clerks."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 4,
-          "category": "policy_governance",
-          "tags": [
-            "policy",
-            "training",
-            "vendors",
-            "incident response"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Written policy",
-            "Training record",
-            "Incident response plan"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "12.6",
-          "requirement_raw": "Security awareness education is an ongoing activity.",
-          "question": "Do you have controls in place to ensure that security awareness education is an ongoing activity?",
-          "help_text": "Security awareness education is an ongoing activity.",
-          "expected_testing_raw": [],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 5,
-          "category": "policy_governance",
-          "tags": [
-            "policy",
-            "training",
-            "vendors",
-            "incident response"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Written policy",
-            "Training record",
-            "Incident response plan"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "12.6.1",
-          "requirement_raw": "A formal security awareness program is implemented to make all personnel aware of the entity’s information security policy and procedures, and their role in protecting the cardholder data.",
-          "question": "Do you have controls in place to ensure that a formal security awareness program is implemented to make all personnel aware of the entity’s information security policy and procedures, and their role in protecting the cardholder data?",
-          "help_text": "A formal security awareness program is implemented to make all personnel aware of the entity’s information security policy and procedures, and their role in protecting the cardholder data. SAQ Completion Guidance:",
-          "expected_testing_raw": [
-            "Examine the security awareness",
-            "program.",
-            "Selection of any of the In Place responses for Requirement 12.6.1 means that the merchant has a security awareness program in place, consistent with the size and",
-            "complexity of the merchant’s business operations. For example, a simple awareness program could be a flyer posted in the back office, or a periodic e-mail sent to all",
-            "employees. Examples of awareness program messaging include descriptions of security tips all employees should follow, such as how to lock doors and storage",
-            "containers, how to determine whether a payment terminal has been tampered with, and processes to confirm the identity and verify there is a legitimate business",
-            "reason for any service workers when they arrive to service payment terminals."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 6,
-          "category": "policy_governance",
-          "tags": [
-            "policy",
-            "training",
-            "vendors",
-            "incident response"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Written policy",
-            "Training record",
-            "Incident response plan"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "12.8",
-          "requirement_raw": "Risk to information assets associated with third-party service provider (TPSP) relationships is managed.",
-          "question": "Do you manage third-party service providers with clear oversight, agreements, and responsibility tracking?",
-          "help_text": "Risk to information assets associated with third-party service provider (TPSP) relationships is managed.",
-          "expected_testing_raw": [],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 7,
-          "category": "policy_governance",
-          "tags": [
-            "policy",
-            "training",
-            "vendors",
-            "incident response"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Written policy",
-            "Training record",
-            "Incident response plan"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "12.8.1",
-          "requirement_raw": "A list of all third-party service providers (TPSPs) with which account data is shared or that could affect the security of account data is maintained, including a description for each of the services provided.",
-          "question": "Do you manage third-party service providers with clear oversight, agreements, and responsibility tracking?",
-          "help_text": "A list of all third-party service providers (TPSPs) with which account data is shared or that could affect the security of account data is maintained, including a description for each of the services provided.",
-          "expected_testing_raw": [
-            "Examine policies and procedures.",
-            "Examine list of TPSPs."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 8,
-          "category": "policy_governance",
-          "tags": [
-            "policy",
-            "training",
-            "vendors",
-            "incident response"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Written policy",
-            "Training record",
-            "Incident response plan"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "12.8.2",
-          "requirement_raw": "Written agreements with TPSPs are maintained as follows: Written agreements are maintained with all TPSPs with which account data is shared or that could affect the security of the CDE. Written agreements include acknowledgments from TPSPs that TPSPs are responsible for the security of account data the TPSPs possess or otherwise store, process, or transmit on behalf of the entity, or to the extent that the TPSP could impact the security of the entity’s cardholder data and/or sensitive authentication data.",
-          "question": "Do you manage third-party service providers with clear oversight, agreements, and responsibility tracking?",
-          "help_text": "Written agreements with TPSPs are maintained as follows: Written agreements are maintained with all TPSPs with which account data is shared or that could affect the security of the CDE. Written agreements include acknowledgments from TPSPs that TPSPs are...",
-          "expected_testing_raw": [
-            "Examine policies and procedures.",
-            "Examine written agreements with",
-            "TPSPs."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 9,
-          "category": "policy_governance",
-          "tags": [
-            "policy",
-            "training",
-            "vendors",
-            "incident response"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Written policy",
-            "Training record",
-            "Incident response plan"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "12.8.3",
-          "requirement_raw": "An established process is implemented for engaging TPSPs, including proper due diligence prior to engagement.",
-          "question": "Do you manage third-party service providers with clear oversight, agreements, and responsibility tracking?",
-          "help_text": "An established process is implemented for engaging TPSPs, including proper due diligence prior to engagement.",
-          "expected_testing_raw": [
-            "Examine policies and procedures.",
-            "Examine evidence.",
-            "Interview responsible personnel.",
-            "PCI DSS Requirement Expected Testing"
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 10,
-          "category": "policy_governance",
-          "tags": [
-            "policy",
-            "training",
-            "vendors",
-            "incident response"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Written policy",
-            "Training record",
-            "Incident response plan"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "12.8.4",
-          "requirement_raw": "A program is implemented to monitor TPSPs’ PCI DSS compliance status at least once every 12 months.",
-          "question": "Do you manage third-party service providers with clear oversight, agreements, and responsibility tracking?",
-          "help_text": "A program is implemented to monitor TPSPs’ PCI DSS compliance status at least once every 12 months.",
-          "expected_testing_raw": [
-            "Examine policies and procedures.",
-            "Examine documentation.",
-            "Interview responsible personnel."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 11,
-          "category": "policy_governance",
-          "tags": [
-            "policy",
-            "training",
-            "vendors",
-            "incident response"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Written policy",
-            "Training record",
-            "Incident response plan"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "12.8.5",
-          "requirement_raw": "Information is maintained about which PCI DSS requirements are managed by each TPSP, which are managed by the entity, and any that are shared between the TPSP and the entity.",
-          "question": "Do you manage third-party service providers with clear oversight, agreements, and responsibility tracking?",
-          "help_text": "Information is maintained about which PCI DSS requirements are managed by each TPSP, which are managed by the entity, and any that are shared between the TPSP and the entity. SAQ Completion Guidance:",
-          "expected_testing_raw": [
-            "Examine policies and procedures.",
-            "Examine documentation.",
-            "Interview responsible personnel.",
-            "Selection of any of the In Place responses for requirements at 12.8.1 through 12.8.5 means that the merchant has a list of, and agreements with, service providers it",
-            "shares account data with or that could impact the security of the merchant’s cardholder data environment. For example, such agreements would be applicable if a",
-            "merchant uses a document-retention company to store paper documents that include account data or if a merchant’s vendor accesses merchant systems remotely to",
-            "perform maintenance."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 12,
-          "category": "policy_governance",
-          "tags": [
-            "policy",
-            "training",
-            "vendors",
-            "incident response"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Written policy",
-            "Training record",
-            "Incident response plan"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "12.10",
-          "requirement_raw": "Suspected and confirmed security incidents that could impact the CDE are responded to immediately.",
-          "question": "Do you have controls in place to ensure that suspected and confirmed security incidents that could impact the CDE are responded to immediately?",
-          "help_text": "Suspected and confirmed security incidents that could impact the CDE are responded to immediately.",
-          "expected_testing_raw": [],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 13,
-          "category": "policy_governance",
-          "tags": [
-            "policy",
-            "training",
-            "vendors",
-            "incident response"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Written policy",
-            "Training record",
-            "Incident response plan"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
-        },
-        {
-          "id": "12.10.1",
-          "requirement_raw": "An incident response plan exists and is ready to be activated in the event of a suspected or confirmed security incident.",
-          "question": "Do you have a documented incident response plan that is current and ready to use?",
-          "help_text": "An incident response plan exists and is ready to be activated in the event of a suspected or confirmed security incident. SAQ Completion Guidance:",
-          "expected_testing_raw": [
-            "Examine the incident response",
-            "plan.",
-            "Interview personnel.",
-            "Examine documentation from",
-            "previously reported incidents.",
-            "Selection of any of the In Place responses for Requirement 12.10.1 means that the merchant has documented an incident response and escalation plan to be used for",
-            "emergencies, consistent with the size and complexity of the merchant’s operations. For example, such a plan could be a simple document posted in the back office",
-            "that lists who to call in the event of various situations with an annual review to confirm it is still accurate, but could extend all the way to a full incident response plan",
-            "including backup “hotsite” facilities and thorough annual testing. This plan should be readily available to all personnel as a resource in an emergency."
-          ],
-          "options": [
-            "In Place",
-            "Not Applicable",
-            "Action Needed"
-          ],
-          "display_order": 14,
-          "category": "policy_governance",
-          "tags": [
-            "policy",
-            "training",
-            "vendors",
-            "incident response"
-          ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Written policy",
-            "Training record",
-            "Incident response plan"
-          ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 2
         }
       ]
     },
     {
-      "section_id": "A2",
+      "section_id": "vulnerability_management",
       "section_order": 11,
-      "section_title": "Additional PCI DSS Requirements for Entities using SSL/Early TLS for Card-Present POS POI Terminal",
-      "category": "legacy_tls",
-      "items": [
+      "section_title": "Vulnerability Management & Scanning",
+      "description": "Find and fix weaknesses in systems and applications in scope.",
+      "category": "vulnerability",
+      "questions": [
         {
-          "id": "A2.1.1",
-          "requirement_raw": "Where POS POI terminals at the merchant or payment acceptance location use SSL and/or early TLS, the entity confirms the devices are not susceptible to any known exploits for those protocols. Examine documentation (for example, vendor documentation, system/network configuration details) that verifies the devices are not susceptible to any known exploits for SSL/early TLS.",
-          "question": "Do you have controls in place to ensure that where POS POI terminals at the merchant or payment acceptance location use SSL and/or early TLS, the entity confirms the devices are not susceptible to any known exploits for those protocols. Examine documentation (for example, vendor documentation, system/network configuration details) that verifies the devices are not susceptible to any known exploits for SSL/early TLS?",
-          "help_text": "Where POS POI terminals at the merchant or payment acceptance location use SSL and/or early TLS, the entity confirms the devices are not susceptible to any known exploits for those protocols. Examine documentation (for example, vendor documentation,...",
-          "expected_testing_raw": [],
+          "id": "vuln_process",
+          "question": "Do you patch or replace software on systems you manage that could affect payment security?",
+          "help_text": "Includes back-office machines touching settlement.",
+          "maps_to_requirements": [
+            "11.3.1",
+            "6.3.3"
+          ],
+          "response_type": "compliance",
+          "requirement_raw": "",
           "options": [
             "In Place",
-            "Not Applicable",
-            "Action Needed"
+            "Action Needed",
+            "Not Applicable"
           ],
-          "display_order": 1,
-          "category": "legacy_tls",
-          "tags": [
-            "appendix",
-            "tls"
+          "display_order": 1
+        },
+        {
+          "id": "ids_ips_considered",
+          "question": "Do you monitor or detect suspicious network activity where feasible (IDS/IPS or equivalent)?",
+          "help_text": "Scale to your size; document what you use.",
+          "maps_to_requirements": [
+            "11.4.1"
           ],
-          "risk_level": "medium",
-          "ui_hint": "yes_no_with_text",
-          "response_type": "single_select",
-          "evidence_examples": [
-            "Protocol inventory",
-            "Migration plan or exception record"
+          "response_type": "compliance",
+          "requirement_raw": "",
+          "options": [
+            "In Place",
+            "Action Needed",
+            "Not Applicable"
           ],
-          "show_requirement_id": true,
-          "allow_note": true
+          "display_order": 2
+        },
+        {
+          "id": "incident_response",
+          "question": "Do you have a simple incident response plan if terminals or networks are suspected compromised?",
+          "help_text": "Who to call and what to preserve.",
+          "maps_to_requirements": [
+            "12.10.1"
+          ],
+          "response_type": "compliance",
+          "requirement_raw": "",
+          "options": [
+            "In Place",
+            "Action Needed",
+            "Not Applicable"
+          ],
+          "display_order": 3
+        }
+      ]
+    },
+    {
+      "section_id": "security_policies",
+      "section_order": 12,
+      "section_title": "Security Policies & Risk Management",
+      "description": "Document expectations, vendors, incidents, and ongoing risk awareness.",
+      "category": "policies",
+      "questions": [
+        {
+          "id": "policy_security",
+          "question": "Do you maintain a security policy covering payment devices and related responsibilities?",
+          "help_text": "Short and current is fine.",
+          "maps_to_requirements": [
+            "12.1",
+            "12.2"
+          ],
+          "response_type": "compliance",
+          "requirement_raw": "",
+          "options": [
+            "In Place",
+            "Action Needed",
+            "Not Applicable"
+          ],
+          "display_order": 1
+        },
+        {
+          "id": "service_providers",
+          "question": "Do you track processors and vendors that support your payment terminals and review their PCI status as needed?",
+          "help_text": "Keep agreements or attestations on file.",
+          "maps_to_requirements": [
+            "12.8.1",
+            "12.8.2"
+          ],
+          "response_type": "compliance",
+          "requirement_raw": "",
+          "options": [
+            "In Place",
+            "Action Needed",
+            "Not Applicable"
+          ],
+          "display_order": 2
+        },
+        {
+          "id": "staff_awareness",
+          "question": "Do employees who handle terminals or payment issues get basic security awareness training yearly?",
+          "help_text": "Phishing and safe handling of cardholder information.",
+          "maps_to_requirements": [
+            "12.6.1",
+            "12.6.2"
+          ],
+          "response_type": "compliance",
+          "requirement_raw": "",
+          "options": [
+            "In Place",
+            "Action Needed",
+            "Not Applicable"
+          ],
+          "display_order": 3
+        },
+        {
+          "id": "dns_email_protection",
+          "question": "Are DNS and email for in-scope staff protected against phishing and malware delivery where feasible?",
+          "help_text": "DMARC/SPF and safe DNS resolvers reduce compromise risk.",
+          "maps_to_requirements": [
+            "5.4.1",
+            "12.6.1"
+          ],
+          "response_type": "compliance",
+          "requirement_raw": "",
+          "options": [
+            "In Place",
+            "Action Needed",
+            "Not Applicable"
+          ],
+          "display_order": 4
         }
       ]
     }

@@ -1,6 +1,7 @@
 /**
  * SAQ metadata and legacy checklist shell types.
  * All real questions load from PRD JSON (`*_prd_ready.json`) via `loadQuestionnaire` — no static items here.
+ * Files use `sections[].questions[]` (or `items`), `maps_to_requirements`, and `response_type: "compliance"`.
  */
 
 export type SaqType =

@@ -31,14 +31,20 @@ const PRD_FILE_BY_SAQ: Record<SaqQuestionnaireType, { data: unknown; filename: s
 /** Raw section shape from PRD JSON (matches exported files). */
 type PrdSectionJson = {
   section_id: string;
-  section_order: number;
+  section_order?: number;
   section_title: string;
+  /** Merchant summary (new PRD layout); maps to section_summary */
+  description?: string;
   category?: string;
-  items: Record<string, unknown>[];
+  items?: Record<string, unknown>[];
+  /** Alias for `items` (new PRD layout) */
+  questions?: Record<string, unknown>[];
 };
 
 type PrdFileJson = {
   framework?: string;
+  saq_type?: string;
+  version?: string;
   source?: string;
   sections: PrdSectionJson[];
 };
@@ -57,9 +63,15 @@ function normalizePrdItem(raw: Record<string, unknown>, sectionId: string): Ques
     ? (raw.expected_testing_raw as unknown[]).map((x) => String(x).trim()).filter(Boolean)
     : undefined;
 
+  const maps =
+    Array.isArray(raw.maps_to_requirements) && raw.maps_to_requirements.length > 0
+      ? (raw.maps_to_requirements as unknown[]).map((x) => String(x).trim()).filter(Boolean)
+      : undefined;
+
   return {
     id: String(raw.id ?? "").trim(),
     section_id: sectionId,
+    maps_to_requirements: maps,
     requirement_raw: String(raw.requirement_raw ?? ""),
     question: String(raw.question ?? "").trim(),
     help_text: raw.help_text != null ? String(raw.help_text) : undefined,
@@ -97,11 +109,18 @@ export function validatePrdQuestionnaireFile(raw: unknown, fileLabel: string): a
       throw new Error(`[${fileLabel}] Invalid section at index ${si}.`);
     }
     const s = sec as Record<string, unknown>;
-    if (!Array.isArray(s.items)) {
-      throw new Error(`[${fileLabel}] Section "${String(s.section_title)}" has no items array.`);
+    const rows = Array.isArray(s.items)
+      ? s.items
+      : Array.isArray(s.questions)
+        ? s.questions
+        : null;
+    if (!rows) {
+      throw new Error(
+        `[${fileLabel}] Section "${String(s.section_title)}" has no "items" or "questions" array.`,
+      );
     }
-    for (let ii = 0; ii < s.items.length; ii++) {
-      const it = s.items[ii];
+    for (let ii = 0; ii < rows.length; ii++) {
+      const it = rows[ii];
       if (!it || typeof it !== "object") {
         throw new Error(`[${fileLabel}] Invalid item at section ${si}, index ${ii}.`);
       }
@@ -123,25 +142,35 @@ export function validatePrdQuestionnaireFile(raw: unknown, fileLabel: string): a
 }
 
 function parsePrdQuestionnaire(raw: PrdFileJson, filename: string): Questionnaire {
+  const rowsForSection = (sec: PrdSectionJson) =>
+    (Array.isArray(sec.items) ? sec.items : sec.questions) ?? [];
+
   const sections: QuestionnaireSection[] = [...raw.sections]
-    .sort((a, b) => (a.section_order ?? 0) - (b.section_order ?? 0))
-    .map((sec) => {
-      const section_id = String(sec.section_id ?? "").trim() || `sec-${sec.section_order}`;
-      const items = [...sec.items]
+    .map((sec, idx) => ({ sec, idx }))
+    .sort((a, b) => (a.sec.section_order ?? a.idx + 1) - (b.sec.section_order ?? b.idx + 1))
+    .map(({ sec, idx }) => {
+      const section_id = String(sec.section_id ?? "").trim() || `sec-${sec.section_order ?? idx + 1}`;
+      const items = [...rowsForSection(sec)]
         .map((row) => normalizePrdItem(row as Record<string, unknown>, section_id))
         .sort((a, b) => (a.display_order ?? 999) - (b.display_order ?? 999));
 
       return {
         section_id,
-        section_order: sec.section_order,
+        section_order: sec.section_order ?? idx + 1,
         section_title: sec.section_title,
+        section_summary: sec.description != null ? String(sec.description) : undefined,
         category: sec.category,
         items,
       };
     });
 
+  const framework =
+    raw.framework?.trim() ||
+    [raw.version?.trim(), raw.saq_type?.trim()].filter(Boolean).join(" · ") ||
+    "PCI DSS SAQ";
+
   return {
-    framework: raw.framework ?? "PCI DSS SAQ",
+    framework,
     source: `${filename} (PRD)`,
     sections,
   };
@@ -193,7 +222,10 @@ export function questionnaireToChecklistDefinition(
         .map((item) => ({
           id: item.id,
           label: item.question,
-          pciRef: `PCI DSS ${item.id}`,
+          pciRef:
+            item.maps_to_requirements && item.maps_to_requirements.length > 0
+              ? `PCI DSS Req. ${item.maps_to_requirements.join(", ")}`
+              : `PCI DSS ${item.id}`,
           type: "compliance_checkpoint" as const,
           helpText: item.help_text,
         })),
